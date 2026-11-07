@@ -13,10 +13,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -32,18 +40,18 @@
       
       <categories>
           
-          <category> 渗透测试 </category>
+          <category> CTF做题笔记 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 外网渗透 </tag>
+            <tag> CTF </tag>
             
-            <tag> 内网渗透 </tag>
+            <tag> Writeup </tag>
             
-            <tag> 靶场 </tag>
+            <tag> 渗透测试 </tag>
             
         </tags>
       
@@ -61,10 +69,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 内网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 内网渗透 </tag>
+            
+            <tag> 综合实战 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -80,10 +96,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 内网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 内网渗透 </tag>
+            
+            <tag> 权限维持 </tag>
+            
+            <tag> 痕迹清理 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -99,10 +125,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 内网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 内网渗透 </tag>
+            
+            <tag> 域渗透 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -118,10 +152,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 内网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 内网渗透 </tag>
+            
+            <tag> 横向移动 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -137,10 +179,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 内网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 内网渗透 </tag>
+            
+            <tag> 凭证获取 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -156,10 +206,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 内网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 内网渗透 </tag>
+            
+            <tag> 隧道 </tag>
+            
+            <tag> 代理 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -175,10 +235,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> 文件上传 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -194,10 +262,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> 解析漏洞 </tag>
+            
+            <tag> 编辑器漏洞 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -213,18 +291,18 @@
       
       <categories>
           
-          <category> Web安全 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
       
         <tags>
             
+            <tag> 外网渗透 </tag>
+            
             <tag> 文件上传 </tag>
             
             <tag> upload-labs </tag>
-            
-            <tag> Web安全 </tag>
             
         </tags>
       
@@ -242,10 +320,20 @@
       
       <categories>
           
-          <category> CTF </category>
+          <category> CTF做题笔记 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> Web </tag>
+            
+            <tag> Writeup </tag>
+            
+        </tags>
       
     </entry>
     
@@ -261,10 +349,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> XXE </tag>
+            
+        </tags>
       
     </entry>
     
@@ -280,10 +376,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> CSRF </tag>
+            
+            <tag> SSRF </tag>
+            
+        </tags>
       
     </entry>
     
@@ -304,6 +410,16 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> AI </tag>
+            
+            <tag> 提示词工程 </tag>
+            
+            <tag> RAG </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -318,18 +434,18 @@
       
       <categories>
           
-          <category> 渗透测试 </category>
+          <category> 工具使用 </category>
           
       </categories>
       
       
         <tags>
             
+            <tag> 工具使用 </tag>
+            
             <tag> Metasploit </tag>
             
             <tag> MSF </tag>
-            
-            <tag> 渗透测试 </tag>
             
         </tags>
       
@@ -347,10 +463,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> RCE </tag>
+            
+            <tag> 命令注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -366,10 +492,22 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 基础知识 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> Web安全 </tag>
+            
+            <tag> DVWA </tag>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -385,10 +523,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> 信息收集 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -404,10 +550,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> MS17-010 </tag>
+            
+            <tag> 永恒之蓝 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -423,10 +579,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 工具使用 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 工具使用 </tag>
+            
+            <tag> Metasploit </tag>
+            
+            <tag> MSF </tag>
+            
+        </tags>
       
     </entry>
     
@@ -442,18 +608,18 @@
       
       <categories>
           
-          <category> 网络安全基础 </category>
+          <category> 工具使用 </category>
           
       </categories>
       
       
         <tags>
             
+            <tag> 工具使用 </tag>
+            
             <tag> Kali Linux </tag>
             
             <tag> Linux </tag>
-            
-            <tag> 安全工具 </tag>
             
         </tags>
       
@@ -471,10 +637,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> 命令注入 </tag>
+            
+            <tag> 业务逻辑 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -490,10 +666,22 @@
       
       <categories>
           
-          <category> 网络安全基础 </category>
+          <category> 基础知识 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> MAC </tag>
+            
+            <tag> IP </tag>
+            
+            <tag> 网络设备 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -509,10 +697,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> SSTI </tag>
+            
+            <tag> 模板注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -528,10 +726,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> CTF做题笔记 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> MISC </tag>
+            
+            <tag> 隐写 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -547,10 +755,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> PHP </tag>
+            
+            <tag> 反序列化 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -566,10 +784,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> XSS </tag>
+            
+        </tags>
       
     </entry>
     
@@ -585,29 +811,18 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
       
-    </entry>
-    
-    
-    
-    <entry>
-      <title>第十届御网杯wp</title>
-      <link href="/2026/07/11/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/"/>
-      <url>/2026/07/11/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/</url>
-      
-        <content type="html"><![CDATA[<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><p><strong>一、WEB-Snake_</strong></p><p><strong>游戏逻辑完全在前端 JS<br>运行，分数、速度、判断逻辑全部暴露在客户端，后端没有任何校验，前端改多少分，后端都认</strong></p><p><strong>属于典型的前端信任漏洞</strong></p><p><strong>所以我们直接通过bp抓包并修改score的值为300即可</strong></p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image1.jpeg"><br>height&#x3D;”3.345138888888889in”}</p><p><strong>发送到repeater,即可获取flag的值</strong></p><ol start="2"><li><p><strong>WEb-PHP_Payment</strong></p><p>本题是一道php反序列化的题目，通过代码审计可知，目标存在PromoManager类，析构函数在对象销毁时自动执行：</p></li></ol><p>function __destruct() { $_SESSION[&#39;balance&#39;] +&#x3D;<br>intval($this-&gt;promo_credit); }</p><p>后端存在优惠券接口，接收coupon参数并反序列化，触发上述逻辑</p><p>同时，购买flag需要 99999 金币，初始金币仅<br>1，所以可通过构造恶意序列化对象增加金币</p><p>这里要注意，余额完全存储在 Session 中，必须使用当前已登录用户的 Session<br>才能修改余额，余额从 $_SESSION[&#39;balance&#39;] 获取</p><p>了解这些之后，我们便可以构造poc并运行<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image2.png"><br>height&#x3D;”1.9819444444444445in”}</p><p>把这个poc放到payload脚本里面</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image3.jpeg"><br>height&#x3D;”0.8090277777777778in”}</p><p>通过脚本获取session，方便一些</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image4.jpeg"><br>height&#x3D;”2.557638888888889in”}</p><p>获取之后向PromoManager.__destruct()投递payload：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image5.jpeg"><br>height&#x3D;”2.8520833333333333in”}</p><p>然后进行攻击并获取flag</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image6.jpeg"><br>height&#x3D;”0.7083333333333334in”}</p><ol start="3"><li><strong>WEB-Enterprise_OA</strong></li></ol><p>本题是很典型的文件包含漏洞题，?module&#x3D;public_notices.php<br>这种直接拼接文件名的方式，我们可以构造?module&#x3D;..&#x2F;..&#x2F;etc&#x2F;passwd 或<br>?module&#x3D;shell.php 读取敏感文件 &#x2F; 上传木马</p><p>先尝试通过php伪协议读取源码</p><p>?module&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;index.php</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image7.jpeg"><br>height&#x3D;”2.5243055555555554in”}</p><p>将该base64编码进行编译可得到源码</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image8.jpeg"><br>height&#x3D;”2.8895833333333334in”}</p><p>通过代码审计，了解到..&#x2F;会被消除，这里可以通过双写.…&#x2F;&#x2F;进行绕过</p><p>通过路径穿越成功访问到flag.txt文件</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image9.jpeg"><br>height&#x3D;”2.7583333333333333in”}</p><p><strong>PWN</strong></p><ol><li><p><strong>PWN-Authenticate</strong></p><p>先checksec一下：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image10.jpeg"><br>height&#x3D;”1.8402777777777777in”}</p><p>基本无保护，不影响下面栈溢出。、</p><p>看看IDA。</p><p>gets()函数显然栈溢出：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image11.jpeg"><br>height&#x3D;”2.613888888888889in”}</p><p>观察看到backdoor函数如图：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image12.jpeg"><br>height&#x3D;”3.6819444444444445in”}</p><p>故使用栈后return_address跳backdoor即可解决。</p><p>初步尝试填充0x80+8到v1，然后接backdoor，但是失败，提示未对齐。</p><p>尝试rop一个ret</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image13.jpeg"><br>height&#x3D;”3.2666666666666666in”}</p><p>正好有个，加上，于是得到最后填充字节：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image14.jpeg"><br>height&#x3D;”3.0527777777777776in”}</p><p>打一下，有shell，cat flag：<br><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image15.jpeg"><br>height&#x3D;”1.6340277777777779in”}</p></li></ol><h2 id="PWN-NoteService"><a href="#PWN-NoteService" class="headerlink" title="PWN-NoteService"></a>PWN-NoteService</h2><p>包里面有个ELF和一个libc，考虑使用libc的方法：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image16.jpeg"><br>height&#x3D;”0.5423611111111111in”}</p><p>看checksec：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image17.jpeg"><br>height&#x3D;”1.6979166666666667in”}</p><p>栈不可执行，开NX了。</p><p>先IDA看反编译：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image18.jpeg"><br>height&#x3D;”2.4305555555555554in”}</p><p>这个buf长64，读0x100显然溢出。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image19.jpeg"><br>height&#x3D;”4.6305555555555555in”}</p><p>又看到secret_note有个shell，考虑跳过来。</p><p>直接elf.symbols[&#39;secret_note&#39;]，然后构造偏移。</p><p>上道题也ret对齐，这个也对齐一下节约时间，</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image20.jpeg"><br>height&#x3D;”1.8340277777777778in”}</p><p>远程得到flag:</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image21.jpeg"><br>height&#x3D;”1.7361111111111112in”}</p><h2 id="三、PWN-Messageboard"><a href="#三、PWN-Messageboard" class="headerlink" title="三、PWN-Messageboard"></a>三、PWN-Messageboard</h2><p>包里面仅一个ELF</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image22.jpeg"><br>height&#x3D;”3.495138888888889in”}</p><p>直接看IDA</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image23.jpeg"><br>height&#x3D;”1.542361111111111in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image24.jpeg"><br>height&#x3D;”2.4972222222222222in”}</p><p>依旧显然溢出，但是buf特大，考虑可能shellcode，再看看checksec。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image25.jpeg"><br>height&#x3D;”2.032638888888889in”}</p><p>无NX信息，试试再说。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image26.jpeg"><br>height&#x3D;”2.6013888888888888in”}</p><p>出了：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image27.jpeg"><br>height&#x3D;”3.5027777777777778in”}</p><h1 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h1><h2 id="reverse-字节码迷踪"><a href="#reverse-字节码迷踪" class="headerlink" title="reverse-字节码迷踪"></a>reverse-字节码迷踪</h2><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image28.png"><br>height&#x3D;”3.313888888888889in”}</p><p>首先这是一个.cpy文件，我想的是把他反编译变成.py文件分析，用已有工具pycdc.exe,把解压后的文件py_obf_08.pyc和pycdc.exe放到同一个文件夹，cmd，输入.\pycdc.exe<br>py_obf_08.pyc &gt;<br>output.py，然后在这个文件夹就可以得到反编译后的文件<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image29.png"><br>height&#x3D;”3.2597222222222224in”}</p><p>进入<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image30.jpeg"><br>height&#x3D;”3.484722222222222in”}</p><p>其实flag已经在其中了，稍加修改代码，运行就可以得到flag<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image31.jpeg"><br>height&#x3D;”4.173611111111111in”}</p><p>flag{2gnkcpz7-sqi2-s48w-xt54-vsoghma1srly}</p><h2 id="reverse-rerere"><a href="#reverse-rerere" class="headerlink" title="reverse-rerere"></a>reverse-rerere</h2><ol start="2"><li><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image32.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>得到<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image33.png"><br>height&#x3D;”2.1881944444444446in”}</p></li></ol><p>DIE分析为64位，进入IDA分析，进入后shift+f12得<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image34.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>看到关键词input，再加上后面还有correct和wrong应该是在比较，推测输入的东西很有可能就是flag，进入<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image35.png"><br>height&#x3D;”3.2708333333333335in”}</p><p>Fgets函数是在获取输入信息，其中最重要的数据为第一个参数buf，往下看找对buf处理的函数sub_140001480进入<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image36.png"><br>height&#x3D;”0.8180555555555555in”}<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image37.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>分析while中的部分，进入byte_140004060,</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image38.png"><br>height&#x3D;”2.540277777777778in”}</p><p>找到其他几个数组内16进制内容，用python写还原的代码<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image39.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>得到结果flag {7fa6888d8465734047572ccf7a140b74}</p><p><strong>Misc</strong></p><h2 id="幻影（shadow06-zip）"><a href="#幻影（shadow06-zip）" class="headerlink" title="幻影（shadow06.zip）"></a>幻影（shadow06.zip）</h2><p>忘了名字叫啥了，好像是这个，里面获得一个bin.</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image40.jpeg"><br>height&#x3D;”0.24791666666666667in”}</p><p>010 editor里面看到了这个提示，说的flag假的，要base64，那就base64：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image41.png"><br>height&#x3D;”2.359722222222222in”}</p><p>跑个base64：<br><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image42.jpeg"><br>height&#x3D;”2.002083333333333in”}</p><p>93&gt;8$mm&lt;h&lt;ki:rnh&lt;nrk&lt;nkrffngrflh:;:;&lt;k:l&#x3D;&quot;</p><p>依旧不是flag，但是看这个像要xor。</p><p>试一下，每个字符xor能导出一个flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image43.jpeg"><br>height&#x3D;”4.1097222222222225in”}</p><h2 id="签到题-损坏的压缩包"><a href="#签到题-损坏的压缩包" class="headerlink" title="签到题-损坏的压缩包"></a>签到题-损坏的压缩包</h2><p>什么data.txt里面放个base64加密文：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image44.jpeg"><br>height&#x3D;”2.2395833333333335in”}</p><p>解：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image45.jpeg"><br>height&#x3D;”2.647222222222222in”}</p><p>那就是flag{yznu}</p><h2 id="迷宫（maze07-zip）"><a href="#迷宫（maze07-zip）" class="headerlink" title="迷宫（maze07.zip）"></a>迷宫（maze07.zip）</h2><p>对。好像这个是迷宫。压缩包maze07.zip</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image46.jpeg"><br>height&#x3D;”0.2826388888888889in”}</p><p>极长的路径...</p><p>最后看得到一个：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image47.jpeg"><br>height&#x3D;”0.3347222222222222in”}</p><p>010打开：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image48.jpeg"><br>height&#x3D;”1.163888888888889in”}</p><p>Base64，不想用shell了:</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image49.jpeg"><br>height&#x3D;”3.689583333333333in”}</p><p>哈哈，有点没思路了，像个MD5，包个flag{}进去竟然是对的。</p><p>flag{ea632c6606becd9e46c1d392f8b0e6da}</p><p><strong>Crypto</strong></p><h2 id="BabyRSA"><a href="#BabyRSA" class="headerlink" title="BabyRSA"></a>BabyRSA</h2><p>题目说是baby RSA，看看啥样。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image50.jpeg"><br>height&#x3D;”0.8263888888888888in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image51.jpeg"><br>height&#x3D;”0.8118055555555556in”}</p><p>数。</p><p>看得出来这个Python脚本是n，e，c的产出过程。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image52.jpeg"><br>height&#x3D;”3.339583333333333in”}</p><p>这个脚本把flag变成long数（m），pq取512prime，c是pow(m,e,n)，e就是公钥的指数，n又特别长，那密文也短得很。</p><p>又知道这个RSA里面<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image54.svg" alt="latexmath"><br>height&#x3D;”0.2708333333333333in”}，e小了<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image56.svg" alt="latexmath"><br>height&#x3D;”0.2708333333333333in”}就小于等于n了，所以可能出现不取模情况。</p><p>那么，对c在整数域开立方根得到m！</p><p>写个脚本。</p><p>整数上面开立方用二分法好做：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image57.jpeg"><br>height&#x3D;”3.1354166666666665in”}</p><p>检查后作逆运算回bytes，目标是flag。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image58.jpeg"><br>height&#x3D;”2.6875in”}</p><p>完整脚本：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image59.jpeg"><br>height&#x3D;”2.113888888888889in”}</p><p>确实得到了flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image60.jpeg"><br>height&#x3D;”3.11875in”}</p><h2 id="ScatterRSA"><a href="#ScatterRSA" class="headerlink" title="ScatterRSA"></a>ScatterRSA</h2><p>那还是RSA，看看内容：<br><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image61.jpeg"><br>height&#x3D;”0.8277777777777777in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image62.jpeg"><br>height&#x3D;”1.86875in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image63.jpeg"><br>height&#x3D;”5.269444444444445in”}</p><p>p，q，n的获得方法和上面一题相似，但是有三次RSA，每次加密还用不一样的。但是指数e依旧是3，估计这是一个典型的带有线性填充的<br>Hastad 广播攻击。</p><p>过程用到很多构造的数学计算，不方便表达，那就列出来：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image65.svg" alt="latexmath"><br>height&#x3D;”0.3541666666666667in”}</p><p>这个公式是每次都有做的计算。</p><p>首项化为1，使用中国剩余定理：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image67.svg" alt="latexmath"><br>height&#x3D;”0.3125in”}</p><p>再用LLL求解，运用LLL的话需要构造一个基矩阵，应该是下面这样：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image69.svg" alt="latexmath"><br>height&#x3D;”1.3958333333333333in”}</p><p>X是一个猜测上界，通过对该矩阵进行 LLL<br>规约分析，提取出最短向量即可恢复一个在整数环域上为0的多项式，求根便可拿到明文。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image70.jpeg"><br>height&#x3D;”3.0520833333333335in”}</p><p>跑起来成功了就是flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image71.jpeg"><br>height&#x3D;”0.9159722222222222in”}</p><p>flag{0e2f0e967e34f9aed84b1c7dcf619586}</p><h2 id="ECDSA-nonce-重用"><a href="#ECDSA-nonce-重用" class="headerlink" title="ECDSA nonce 重用"></a><strong>ECDSA nonce 重用</strong></h2><p>题上给了一堆详细信息：</p><p>我们截获了某平台签发的 10 组 ECDSA 签名数据，每组包含： 同一个公钥<br>两条不同消息及其对应的 ECDSA 签名<br>安全研究员发现，该平台在签名时错误地重复使用了相同的随机数（nonce）k。<br>请利用这一漏洞，恢复出原始私钥，并提交对应的 flag。 每个压缩包<br>otp_XX.zip 中包含一个 challenge.json 文件，格式如下： {<br>&quot;public_key_x&quot;: &quot;...&quot;, &quot;public_key_y&quot;: &quot;...&quot;, &quot;message1&quot;:<br>&quot;57656c636f6d6520746f2074686520435446206368616c6c656e676521&quot;,<br>&quot;message2&quot;:<br>&quot;506c65617365207265636f766572207468652073656372657420666c61672e&quot;,<br>&quot;signature1_r&quot;: 123456..., &quot;signature1_s&quot;: 789012...,<br>&quot;signature2_r&quot;: 123456..., &#x2F;&#x2F; 注意：与 signature1_r 相同！<br>&quot;signature2_s&quot;: 345678..., &quot;curve&quot;: &quot;SECP256k1&quot; } Flag<br>格式：flag{ecdsa_nonce_reuse_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}</p><p>大致看看，然后先看文件：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image72.jpeg"><br>height&#x3D;”3.623611111111111in”}</p><p>一个JSON，里面是？</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image73.jpeg"><br>height&#x3D;”1.5368055555555555in”}</p><p>和题目描述相关。</p><p>对于 ECDSA，签名生成的两个结果为：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image75.svg" alt="latexmath"><br>height&#x3D;”0.3645833333333333in”}和<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image77.svg" alt="latexmath"><br>height&#x3D;”0.3645833333333333in”}</p><p>然后因为两个签名使用了相同的k，使得r值相同。两式相减变换后得到了k。</p><p>用公钥了，验证SHA256和SHA1，也验证不SHA的情况，发现确实是SHA256：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image78.jpeg"><br>height&#x3D;”3.826388888888889in”}</p><p>爆了，看看：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image79.jpeg"><br>height&#x3D;”4.750694444444444in”}</p><p>错了。</p><p>看这个flag有点长了，是不是这个东西需要截断？我看到了flag后面32个x，那就该只截断到32位，再试试。</p><p>截断有多种可能，尝试截断私钥前128，后128，Nonce<br>k前128，后128，甚至SHA256和MD5一起尝试，避免猜错，反正长度先固定下来。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image80.jpeg"><br>height&#x3D;”3.704861111111111in”}</p><p>试第一个flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image81.jpeg"><br>height&#x3D;”4.291666666666667in”}<br>成了，第一个就是对的。那么flag就是：</p><p>flag{ecdsa_nonce_reuse_27da112f7d3f0567c8d95827b4eff200}</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 安全笔记 </category>
-          
-      </categories>
-      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> 信息泄露 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -623,10 +838,47 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 外网渗透 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 外网渗透 </tag>
+            
+            <tag> 文件包含 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>第十届御网杯wp</title>
+      <link href="/2026/07/11/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/"/>
+      <url>/2026/07/11/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><p><strong>一、WEB-Snake_</strong></p><p><strong>游戏逻辑完全在前端 JS<br>运行，分数、速度、判断逻辑全部暴露在客户端，后端没有任何校验，前端改多少分，后端都认</strong></p><p><strong>属于典型的前端信任漏洞</strong></p><p><strong>所以我们直接通过bp抓包并修改score的值为300即可</strong></p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image1.jpeg"><br>height&#x3D;”3.345138888888889in”}</p><p><strong>发送到repeater,即可获取flag的值</strong></p><ol start="2"><li><p><strong>WEb-PHP_Payment</strong></p><p>本题是一道php反序列化的题目，通过代码审计可知，目标存在PromoManager类，析构函数在对象销毁时自动执行：</p></li></ol><p>function __destruct() { $_SESSION[&#39;balance&#39;] +&#x3D;<br>intval($this-&gt;promo_credit); }</p><p>后端存在优惠券接口，接收coupon参数并反序列化，触发上述逻辑</p><p>同时，购买flag需要 99999 金币，初始金币仅<br>1，所以可通过构造恶意序列化对象增加金币</p><p>这里要注意，余额完全存储在 Session 中，必须使用当前已登录用户的 Session<br>才能修改余额，余额从 $_SESSION[&#39;balance&#39;] 获取</p><p>了解这些之后，我们便可以构造poc并运行<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image2.png"><br>height&#x3D;”1.9819444444444445in”}</p><p>把这个poc放到payload脚本里面</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image3.jpeg"><br>height&#x3D;”0.8090277777777778in”}</p><p>通过脚本获取session，方便一些</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image4.jpeg"><br>height&#x3D;”2.557638888888889in”}</p><p>获取之后向PromoManager.__destruct()投递payload：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image5.jpeg"><br>height&#x3D;”2.8520833333333333in”}</p><p>然后进行攻击并获取flag</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image6.jpeg"><br>height&#x3D;”0.7083333333333334in”}</p><ol start="3"><li><strong>WEB-Enterprise_OA</strong></li></ol><p>本题是很典型的文件包含漏洞题，?module&#x3D;public_notices.php<br>这种直接拼接文件名的方式，我们可以构造?module&#x3D;..&#x2F;..&#x2F;etc&#x2F;passwd 或<br>?module&#x3D;shell.php 读取敏感文件 &#x2F; 上传木马</p><p>先尝试通过php伪协议读取源码</p><p>?module&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;index.php</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image7.jpeg"><br>height&#x3D;”2.5243055555555554in”}</p><p>将该base64编码进行编译可得到源码</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image8.jpeg"><br>height&#x3D;”2.8895833333333334in”}</p><p>通过代码审计，了解到..&#x2F;会被消除，这里可以通过双写.…&#x2F;&#x2F;进行绕过</p><p>通过路径穿越成功访问到flag.txt文件</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image9.jpeg"><br>height&#x3D;”2.7583333333333333in”}</p><p><strong>PWN</strong></p><ol><li><p><strong>PWN-Authenticate</strong></p><p>先checksec一下：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image10.jpeg"><br>height&#x3D;”1.8402777777777777in”}</p><p>基本无保护，不影响下面栈溢出。、</p><p>看看IDA。</p><p>gets()函数显然栈溢出：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image11.jpeg"><br>height&#x3D;”2.613888888888889in”}</p><p>观察看到backdoor函数如图：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image12.jpeg"><br>height&#x3D;”3.6819444444444445in”}</p><p>故使用栈后return_address跳backdoor即可解决。</p><p>初步尝试填充0x80+8到v1，然后接backdoor，但是失败，提示未对齐。</p><p>尝试rop一个ret</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image13.jpeg"><br>height&#x3D;”3.2666666666666666in”}</p><p>正好有个，加上，于是得到最后填充字节：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image14.jpeg"><br>height&#x3D;”3.0527777777777776in”}</p><p>打一下，有shell，cat flag：<br><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image15.jpeg"><br>height&#x3D;”1.6340277777777779in”}</p></li></ol><h2 id="PWN-NoteService"><a href="#PWN-NoteService" class="headerlink" title="PWN-NoteService"></a>PWN-NoteService</h2><p>包里面有个ELF和一个libc，考虑使用libc的方法：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image16.jpeg"><br>height&#x3D;”0.5423611111111111in”}</p><p>看checksec：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image17.jpeg"><br>height&#x3D;”1.6979166666666667in”}</p><p>栈不可执行，开NX了。</p><p>先IDA看反编译：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image18.jpeg"><br>height&#x3D;”2.4305555555555554in”}</p><p>这个buf长64，读0x100显然溢出。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image19.jpeg"><br>height&#x3D;”4.6305555555555555in”}</p><p>又看到secret_note有个shell，考虑跳过来。</p><p>直接elf.symbols[&#39;secret_note&#39;]，然后构造偏移。</p><p>上道题也ret对齐，这个也对齐一下节约时间，</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image20.jpeg"><br>height&#x3D;”1.8340277777777778in”}</p><p>远程得到flag:</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image21.jpeg"><br>height&#x3D;”1.7361111111111112in”}</p><h2 id="三、PWN-Messageboard"><a href="#三、PWN-Messageboard" class="headerlink" title="三、PWN-Messageboard"></a>三、PWN-Messageboard</h2><p>包里面仅一个ELF</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image22.jpeg"><br>height&#x3D;”3.495138888888889in”}</p><p>直接看IDA</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image23.jpeg"><br>height&#x3D;”1.542361111111111in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image24.jpeg"><br>height&#x3D;”2.4972222222222222in”}</p><p>依旧显然溢出，但是buf特大，考虑可能shellcode，再看看checksec。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image25.jpeg"><br>height&#x3D;”2.032638888888889in”}</p><p>无NX信息，试试再说。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image26.jpeg"><br>height&#x3D;”2.6013888888888888in”}</p><p>出了：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image27.jpeg"><br>height&#x3D;”3.5027777777777778in”}</p><h1 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h1><h2 id="reverse-字节码迷踪"><a href="#reverse-字节码迷踪" class="headerlink" title="reverse-字节码迷踪"></a>reverse-字节码迷踪</h2><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image28.png"><br>height&#x3D;”3.313888888888889in”}</p><p>首先这是一个.cpy文件，我想的是把他反编译变成.py文件分析，用已有工具pycdc.exe,把解压后的文件py_obf_08.pyc和pycdc.exe放到同一个文件夹，cmd，输入.\pycdc.exe<br>py_obf_08.pyc &gt;<br>output.py，然后在这个文件夹就可以得到反编译后的文件<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image29.png"><br>height&#x3D;”3.2597222222222224in”}</p><p>进入<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image30.jpeg"><br>height&#x3D;”3.484722222222222in”}</p><p>其实flag已经在其中了，稍加修改代码，运行就可以得到flag<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image31.jpeg"><br>height&#x3D;”4.173611111111111in”}</p><p>flag{2gnkcpz7-sqi2-s48w-xt54-vsoghma1srly}</p><h2 id="reverse-rerere"><a href="#reverse-rerere" class="headerlink" title="reverse-rerere"></a>reverse-rerere</h2><ol start="2"><li><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image32.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>得到<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image33.png"><br>height&#x3D;”2.1881944444444446in”}</p></li></ol><p>DIE分析为64位，进入IDA分析，进入后shift+f12得<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image34.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>看到关键词input，再加上后面还有correct和wrong应该是在比较，推测输入的东西很有可能就是flag，进入<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image35.png"><br>height&#x3D;”3.2708333333333335in”}</p><p>Fgets函数是在获取输入信息，其中最重要的数据为第一个参数buf，往下看找对buf处理的函数sub_140001480进入<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image36.png"><br>height&#x3D;”0.8180555555555555in”}<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image37.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>分析while中的部分，进入byte_140004060,</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image38.png"><br>height&#x3D;”2.540277777777778in”}</p><p>找到其他几个数组内16进制内容，用python写还原的代码<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image39.png"><br>height&#x3D;”3.2368055555555557in”}</p><p>得到结果flag {7fa6888d8465734047572ccf7a140b74}</p><p><strong>Misc</strong></p><h2 id="幻影（shadow06-zip）"><a href="#幻影（shadow06-zip）" class="headerlink" title="幻影（shadow06.zip）"></a>幻影（shadow06.zip）</h2><p>忘了名字叫啥了，好像是这个，里面获得一个bin.</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image40.jpeg"><br>height&#x3D;”0.24791666666666667in”}</p><p>010 editor里面看到了这个提示，说的flag假的，要base64，那就base64：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image41.png"><br>height&#x3D;”2.359722222222222in”}</p><p>跑个base64：<br><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image42.jpeg"><br>height&#x3D;”2.002083333333333in”}</p><p>93&gt;8$mm&lt;h&lt;ki:rnh&lt;nrk&lt;nkrffngrflh:;:;&lt;k:l&#x3D;&quot;</p><p>依旧不是flag，但是看这个像要xor。</p><p>试一下，每个字符xor能导出一个flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image43.jpeg"><br>height&#x3D;”4.1097222222222225in”}</p><h2 id="签到题-损坏的压缩包"><a href="#签到题-损坏的压缩包" class="headerlink" title="签到题-损坏的压缩包"></a>签到题-损坏的压缩包</h2><p>什么data.txt里面放个base64加密文：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image44.jpeg"><br>height&#x3D;”2.2395833333333335in”}</p><p>解：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image45.jpeg"><br>height&#x3D;”2.647222222222222in”}</p><p>那就是flag{yznu}</p><h2 id="迷宫（maze07-zip）"><a href="#迷宫（maze07-zip）" class="headerlink" title="迷宫（maze07.zip）"></a>迷宫（maze07.zip）</h2><p>对。好像这个是迷宫。压缩包maze07.zip</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image46.jpeg"><br>height&#x3D;”0.2826388888888889in”}</p><p>极长的路径...</p><p>最后看得到一个：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image47.jpeg"><br>height&#x3D;”0.3347222222222222in”}</p><p>010打开：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image48.jpeg"><br>height&#x3D;”1.163888888888889in”}</p><p>Base64，不想用shell了:</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image49.jpeg"><br>height&#x3D;”3.689583333333333in”}</p><p>哈哈，有点没思路了，像个MD5，包个flag{}进去竟然是对的。</p><p>flag{ea632c6606becd9e46c1d392f8b0e6da}</p><p><strong>Crypto</strong></p><h2 id="BabyRSA"><a href="#BabyRSA" class="headerlink" title="BabyRSA"></a>BabyRSA</h2><p>题目说是baby RSA，看看啥样。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image50.jpeg"><br>height&#x3D;”0.8263888888888888in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image51.jpeg"><br>height&#x3D;”0.8118055555555556in”}</p><p>数。</p><p>看得出来这个Python脚本是n，e，c的产出过程。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image52.jpeg"><br>height&#x3D;”3.339583333333333in”}</p><p>这个脚本把flag变成long数（m），pq取512prime，c是pow(m,e,n)，e就是公钥的指数，n又特别长，那密文也短得很。</p><p>又知道这个RSA里面<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image54.svg" alt="latexmath"><br>height&#x3D;”0.2708333333333333in”}，e小了<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image56.svg" alt="latexmath"><br>height&#x3D;”0.2708333333333333in”}就小于等于n了，所以可能出现不取模情况。</p><p>那么，对c在整数域开立方根得到m！</p><p>写个脚本。</p><p>整数上面开立方用二分法好做：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image57.jpeg"><br>height&#x3D;”3.1354166666666665in”}</p><p>检查后作逆运算回bytes，目标是flag。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image58.jpeg"><br>height&#x3D;”2.6875in”}</p><p>完整脚本：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image59.jpeg"><br>height&#x3D;”2.113888888888889in”}</p><p>确实得到了flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image60.jpeg"><br>height&#x3D;”3.11875in”}</p><h2 id="ScatterRSA"><a href="#ScatterRSA" class="headerlink" title="ScatterRSA"></a>ScatterRSA</h2><p>那还是RSA，看看内容：<br><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image61.jpeg"><br>height&#x3D;”0.8277777777777777in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image62.jpeg"><br>height&#x3D;”1.86875in”}</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image63.jpeg"><br>height&#x3D;”5.269444444444445in”}</p><p>p，q，n的获得方法和上面一题相似，但是有三次RSA，每次加密还用不一样的。但是指数e依旧是3，估计这是一个典型的带有线性填充的<br>Hastad 广播攻击。</p><p>过程用到很多构造的数学计算，不方便表达，那就列出来：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image65.svg" alt="latexmath"><br>height&#x3D;”0.3541666666666667in”}</p><p>这个公式是每次都有做的计算。</p><p>首项化为1，使用中国剩余定理：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image67.svg" alt="latexmath"><br>height&#x3D;”0.3125in”}</p><p>再用LLL求解，运用LLL的话需要构造一个基矩阵，应该是下面这样：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image69.svg" alt="latexmath"><br>height&#x3D;”1.3958333333333333in”}</p><p>X是一个猜测上界，通过对该矩阵进行 LLL<br>规约分析，提取出最短向量即可恢复一个在整数环域上为0的多项式，求根便可拿到明文。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image70.jpeg"><br>height&#x3D;”3.0520833333333335in”}</p><p>跑起来成功了就是flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image71.jpeg"><br>height&#x3D;”0.9159722222222222in”}</p><p>flag{0e2f0e967e34f9aed84b1c7dcf619586}</p><h2 id="ECDSA-nonce-重用"><a href="#ECDSA-nonce-重用" class="headerlink" title="ECDSA nonce 重用"></a><strong>ECDSA nonce 重用</strong></h2><p>题上给了一堆详细信息：</p><p>我们截获了某平台签发的 10 组 ECDSA 签名数据，每组包含： 同一个公钥<br>两条不同消息及其对应的 ECDSA 签名<br>安全研究员发现，该平台在签名时错误地重复使用了相同的随机数（nonce）k。<br>请利用这一漏洞，恢复出原始私钥，并提交对应的 flag。 每个压缩包<br>otp_XX.zip 中包含一个 challenge.json 文件，格式如下： {<br>&quot;public_key_x&quot;: &quot;...&quot;, &quot;public_key_y&quot;: &quot;...&quot;, &quot;message1&quot;:<br>&quot;57656c636f6d6520746f2074686520435446206368616c6c656e676521&quot;,<br>&quot;message2&quot;:<br>&quot;506c65617365207265636f766572207468652073656372657420666c61672e&quot;,<br>&quot;signature1_r&quot;: 123456..., &quot;signature1_s&quot;: 789012...,<br>&quot;signature2_r&quot;: 123456..., &#x2F;&#x2F; 注意：与 signature1_r 相同！<br>&quot;signature2_s&quot;: 345678..., &quot;curve&quot;: &quot;SECP256k1&quot; } Flag<br>格式：flag{ecdsa_nonce_reuse_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}</p><p>大致看看，然后先看文件：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image72.jpeg"><br>height&#x3D;”3.623611111111111in”}</p><p>一个JSON，里面是？</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image73.jpeg"><br>height&#x3D;”1.5368055555555555in”}</p><p>和题目描述相关。</p><p>对于 ECDSA，签名生成的两个结果为：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image75.svg" alt="latexmath"><br>height&#x3D;”0.3645833333333333in”}和<img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image77.svg" alt="latexmath"><br>height&#x3D;”0.3645833333333333in”}</p><p>然后因为两个签名使用了相同的k，使得r值相同。两式相减变换后得到了k。</p><p>用公钥了，验证SHA256和SHA1，也验证不SHA的情况，发现确实是SHA256：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image78.jpeg"><br>height&#x3D;”3.826388888888889in”}</p><p>爆了，看看：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image79.jpeg"><br>height&#x3D;”4.750694444444444in”}</p><p>错了。</p><p>看这个flag有点长了，是不是这个东西需要截断？我看到了flag后面32个x，那就该只截断到32位，再试试。</p><p>截断有多种可能，尝试截断私钥前128，后128，Nonce<br>k前128，后128，甚至SHA256和MD5一起尝试，避免猜错，反正长度先固定下来。</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image80.jpeg"><br>height&#x3D;”3.704861111111111in”}</p><p>试第一个flag：</p><p><img src="/images/notes/media_%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/media/image81.jpeg"><br>height&#x3D;”4.291666666666667in”}<br>成了，第一个就是对的。那么flag就是：</p><p>flag{ecdsa_nonce_reuse_27da112f7d3f0567c8d95827b4eff200}</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF做题笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> Writeup </tag>
+            
+            <tag> 御网杯 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -642,10 +894,20 @@
       
       <categories>
           
-          <category> 网络安全基础 </category>
+          <category> 基础知识 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> TCP/IP </tag>
+            
+            <tag> DoS </tag>
+            
+        </tags>
       
     </entry>
     
@@ -661,10 +923,18 @@
       
       <categories>
           
-          <category> 网络安全基础 </category>
+          <category> 基础知识 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> 网络协议 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -680,10 +950,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 工具使用 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 工具使用 </tag>
+            
+            <tag> phpStudy </tag>
+            
+            <tag> 环境搭建 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -699,10 +979,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 基础知识 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> 本地访问 </tag>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -718,10 +1008,20 @@
       
       <categories>
           
-          <category> 安全笔记 </category>
+          <category> 基础知识 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> HTTP </tag>
+            
+            <tag> HTTPS </tag>
+            
+        </tags>
       
     </entry>
     
@@ -737,10 +1037,20 @@
       
       <categories>
           
-          <category> CTF </category>
+          <category> CTF做题笔记 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> Writeup </tag>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
