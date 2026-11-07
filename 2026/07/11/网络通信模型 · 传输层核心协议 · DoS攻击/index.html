@@ -1,0 +1,1101 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第一部分：网络通信模型 1.1 什么是网络通信模型？网络通信模型就是一套&quot;规则&quot;或&quot;框架&quot;，用来规定计算机之间如何传递数据。就好比两个人写信：需要信封格式、地址写法、邮局分拣流程等规则。网络模型将这些规则分层管理，每一层只管自己的事情，便于设计和维护。 1.2 OSI 七层模型（理论参考模型）OSI（Open SystemInterconnection）是国">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络通信模型 · 传输层核心协议 · DoS攻击">
+<meta property="og:url" content="https://chiya-66.github.io/2026/07/11/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B%20%C2%B7%20%E4%BC%A0%E8%BE%93%E5%B1%82%E6%A0%B8%E5%BF%83%E5%8D%8F%E8%AE%AE%20%C2%B7%20DoS%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="第一部分：网络通信模型 1.1 什么是网络通信模型？网络通信模型就是一套&quot;规则&quot;或&quot;框架&quot;，用来规定计算机之间如何传递数据。就好比两个人写信：需要信封格式、地址写法、邮局分拣流程等规则。网络模型将这些规则分层管理，每一层只管自己的事情，便于设计和维护。 1.2 OSI 七层模型（理论参考模型）OSI（Open SystemInterconnection）是国">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-10T23:48:20.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.382Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>网络通信模型 · 传输层核心协议 · DoS攻击 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络通信模型 · 传输层核心协议 · DoS攻击"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-11 07:48" pubdate>
+          2026年7月11日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">网络通信模型 · 传输层核心协议 · DoS攻击</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>第一部分：网络通信模型</p>
+<h2 id="1-1-什么是网络通信模型？"><a href="#1-1-什么是网络通信模型？" class="headerlink" title="1.1 什么是网络通信模型？"></a>1.1 什么是网络通信模型？</h2><p>网络通信模型就是一套&quot;规则&quot;或&quot;框架&quot;，用来规定计算机之间如何传递数据。就好比两个人写信：需要信封格式、地址写法、邮局分拣流程等规则。网络模型将这些规则分层管理，每一层只管自己的事情，便于设计和维护。</p>
+<h2 id="1-2-OSI-七层模型（理论参考模型）"><a href="#1-2-OSI-七层模型（理论参考模型）" class="headerlink" title="1.2 OSI 七层模型（理论参考模型）"></a>1.2 OSI 七层模型（理论参考模型）</h2><p><strong>OSI（Open System<br>Interconnection）是国际标准化组织（ISO）制定的网络通信模型，共分7层。下面从上到下逐一说明：</strong></p>
+<ul>
+<li><strong>第7层 — 应用层（Application Layer）</strong></li>
+</ul>
+<p>直接为用户提供网络服务，如浏览器（HTTP）、邮件（SMTP）、文件传输（FTP）。这是用户接触最多的一层。</p>
+<ul>
+<li><strong>第6层 — 表示层（Presentation Layer）</strong></li>
+</ul>
+<p>负责数据格式转换、加密解密、压缩解压。确保不同系统之间的数据能被正确理解。例如：图片的JPEG编码、文本的ASCII&#x2F;Unicode编码。</p>
+<ul>
+<li><strong>第5层 — 会话层（Session Layer）</strong></li>
+</ul>
+<p>负责建立、管理和拆除会话（Session），即两台设备之间的通信会话。例如：登录一个网站时建立的会话。</p>
+<ul>
+<li><strong>第4层 — 传输层（Transport Layer）</strong></li>
+</ul>
+<p>⭐ 核心层！负责端到端的通信，保证数据可靠或快速地交付。主要协议有<br>TCP（可靠）和 UDP（快速）。这层是本文第二部分重点。</p>
+<ul>
+<li><strong>第3层 — 网络层（Network Layer）</strong></li>
+</ul>
+<p>负责数据包的路由和转发，决定数据从源到目的地的路径。核心设备是路由器，核心协议是<br>IP（网际协议）。</p>
+<ul>
+<li><strong>第2层 — 数据链路层（Data Link Layer）</strong></li>
+</ul>
+<p>负责在物理链路上进行可靠的数据传输，进行差错检测和流量控制。核心设备是交换机。数据单元称为&quot;帧&quot;（Frame）。</p>
+<ul>
+<li><strong>第1层 — 物理层（Physical Layer）</strong></li>
+</ul>
+<p>负责传输原始的比特流（0和1），定义电压、线缆规格、接口形状等物理特性。核心设备是集线器（Hub）、中继器。</p>
+<p><strong>💡 记忆口诀（从上到下）：</strong>&quot;应-表-会-传-网-数-物&quot; →<br>&quot;应表会传网数物&quot; → 谐音记忆：&quot;应该会穿网速快&quot;</p>
+<h2 id="1-3-TCP-IP-四层模型（实际使用模型）"><a href="#1-3-TCP-IP-四层模型（实际使用模型）" class="headerlink" title="1.3 TCP&#x2F;IP 四层模型（实际使用模型）"></a>1.3 TCP&#x2F;IP 四层模型（实际使用模型）</h2><p><strong>TCP&#x2F;IP 模型是互联网实际使用的模型，比OSI更简洁，共4层：</strong></p>
+<ul>
+<li><strong>第4层 — 应用层</strong></li>
+</ul>
+<p>对应 OSI 的应用层、表示层、会话层。协议有 HTTP、HTTPS、FTP、SMTP、DNS<br>等。</p>
+<ul>
+<li><strong>第3层 — 传输层</strong></li>
+</ul>
+<p>对应 OSI<br>的传输层。核心协议：TCP（传输控制协议）、UDP（用户数据报协议）。</p>
+<ul>
+<li><strong>第2层 — 网际层（Internet Layer）</strong></li>
+</ul>
+<p>对应 OSI 的网络层。核心协议：IP（IPv4 &#x2F; IPv6）、ICMP、ARP。</p>
+<ul>
+<li><strong>第1层 — 网络接口层（Network Access Layer）</strong></li>
+</ul>
+<p>对应 OSI 的数据链路层和物理层。负责在物理网络上发送数据。</p>
+<h2 id="1-4-OSI-与-TCP-IP-的对应关系"><a href="#1-4-OSI-与-TCP-IP-的对应关系" class="headerlink" title="1.4 OSI 与 TCP&#x2F;IP 的对应关系"></a>1.4 OSI 与 TCP&#x2F;IP 的对应关系</h2><hr>
+<p>  <strong>OSI 七层模型</strong>        <strong>TCP&#x2F;IP 四层模型</strong>     <strong>核心协议举例</strong></p>
+<p>  应用层 &#x2F; 表示层 &#x2F;       应用层                  HTTP, HTTPS, FTP, SMTP,<br>  会话层                                          DNS</p>
+<p>  传输层                  传输层                  TCP, UDP</p>
+<p>  网络层                  网际层                  IP (IPv4 &#x2F; IPv6), ICMP,<br>                                                  ARP</p>
+<p>  数据链路层              网络接口层              以太网, PPP</p>
+<p>  物理层                  网络接口层              双绞线, 光纤, 无线</p>
+<hr>
+<h2 id="1-5-数据封装与解封装"><a href="#1-5-数据封装与解封装" class="headerlink" title="1.5 数据封装与解封装"></a>1.5 数据封装与解封装</h2><p>当数据从一台计算机发送到另一台时，每一层都会给数据加上自己的头部信息，这个过程叫&quot;封装&quot;（Encapsulation）。接收方则逐层去掉头部，叫&quot;解封装&quot;（Decapsulation）。</p>
+<p>数据在各层的叫法不同：</p>
+<ul>
+<li><p>应用层 → 数据（Data &#x2F; Message）</p>
+</li>
+<li><p>传输层 → 数据段（Segment，TCP）&#x2F; 数据报（Datagram，UDP）</p>
+</li>
+<li><p>网络层 → 数据包（Packet）</p>
+</li>
+<li><p>数据链路层 → 数据帧（Frame）</p>
+</li>
+<li><p>物理层 → 比特流（Bits）</p>
+</li>
+</ul>
+<h1 id="第二部分：传输层核心协议"><a href="#第二部分：传输层核心协议" class="headerlink" title="第二部分：传输层核心协议"></a>第二部分：传输层核心协议</h1><h2 id="2-1-传输层的作用"><a href="#2-1-传输层的作用" class="headerlink" title="2.1 传输层的作用"></a>2.1 传输层的作用</h2><p>传输层位于网络层之上、应用层之下，负责为应用程序提供&quot;端到端&quot;的通信服务。它的核心任务是：</p>
+<ul>
+<li><p>端口寻址：区分同一台主机上的不同应用程序（通过端口号，如 HTTP→80,<br>HTTPS→443）</p>
+</li>
+<li><p>数据分段与重组：将应用层的大数据切分成小段，接收方再拼回去</p>
+</li>
+<li><p>可靠性控制：保证数据不丢失、不重复、不乱序（TCP）</p>
+</li>
+<li><p>流量控制：协调发送方和接收方的速率</p>
+</li>
+<li><p>差错控制：检测和纠正传输中的错误</p>
+</li>
+</ul>
+<h2 id="2-2-TCP（传输控制协议）——-可靠但慢"><a href="#2-2-TCP（传输控制协议）——-可靠但慢" class="headerlink" title="2.2 TCP（传输控制协议）—— 可靠但慢"></a>2.2 TCP（传输控制协议）—— 可靠但慢</h2><p><strong>TCP（Transmission Control<br>Protocol）是面向连接的、可靠的数据传输协议。就像&quot;打电话&quot;：先拨号建立连接，然后通话，最后挂断。</strong></p>
+<h3 id="2-2-1-TCP-的特点"><a href="#2-2-1-TCP-的特点" class="headerlink" title="2.2.1 TCP 的特点"></a>2.2.1 TCP 的特点</h3><ul>
+<li><p>面向连接：通信前必须先建立连接（三次握手），结束后断开连接（四次挥手）</p>
+</li>
+<li><p>可靠传输：通过确认应答（ACK）、超时重传、序列号等机制，确保数据完整到达</p>
+</li>
+<li><p>有序传输：数据按发送顺序到达接收方</p>
+</li>
+<li><p>流量控制：使用滑动窗口机制，避免发送方太快导致接收方来不及处理</p>
+</li>
+<li><p>拥塞控制：当网络拥堵时主动降低发送速率，避免网络瘫痪</p>
+</li>
+</ul>
+<h3 id="2-2-2-三次握手（建立连接）"><a href="#2-2-2-三次握手（建立连接）" class="headerlink" title="2.2.2 三次握手（建立连接）"></a>2.2.2 三次握手（建立连接）</h3><p>三次握手是 TCP 建立连接的过程，共三个步骤：</p>
+<ul>
+<li><p>第1次（SYN）：客户端 → 服务器，发送 SYN&#x3D;1<br>的报文，表示&quot;我要和你建立连接&quot;</p>
+</li>
+<li><p>第2次（SYN+ACK）：服务器 → 客户端，发送 SYN&#x3D;1,<br>ACK&#x3D;1，表示&quot;收到，我也准备好和你连接&quot;</p>
+</li>
+<li><p>第3次（ACK）：客户端 → 服务器，发送 ACK&#x3D;1，表示&quot;好的，连接已建立&quot;</p>
+</li>
+</ul>
+<p>为什么要三次？防止已经失效的连接请求突然又传到服务器，造成错误。三次握手能确保双方都具备收发能力。</p>
+<h3 id="2-2-3-四次挥手（断开连接）"><a href="#2-2-3-四次挥手（断开连接）" class="headerlink" title="2.2.3 四次挥手（断开连接）"></a>2.2.3 四次挥手（断开连接）</h3><p>四次挥手是 TCP 断开连接的过程：</p>
+<ul>
+<li><p>第1次（FIN）：客户端 → 服务器，表示&quot;我的数据发完了，可以关闭了&quot;</p>
+</li>
+<li><p>第2次（ACK）：服务器 → 客户端，表示&quot;收到你的关闭请求&quot;</p>
+</li>
+<li><p>第3次（FIN）：服务器 → 客户端，表示&quot;我的数据也发完了，可以关闭了&quot;</p>
+</li>
+<li><p>第4次（ACK）：客户端 → 服务器，表示&quot;好的，关闭连接&quot;</p>
+</li>
+</ul>
+<p>为什么是四次？因为 TCP 是全双工通信，双方都要单独关闭自己的数据通道。</p>
+<h3 id="2-2-4-TCP-报文头部结构"><a href="#2-2-4-TCP-报文头部结构" class="headerlink" title="2.2.4 TCP 报文头部结构"></a>2.2.4 TCP 报文头部结构</h3><p>TCP 头部至少 20 字节，重要字段包括：</p>
+<ul>
+<li><p>源端口 &#x2F; 目的端口（各2字节）：标识应用程序</p>
+</li>
+<li><p>序列号（4字节）：保证数据顺序</p>
+</li>
+<li><p>确认号（4字节）：告诉对方下一个期望收到的序号</p>
+</li>
+<li><p>标志位（6位）：SYN（建立连接）、ACK（确认）、FIN（断开）、RST（重置）、PSH（推送）、URG（紧急）</p>
+</li>
+<li><p>窗口大小（2字节）：用于流量控制</p>
+</li>
+</ul>
+<h2 id="2-3-UDP（用户数据报协议）——-快速但不可靠"><a href="#2-3-UDP（用户数据报协议）——-快速但不可靠" class="headerlink" title="2.3 UDP（用户数据报协议）—— 快速但不可靠"></a>2.3 UDP（用户数据报协议）—— 快速但不可靠</h2><p><strong>UDP（User Datagram<br>Protocol）是无连接的、不可靠的数据传输协议。就像&quot;寄明信片&quot;：直接扔进邮筒，不关心是否到达。</strong></p>
+<h3 id="2-3-1-UDP-的特点"><a href="#2-3-1-UDP-的特点" class="headerlink" title="2.3.1 UDP 的特点"></a>2.3.1 UDP 的特点</h3><ul>
+<li><p>无连接：不需要建立连接，直接发送数据</p>
+</li>
+<li><p>不可靠：不保证数据到达，没有确认和重传机制</p>
+</li>
+<li><p>开销小：头部仅 8 字节（TCP 至少 20 字节）</p>
+</li>
+<li><p>速度快：没有握手、确认、重传等流程</p>
+</li>
+<li><p>支持广播和多播：一对一多的通信场景</p>
+</li>
+</ul>
+<h3 id="2-3-2-UDP-的应用场景"><a href="#2-3-2-UDP-的应用场景" class="headerlink" title="2.3.2 UDP 的应用场景"></a>2.3.2 UDP 的应用场景</h3><ul>
+<li><p>视频直播 &#x2F; 视频会议：偶尔丢一帧不影响，但延迟不能高</p>
+</li>
+<li><p>在线游戏：实时性要求高，丢包可以忍受</p>
+</li>
+<li><p>DNS 查询：一次查询一个请求一个应答，简单快速</p>
+</li>
+<li><p>VoIP 网络电话：实时语音通信</p>
+</li>
+</ul>
+<h2 id="2-4-TCP-与-UDP-的对比总结"><a href="#2-4-TCP-与-UDP-的对比总结" class="headerlink" title="2.4 TCP 与 UDP 的对比总结"></a>2.4 TCP 与 UDP 的对比总结</h2><hr>
+<p>  <strong>对比项</strong>              <strong>TCP</strong>                      <strong>UDP</strong></p>
+<p>  连接方式                面向连接（三次握手）         无连接</p>
+<p>  可靠性                  可靠（确认重传）             不可靠（尽力而为）</p>
+<p>  数据顺序                保证有序                     不保证有序</p>
+<p>  速度                    较慢                         较快</p>
+<p>  头部大小                20~60 字节                  8 字节</p>
+<p>  流量&#x2F;拥塞控制           支持                         不支持</p>
+<p>  典型应用                网页(HTTP)、邮件、文件传输   直播、游戏、DNS</p>
+<hr>
+<p>**💡 简单记忆：**TCP &#x3D; 可靠但慢（适合重要数据）；UDP &#x3D;<br>快但可能丢（适合实时应用）</p>
+<h2 id="2-5-端口号"><a href="#2-5-端口号" class="headerlink" title="2.5 端口号"></a>2.5 端口号</h2><p>端口号用于标识一台主机上的不同应用程序，范围 0~65535。</p>
+<ul>
+<li><p>知名端口（0~1023）：HTTP&#x3D;80, HTTPS&#x3D;443, FTP&#x3D;21, SSH&#x3D;22, DNS&#x3D;53</p>
+</li>
+<li><p>注册端口（1024~49151）：分配给特定服务，如 MySQL&#x3D;3306</p>
+</li>
+<li><p>动态&#x2F;私有端口（49152~65535）：临时分配给客户端使用</p>
+<p><strong>第三部分：DoS 攻击（拒绝服务攻击）</strong></p>
+</li>
+</ul>
+<h2 id="3-1-什么是-DoS-攻击？"><a href="#3-1-什么是-DoS-攻击？" class="headerlink" title="3.1 什么是 DoS 攻击？"></a>3.1 什么是 DoS 攻击？</h2><p>DoS（Denial of<br>Service，拒绝服务攻击）是一种通过消耗目标系统资源（带宽、CPU、内存、连接数等），使其无法正常为合法用户提供服务的攻击方式。</p>
+<p>打个比方：一家餐厅只有10个座位，攻击者派了100个人进去占座但不点餐，真正的客人就没地方坐了。这就是拒绝服务。</p>
+<h2 id="3-2-DDoS-攻击-——-分布式拒绝服务攻击"><a href="#3-2-DDoS-攻击-——-分布式拒绝服务攻击" class="headerlink" title="3.2 DDoS 攻击 —— 分布式拒绝服务攻击"></a>3.2 DDoS 攻击 —— 分布式拒绝服务攻击</h2><p>DDoS（Distributed Denial of Service）是 DoS<br>的升级版，攻击者控制大量&quot;僵尸主机&quot;（肉鸡）同时向目标发起攻击，威力更大、更难防御。就像上千人同时冲进餐厅占座。</p>
+<ul>
+<li><p>攻击者（Attacker）：幕后操控者</p>
+</li>
+<li><p>控制服务器（C&amp;C）：下发攻击指令</p>
+</li>
+<li><p>僵尸网络（Botnet）：被控制的大量受害主机（肉鸡）</p>
+</li>
+<li><p>目标（Target）：被攻击的服务器</p>
+</li>
+</ul>
+<h2 id="3-3-常见的-DoS-DDoS-攻击类型"><a href="#3-3-常见的-DoS-DDoS-攻击类型" class="headerlink" title="3.3 常见的 DoS &#x2F; DDoS 攻击类型"></a>3.3 常见的 DoS &#x2F; DDoS 攻击类型</h2><h3 id="3-3-1-体积型攻击（Volumetric-Attacks）"><a href="#3-3-1-体积型攻击（Volumetric-Attacks）" class="headerlink" title="3.3.1 体积型攻击（Volumetric Attacks）"></a>3.3.1 体积型攻击（Volumetric Attacks）</h3><p>目标：消耗目标带宽。通过发送海量数据包，塞满目标网络带宽。</p>
+<ul>
+<li><p>UDP Flood（UDP 洪泛）：向目标随机端口发送大量 UDP 包，使其忙于处理</p>
+</li>
+<li><p>ICMP Flood（ICMP 洪泛 &#x2F; Ping Flood）：发送大量 Ping 请求</p>
+</li>
+<li><p>DNS 放大攻击（DNS Amplification）：利用 DNS<br>服务器，发送小请求获取大响应，把流量放大几十倍打向目标</p>
+</li>
+</ul>
+<h3 id="3-3-2-协议型攻击（Protocol-Attacks）"><a href="#3-3-2-协议型攻击（Protocol-Attacks）" class="headerlink" title="3.3.2 协议型攻击（Protocol Attacks）"></a>3.3.2 协议型攻击（Protocol Attacks）</h3><p>目标：消耗服务器的连接资源或中间设备的处理能力。</p>
+<ul>
+<li><p>SYN Flood（SYN 洪泛）：最经典的 DoS 攻击之一。攻击者发送大量 SYN<br>包（三次握手的第一次）但不完成握手，导致服务器维护大量半开连接，耗尽连接表。</p>
+</li>
+<li><p>Smurf 攻击：向广播地址发送伪造源地址的 ICMP<br>请求，导致大量回复涌向受害者。</p>
+</li>
+<li><p>ACK Flood：发送大量 ACK 包，迫使服务器进行无意义的处理。</p>
+</li>
+</ul>
+<h3 id="3-3-3-应用层攻击（Application-Layer-Attacks）"><a href="#3-3-3-应用层攻击（Application-Layer-Attacks）" class="headerlink" title="3.3.3 应用层攻击（Application Layer Attacks）"></a>3.3.3 应用层攻击（Application Layer Attacks）</h3><p>目标：消耗应用服务器资源（CPU、内存）。模仿正常请求，更难检测。</p>
+<ul>
+<li><p>HTTP Flood：大量请求网页、API 接口，耗尽服务器处理能力</p>
+</li>
+<li><p>Slowloris（慢速攻击）：发送不完整的 HTTP<br>请求，保持连接打开，耗尽服务器连接池</p>
+</li>
+<li><p>DNS Query Flood：大量 DNS 查询请求，耗尽 DNS 服务器资源</p>
+</li>
+</ul>
+<h2 id="3-4-SYN-Flood-攻击详解（与传输层密切相关）"><a href="#3-4-SYN-Flood-攻击详解（与传输层密切相关）" class="headerlink" title="3.4 SYN Flood 攻击详解（与传输层密切相关）"></a>3.4 SYN Flood 攻击详解（与传输层密切相关）</h2><p><strong>SYN Flood 是最常见也最具代表性的传输层 DoS 攻击，利用 TCP<br>三次握手的漏洞。</strong></p>
+<h3 id="3-4-1-攻击原理"><a href="#3-4-1-攻击原理" class="headerlink" title="3.4.1 攻击原理"></a>3.4.1 攻击原理</h3><p>正常 TCP 三次握手：</p>
+<ul>
+<li><p>① 客户端发 SYN → 服务器</p>
+</li>
+<li><p>② 服务器回复 SYN+ACK，并分配资源（进入 SYN_RCVD 状态）</p>
+</li>
+<li><p>③ 客户端发 ACK，完成连接</p>
+</li>
+</ul>
+<p>SYN Flood 攻击：</p>
+<ul>
+<li><p>攻击者发送大量 SYN 包，但使用伪造的源 IP 地址</p>
+</li>
+<li><p>服务器回复 SYN+ACK 到伪造的IP（无人回复）</p>
+</li>
+<li><p>服务器一直等待 ACK，维护着大量半开连接</p>
+</li>
+<li><p>服务器的&quot;半开连接队列&quot;（Backlog Queue）很快被填满</p>
+</li>
+<li><p>后续正常的连接请求被丢弃，合法用户无法访问</p>
+</li>
+</ul>
+<h3 id="3-4-2-SYN-Flood-的防御方法"><a href="#3-4-2-SYN-Flood-的防御方法" class="headerlink" title="3.4.2 SYN Flood 的防御方法"></a>3.4.2 SYN Flood 的防御方法</h3><ul>
+<li><p>SYN Cookie：不分配资源，直到收到 ACK 才分配。将连接信息编码在 SYN+ACK<br>的序列号中。</p>
+</li>
+<li><p>增大半开连接队列（Backlog）大小</p>
+</li>
+<li><p>缩短 SYN 超时时间</p>
+</li>
+<li><p>部署专门的抗 DDoS 设备或云清洗服务（如 Cloudflare、AWS Shield）</p>
+</li>
+</ul>
+<h2 id="3-5-其他与传输层相关的攻击"><a href="#3-5-其他与传输层相关的攻击" class="headerlink" title="3.5 其他与传输层相关的攻击"></a>3.5 其他与传输层相关的攻击</h2><h3 id="3-5-1-TCP-重置攻击（TCP-RST-Attack）"><a href="#3-5-1-TCP-重置攻击（TCP-RST-Attack）" class="headerlink" title="3.5.1 TCP 重置攻击（TCP RST Attack）"></a>3.5.1 TCP 重置攻击（TCP RST Attack）</h3><p>攻击者伪造 TCP 的 RST 包，强制断开两台主机之间的 TCP<br>连接。如果攻击者能正确猜测 TCP 序列号，就可以成功中断通信。</p>
+<h3 id="3-5-2-端口扫描（Port-Scan）"><a href="#3-5-2-端口扫描（Port-Scan）" class="headerlink" title="3.5.2 端口扫描（Port Scan）"></a>3.5.2 端口扫描（Port Scan）</h3><p>虽然不是直接的 DoS<br>攻击，但常用于攻击前的信息收集。通过扫描目标主机的开放端口，了解其上运行的服务，为后续攻击做准备。</p>
+<ul>
+<li><p>TCP 全连接扫描：完整完成三次握手来判断端口是否开放</p>
+</li>
+<li><p>SYN 半开扫描（隐蔽扫描）：只发送 SYN，根据回复判断端口状态</p>
+</li>
+<li><p>UDP 扫描：发送 UDP 包，根据 ICMP 不可达回复判断</p>
+</li>
+</ul>
+<h2 id="3-6-如何防范-DoS-DDoS-攻击"><a href="#3-6-如何防范-DoS-DDoS-攻击" class="headerlink" title="3.6 如何防范 DoS &#x2F; DDoS 攻击"></a>3.6 如何防范 DoS &#x2F; DDoS 攻击</h2><ul>
+<li><p>带宽扩容：增大出口带宽，提高攻击成本</p>
+</li>
+<li><p>流量清洗：使用专业 Anti-DDoS 设备或云服务过滤恶意流量</p>
+</li>
+<li><p>负载均衡：分散流量到多台服务器</p>
+</li>
+<li><p>限制连接速率：对单个 IP 的连接数、请求频率进行限制</p>
+</li>
+<li><p>防火墙规则：屏蔽异常流量、关闭不必要端口</p>
+</li>
+<li><p>CDN 加速：隐藏真实源站 IP，分散攻击流量</p>
+</li>
+<li><p>监控告警：实时监控流量异常，及时发现并响应</p>
+</li>
+</ul>
+<h1 id="附录：常见术语速查表"><a href="#附录：常见术语速查表" class="headerlink" title="附录：常见术语速查表"></a>附录：常见术语速查表</h1><hr>
+<p>  <strong>术语</strong>                            <strong>说明</strong></p>
+<p>  OSI                                 开放系统互连参考模型，7层网络模型</p>
+<p>  TCP&#x2F;IP                              传输控制协议&#x2F;网际协议，互联网实际使用的协议族</p>
+<p>  TCP                                 传输控制协议，面向连接、可靠的传输协议</p>
+<p>  UDP                                 用户数据报协议，无连接、不可靠的传输协议</p>
+<p>  IP                                  网际协议，负责数据包的路由和寻址</p>
+<p>  ICMP                                互联网控制报文协议，用于网络诊断（如 Ping）</p>
+<p>  SYN                                 同步序列号，TCP 握手中的标志位</p>
+<p>  ACK                                 确认标志位，表示确认收到数据</p>
+<p>  FIN                                 结束标志位，表示断开连接</p>
+<p>  DoS                                 拒绝服务攻击，使目标无法提供正常服务</p>
+<p>  DDoS                                分布式拒绝服务攻击，多源协同攻击</p>
+<p>  SYN Flood                           利用 TCP 三次握手的漏洞进行的 DoS 攻击</p>
+<p>  端口                                标识应用程序的 16 位数字，范围 0~65535</p>
+<p>  三次握手                            TCP 建立连接的三步过程</p>
+<p>  四次挥手                            TCP 断开连接的四步过程</p>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%9F%BA%E7%A1%80/" class="category-chain-item">网络安全基础</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络通信模型 · 传输层核心协议 · DoS攻击</div>
+      <div>https://chiya-66.github.io/2026/07/11/网络通信模型 · 传输层核心协议 · DoS攻击/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/11/%E7%AC%AC%E5%8D%81%E5%B1%8A%E5%BE%A1%E7%BD%91%E6%9D%AFwp/" title="第十届御网杯wp">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">第十届御网杯wp</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/11/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" title="网络协议与技术入门指南">
+                        <span class="hidden-mobile">网络协议与技术入门指南</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

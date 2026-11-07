@@ -333,15 +333,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2026/11/07/hello-world/" target="_self">
-          Hello World
+        <a href="/2026/11/06/sql%E6%B3%A8%E5%85%A5/" target="_self">
+          sql注入
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/11/07/hello-world/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/11/06/sql%E6%B3%A8%E5%85%A5/" target="_self">
         <div>
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+          一．定义 SQL注入（SQLInjection）:是一种将恶意SQL代码插入到应用程序输入参数中的攻击技术，攻击成功后可以获取、篡改或删除数据库数据，甚至控制服务器 比如使用单引号来破坏sql的闭合结构 根本原因：未做参数化，直接拼接用户可控输入。 预编译会预防的原因：SQL结构先编译固定，用户输入仅作为数据，不会改变语句结构。  分类以及判断方式  数字型注入： 判断方法：使用 1 and 1&
         </div>
       </a>
 
@@ -349,11 +349,518 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2026-11-07 18:13" pubdate>
-              2026-11-07
+            <time datetime="2026-11-06 09:57" pubdate>
+              2026-11-06
             </time>
           </div>
         
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/10/16/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" target="_self">
+          实验：内网渗透测试
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/10/16/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" target="_self">
+        <div>
+          渗透测试实战1. 概念和意义没什么可说的，就是综合了一下之前的内容，直接上实操即可 2.实验过程2.1 实验所需的工具和设备 设备： fastjson  工具：   2.2 实验大致过程1.在本机部署好靶机虚拟机fastjson , 并看一下靶机的ip 然后在本地打开该靶场，并注册一个帐号来进入后台，该靶场是通过java语言写得，使用fastjson 注册后成功登录 2. 进行信息收集通过fast
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-10-16 17:24" pubdate>
+              2026-10-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/10/12/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81%E7%97%95%E8%BF%B9%E6%B8%85%E7%90%86/" target="_self">
+          实验：内网权限维持痕迹清理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/10/12/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81%E7%97%95%E8%BF%B9%E6%B8%85%E7%90%86/" target="_self">
+        <div>
+          1.概念和原理1.1 DSRM后门 – 目录服务还原模式原理DSRM(Directory Services Restore Mode)是域控的离线修复模式。DC的本地SAM中有一个独立的Administrator账户（RID 500），密码在DC提升时设置，与域Administrator完全独立。攻击者无需改密码，直接dump本地SAM拿到hash，配合DSRMAdminLogonBehavior
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-10-12 21:36" pubdate>
+              2026-10-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/10/01/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%9F%9F%E6%B8%97%E9%80%8F/" target="_self">
+          实验：域渗透
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/10/01/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%9F%9F%E6%B8%97%E9%80%8F/" target="_self">
+        <div>
+          域渗透1、概念和原理1.1中继委派中继： 钓鱼欺骗 委派： 以机器用户的身份去访问某台设备（在dc上进行），叫做委派访问，若配置不当，则可能让用户以任意机器任意身份去访问sql server 而我们这是进行窃取机器用户的身份，来窃取域中的一个访问权限 12345678① ④ HTTP WPAD (NTLM认证)            ⑤ 中继 NTLM 到 LDAPWebServer ──────
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-10-01 21:19" pubdate>
+              2026-10-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/09/23/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" target="_self">
+          实验：内网横向移动
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/09/23/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" target="_self">
+        <div>
+          1.概念和原理1.1 前置知识这两个概念贯穿整个横向移动，先搞清楚再往下看。 1.1.1 NTLM vs Kerberos — Windows 的两种认证方式一句话：NTLM 像对暗号  全程没有传密码，只传了一个 Hash 加密后的响应值 所以你有 Hash &#x3D; 你能算出正确答案 &#x3D; 你能认证——这就是 PtH 的前提 NTLM 还有一个弱点：挑战-响应可以被中继转发（NTL
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-09-23 19:33" pubdate>
+              2026-09-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E5%87%AD%E8%AF%81%E8%8E%B7%E5%8F%96/" target="_self">
+          实验：内网凭证获取
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E5%87%AD%E8%AF%81%E8%8E%B7%E5%8F%96/" target="_self">
+        <div>
+          1.概念和原理1.1 前置知识域环境中的设备：dc，员工的电脑，web server，sqlserver，exchangeserver 注： exchangeserver是一种邮件服务器，有一个web 界面，在浏览器中登录 而凭证获取就是通过已经拿到权限的服务器，进一步获取到这个服务器中的深层信息，主要是获取域管理员的一个凭证 1.1 凭证类型   凭证 位置 &#x2F; 形态 说明    明文
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-09-09 13:32" pubdate>
+              2026-09-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA/" target="_self">
+          实验：内网隧道搭建
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA/" target="_self">
+        <div>
+          内网一层隧道搭建1. 概念与原理1.1 什么是”一层隧道”在攻防场景中，攻击者通常位于外网，而目标的核心资产位于内网。攻击者无法直接访问内网，但往往能通过 Web 漏洞、弱口令、钓鱼等方式先拿下一台边界服务器（Web 服务器、DMZ 主机、跳板机等）。这台边界主机同时连通外网与内网，因此可作为”跳板”。 “一层隧道” 即指：利用边界主机作为中转，在攻击机与内网之间建立一条通信隧道，使攻击机能够通过
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-09-09 13:27" pubdate>
+              2026-09-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/10/upload/" target="_self">
+          文件上传漏洞
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/10/upload/" target="_self">
+        <div>
+          一、文件上传的大致定义文件上传功能本身是正常的业务需求（如头像上传），但当开发者未对文件类型、内容、文件名做严格校验时，攻击者就可以上传恶意脚本（如 PHP、JSP、ASP），通过该脚本获取服务器控制权。 核心条件：上传目录可访问 + 文件可被服务器解析。  二、验证文件类型的分类 前端 JS 校验文件后缀名 后端校验： 校验文件后缀名 校验 MIME 类型（HTTP 请求头里的一段文字，告诉服务
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-10 14:35" pubdate>
+              2026-08-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/08/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E4%B8%8E%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E/" target="_self">
+          解析漏洞与编辑器漏洞
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/08/%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E4%B8%8E%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E/" target="_self">
+        <div>
+          一、概述解析漏洞是指 Web 服务器（中间件）在处理文件请求时，由于自身解析规则的缺陷，导致非脚本文件被当作脚本执行的安全漏洞。利用解析漏洞，攻击者可以上传看似正常的图片文件，再通过特殊路径使其被解析为脚本，从而强行执行木马。 编辑器漏洞则是网站使用的在线编辑器（如 FCKEditor、UEditor 等）自身存在的安全缺陷，攻击者可直接利用编辑器的上传功能绕过校验，上传恶意脚本。  核心区别：
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-08 21:11" pubdate>
+              2026-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/04/Ctf%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/" target="_self">
+          Ctf做题笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/04/Ctf%E5%81%9A%E9%A2%98%E7%AC%94%E8%AE%B0/" target="_self">
+        <div>
+          [HCTF 2018]WarmUp这是图给界面，得不出任何信息，我们可以尝试扫描或者查看源码  然后进行访问，在source.php中得到源码,然后在hint.php中得到flag的位置   由这里可知,我们需要通过file形式进行访问 但我们并不知道flag的具体位置，所以可以尝试路径穿越 1source.php?file=hint.php?/../../../../../../../../ff
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-04 16:52" pubdate>
+              2026-08-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CTF/" class="category-chain-item">CTF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
         
         
       </div>
@@ -361,6 +868,12 @@
   </div>
 
 
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 

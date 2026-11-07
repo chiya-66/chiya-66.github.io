@@ -1,0 +1,918 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="chiya-66">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="php反序列化 一、一些前置基础知识 1.序列化serialize()序列化：序列化是将对象或数组转化为方便存储、传输的字符串。php使用serialize()函数将对象序列化；**序列化只作用于对象的成员属性，不序列化成员方法；**通俗一点就是把一个对象变成可以传输的字符串**注：成员方法：**写在类里面、属于对象的”函数&#x2F;动作” **成员属性：**类里面定义的、用来保存对象数据的变量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php反序列化">
+<meta property="og:url" content="https://chiya-66.github.io/2026/07/11/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="Chiya 的博客">
+<meta property="og:description" content="php反序列化 一、一些前置基础知识 1.序列化serialize()序列化：序列化是将对象或数组转化为方便存储、传输的字符串。php使用serialize()函数将对象序列化；**序列化只作用于对象的成员属性，不序列化成员方法；**通俗一点就是把一个对象变成可以传输的字符串**注：成员方法：**写在类里面、属于对象的”函数&#x2F;动作” **成员属性：**类里面定义的、用来保存对象数据的变量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://chiya-66.github.io/images/notes/media_php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/media/image1.jpeg">
+<meta property="article:published_time" content="2026-07-11T00:04:13.000Z">
+<meta property="article:modified_time" content="2026-11-07T10:54:29.366Z">
+<meta property="article:author" content="chiya-66">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chiya-66.github.io/images/notes/media_php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/media/image1.jpeg">
+  
+  
+  
+  <title>php反序列化 - Chiya 的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"chiya-66.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Chiya 的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="php反序列化"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-07-11 08:04" pubdate>
+          2026年7月11日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">php反序列化</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>php反序列化</strong></p>
+<p><strong>一、一些前置基础知识</strong></p>
+<h5 id="1-序列化serialize"><a href="#1-序列化serialize" class="headerlink" title="1.序列化serialize()"></a><strong>1.序列化</strong>serialize()</h5><h2 id="序列化：序列化是将对象或数组转化为方便存储、传输的字符串。php使用serialize-函数将对象序列化；-序列化只作用于对象的成员属性，不序列化成员方法；-通俗一点就是把一个对象变成可以传输的字符串"><a href="#序列化：序列化是将对象或数组转化为方便存储、传输的字符串。php使用serialize-函数将对象序列化；-序列化只作用于对象的成员属性，不序列化成员方法；-通俗一点就是把一个对象变成可以传输的字符串" class="headerlink" title="序列化：序列化是将对象或数组转化为方便存储、传输的字符串。php使用serialize()函数将对象序列化；**序列化只作用于对象的成员属性，不序列化成员方法；**通俗一点就是把一个对象变成可以传输的字符串"></a>序列化：序列化是将对象或数组转化为方便存储、传输的字符串。php使用serialize()函数将对象序列化；**序列化只作用于对象的成员属性，不序列化成员方法；**通俗一点就是把一个对象变成可以传输的字符串</h2><p>**注：成员方法：**写在类里面、属于对象的”函数&#x2F;动作”</p>
+<p>**成员属性：**类里面定义的、用来保存对象数据的变量</p>
+<p><strong>例如：</strong></p>
+<p>**O:4:&quot;Test&quot;:1:{s:3:&quot;cmd&quot;;s:6:&quot;whoami&quot;;} **</p>
+<p><strong>1、类型标识（开头字母）</strong></p>
+<p>**O：**Object 对象</p>
+<p>**s：**String 字符串</p>
+<p>**i：**Int 整数</p>
+<p>**b：**Boolean 布尔</p>
+<p>**d：**Float 浮点数</p>
+<p>**a：**Array 数组</p>
+<p>**N：**Null 空</p>
+<p><strong>2、数字规则</strong></p>
+<p><strong>1.O:4:&quot;Test&quot;</strong> </p>
+<p>**O：**对象</p>
+<p>**4：**类名字符串长度</p>
+<p>**Test：**类名</p>
+<p><strong>2.:1</strong></p>
+<p>:该对象成员变量个数</p>
+<p><strong>3.s:3:&quot;cmd&quot;</strong> </p>
+<p>**s：**字符串</p>
+<p>**3：**字符串长度</p>
+<p>**cmd：**字符串内容</p>
+<p><strong>序列化后字符串意义解释：</strong></p>
+<p>变量类型：类名长度（字节）：类名：属性数量：{属性名类型：属性名长度：属性值长度：属性值内容}</p>
+<p>序列化对象：</p>
+<p>private变量会被序列化为：\x00类名\x00变量名</p>
+<p>protected变量会被序列化为：\x00*\x00变量名</p>
+<p>public变量会被序列化为：变量名</p>
+<ol start="2">
+<li><p><strong>public、protected、与private在序列化时的区别</strong></p>
+<p>**public：**声明的字段都是公共字段，因此他们的字段名的序列化格式是相同的。公共字段的字段名按照声明时的字段名进行序列化，但序列化后的字段名中不包括声明是时的变量前缀符号$</p>
+<p>**protected：**声明的字段为保护字段，在所声明的类和该类的子类中可见，但在该类的对象实例中不可见。因此保护字段的字段名在序列化时，字段名前面会加上\0*\0的前缀</p>
+<p>**注：**这里的\0表示ASCII码为0的字符</p>
+<p>**privite：**声明的字段为私有字段，只在所声明的类中可见，在该类的子类和该类的对象实例中均不可见。</p>
+<p><strong>二、相关定义</strong></p>
+</li>
+</ol>
+<h5 id="反序列化unserialize-：就是把被序列化的字符串还原为对象，然后在接下来的代码中继续使用。"><a href="#反序列化unserialize-：就是把被序列化的字符串还原为对象，然后在接下来的代码中继续使用。" class="headerlink" title="反序列化unserialize()：就是把被序列化的字符串还原为对象，然后在接下来的代码中继续使用。"></a>反序列化unserialize()：就是把被序列化的字符串还原为对象，然后在接下来的代码中继续使用。</h5><p>**主要原理：**应用程序在反序列化过程中没有对传入的数据进行足够的验证和过滤，导致攻击者可以利用构造的恶意序列化数据来执行任意代码或远程代码执行攻击。</p>
+<h4 id="三、反序列化中的魔术方法"><a href="#三、反序列化中的魔术方法" class="headerlink" title="三、反序列化中的魔术方法"></a>三、反序列化中的魔术方法</h4><p>序列化和反序列化本身没有问题，但是如果反序列化的内容是用户可以控制的，且后台不正当的使用了php中的魔法函数，或者与其他漏洞，如xss漏洞进行联合使用，就会导致安全问题。</p>
+<p>**注：**魔术方法就是系统自动调用、不用你手动去调的特殊方法，名字固定、格式固定，用来控制序列化、反序列化的行为。</p>
+<p>常见的几个魔法函数：</p>
+<p>_construct()当一个对象创建时被调用</p>
+<p>_destruct()当一个对象销毁时被调用</p>
+<p>_toString()当一个对象被当作一个字符串使用</p>
+<p>_sleep()在对象在被序列化之前运行</p>
+<p>_wakeup()将在序列化之后立即被调用</p>
+<p>_get()用于从不可访问的属性读取数据</p>
+<h4 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h4><p><strong>核心思路</strong>：Php反序列化攻击的思路大致都为找pop链</p>
+<p>注：Pop链：魔术方法调用链</p>
+<p>因为PHP 反序列化漏洞本身不是直接执行代码，而是反序列化  unserialize() <br>会把对象恢复出来，自动触发魔术方法；</p>
+<p>而我们的目标，就是通过构造对象的属性值，让魔术方法之间互相调用，形成一条执行链，最终走到能执行危险操作的函数。</p>
+<p>**大致具体思路：**先找最终能实现目标的魔术方法（如ctf中就是直接找能报出flag的链条），之后便是找触发该链条的上一环，然后一直往前推，直到找到入口。最后构造对象并补齐格式，然后通过php工具将其序列化，然后进行攻击</p>
+<p>注：Php反序列化漏洞大多是与其他漏洞联动出现的</p>
+<p><strong>利用前提：</strong></p>
+<ul>
+<li><p><strong>代码中存在 unserialize() 函数处理用户可控输入</strong></p>
+</li>
+<li><p><strong>存在可利用的魔术方法&#x2F;类结构，比如</strong>class S{public<br>$test&#x3D;&quot;&lt;script&gt;alert(1)&lt;&#x2F;script&gt;&quot;;}<strong>来触发恶意行为</strong></p>
+<p>**注：**进行反序列化时：需要格式完全符合PHP序列化规范，包括长度匹配等（比如xss是三个字符，就不能改成1这一个字符）</p>
+<p>例如，我们先观察源文件，找到了对应的类结构和魔术方法</p>
+<p>&#x2F;&#x2F; 正常序列化</p>
+<p>O:4:&quot;Test&quot;:1:{s:3:&quot;cmd&quot;;s:6:&quot;whoami&quot;;}</p>
+<p>&#x2F;&#x2F; 绕过检测（添加多余属性）</p>
+<p>O:4:&quot;Test&quot;:2:{s:3:&quot;cmd&quot;;s:6:&quot;whoami&quot;;s:3:&quot;tmp&quot;;s:3:&quot;tmp&quot;;}</p>
+<p><img src="/images/notes/media_php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/media/image1.jpeg" srcset="/img/loading.gif" lazyload alt="105e14c62649d0c89f4b978a5fcf15ac"><br>height&#x3D;”2.9479166666666665in”}</p>
+<p>我们对应构造一串攻击代码</p>
+<p>class S{public $test&#x3D;&quot;&lt;script&gt;alert(xss)&lt;&#x2F;script&gt;&quot;;}</p>
+<p>并将其进行序列化</p>
+<p>O:1:&quot;S&quot;:1:{s:4:&quot;test&quot;;s:29:&quot;&lt;script&gt;alert(xss)&lt;&#x2F;script&gt;&quot;;}</p>
+<p>然后在对应位置进行提交，以触发魔术方法，从而成功攻击</p>
+<p>XSS攻击，在这个特定的例子中，类S只包含一个简单的字符串属性，并且没有定义其他魔术方法，将用户输入直接嵌入到html中仍然是不安全的。如果攻击者能够发送一个包含Javascript代码的序列化字符串，并且这段代码被成功反序列化并嵌入到html中，那么它可能会被浏览器执行，从而构成一个跨站脚本攻击</p>
+</li>
+</ul>
+<ol start="5">
+<li><p><strong>一些绕过方法</strong></p>
+<p><strong>1. __wakeup()绕过</strong></p>
+<p>**原理：**当序列化字符串中对象属性个数 &gt;<br>实际属性个数时，会跳过__wakeup() 执行。</p>
+<p><strong>例：</strong></p>
+<p><strong>正常序列化：</strong> O:4:&quot;xctf&quot;:1:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;} </p>
+<p>**绕过Payload： **O:4:&quot;xctf&quot;:2:{s:4:&quot;flag&quot;;s:3:&quot;111&quot;;} （把属性数1改成2）</p>
+<p><strong>2. 私有&#x2F;保护属性的序列化绕过</strong></p>
+<p>**原理：**不同访问权限的属性，序列化时会有特殊格式，若丢失空字符会导致反序列化失败</p>
+<p>**public：**直接属性名，如 s:4:&quot;name&quot; </p>
+<p><strong>protected：</strong>\x00*\x00属性名，如s:7:&quot;\x00*\x00func&quot; </p>
+<p><strong>private：</strong>\x00类名\x00属性名，如 s:11:&quot;\x00Sec\x00obj&quot;</p>
+<p><strong>3. 正则过滤O:绕过</strong></p>
+<p>**原理：**部分题目会用 preg_match(&#39;&#x2F;O:&#x2F;i&#39;) 过滤对象标识，可通过数组嵌套对象绕过。</p>
+<p>**方法：**数组序列化以a:开头，可绕过O:的过滤。</p>
+<p><strong>4. 字符串逃逸绕过</strong></p>
+<p>**原理：**当反序列化数据被 str_replace 等函数处理时，利用字符串长度差构造恶意数据。</p>
+<p>例如：构造输入：user&#x3D;hhhhhh&quot;;s:8:&quot;is_admin&quot;;i:1;&#x2F;&#x2F; </p>
+<p>替换后： hhhhhhhh&quot;;s:8:&quot;is_admin&quot;;i:1;&#x2F;&#x2F; </p>
+<p>最终序列化字符串会被解析为 is_admin&#x3D;1 ，实现权限绕过。</p>
+<p><strong>5.phar:&#x2F;&#x2F;协议绕过（无直接 unserialize() 场景）</strong></p>
+<p>**原理：**PHP的文件操作函数（如 file_exists() &#x2F; fopen() ）在处理 phar:&#x2F;&#x2F; 协议时，会自动反序列化phar文件的元数据。</p>
+<p>**例如：**直接构造phar文件，触发反序列化，无需调用函数</p>
+<p><strong>6. 引用符 &amp; 绕过过滤</strong></p>
+<p>**原理<br>：**利用PHP的引用符号&amp;，让变量指向目标值，绕过对特定字符串的过滤。</p>
+<p><strong>7.大小写绕过</strong></p>
+<p>如$payload &#x3D; &#39;O:4:&quot;tEst&quot;:1:{s:3:&quot;cmd&quot;;s:6:&quot;whoami&quot;;}&#39;;</p>
+<p>在部分题目不做大小写区分的情况下，可以进行</p>
+<p><strong>8.绕过preg_match对序列化字符串的检测</strong></p>
+<p>**原理：**部分题目用正则检测序列化格式，可通过修改属性数、添加多余属性绕过。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%89%E5%85%A8%E7%AC%94%E8%AE%B0/" class="category-chain-item">安全笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>php反序列化</div>
+      <div>https://chiya-66.github.io/2026/07/11/php反序列化/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>chiya-66</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年7月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/07/11/SSTI/" title="SSTI">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SSTI</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/11/misc/" title="misc">
+                        <span class="hidden-mobile">misc</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
